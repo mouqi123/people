@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="AuditLog" >
+  <resultMap id="BaseResultMap" type="AuditLogDO" >
+    <id column="id" property="id" />
+    <id column="modelname" property="modelname" />
+    <result column="masterid" property="masterid" />
+    <result column="mastername" property="mastername" />
+    <result column="srcip" property="srcip" />
+    <result column="serverip" property="serverip" />
+    <result column="serverport" property="serverport" />
+    <result column="operation" property="operation" />
+    <result column="opttime" property="opttime" />
+    <result column="levelnum" property="level" />
+    <result column="status" property="status" />
+    <result column="description" property="description" />
+  </resultMap>
+  
+  <resultMap id="dealResultMap" type="DealLogDO" >
+    <id column="id" property="id" />
+    <id column="deal_date" property="dealDate" />
+    <result column="phone" property="phone" />
+    <result column="deal_info" property="dealInfo" />
+    <result column="pc_info" property="pcInfo" />
+    <result column="status" property="status" />
+    <result column="data" property="data" />
+  </resultMap>
+  
+  
+  <sql id="Base_Column_List" >
+    a.id,a.modelname,a.masterid,a.srcip,a.serverip,a.serverport,a.operation,a.opttime,a.levelnum,a.status,a.description
+  </sql>
+  
+  <sql id="Deal_Column_List" >
+  id,deal_date,phone,deal_info,pc_info,status,data
+  </sql>
+  
+  
+  <sql id="where">
+  	<where>
+       <if test="logtype!=null " >
+        and a.logtype = #{logtype}
+      </if>
+  	</where>
+  </sql>
+  
+  <select id="selectCountAuditLog" resultType="Integer" parameterType="map" >
+  	select count(*)
+  	from t_system_auditlog a
+  	<include refid="where"/>
+  </select>
+  <select id="selectAuditLogList" resultMap="BaseResultMap" parameterType="map" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_system_auditlog a
+    <include refid="where"/>
+    <include refid="common.pageUtil"/>
+  </select>
+  <!-- 添加日志信息-->
+	<insert id="addAuditLog" parameterType="AuditLogDO">
+		<![CDATA[
+            insert into t_system_auditlog
+            		(modelname,masterid,srcip,serverip,serverport,operation,
+						opttime,levelnum,status,description,logtype,data)
+            values  (#{modelname},#{masterid},#{srcip},#{serverip},#{serverport},
+						#{operation},now(),#{level},#{status},#{description},#{logtype},#{data})
+		]]>
+	</insert>
+	<select id="getAuditLogInfo" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_system_auditlog a,t_system_user u
+    where a.masterid= u.id and a.id = #{id}
+  </select>
+  
+  
+  
+  <!-- 操作日志 -->
+   <select id="selectCountDealLog" resultType="Integer" parameterType="map" >
+  	select count(*)
+  	from tb_deal_log 
+  </select>
+  <select id="selectDealLogList" resultMap="dealResultMap" parameterType="map" >
+    select 
+    <include refid="Deal_Column_List" />
+    from tb_deal_log
+    <include refid="common.pageUtil"/>
+  </select>
+  
+  
+  
+  
+  
+  
+  
+  
+  <insert id="addDealLog" parameterType="DealLogDO">
+		<![CDATA[
+            insert into tb_deal_log
+            		(phone,deal_info,pc_info,status,data,deal_date)
+            values  (#{phone},#{dealInfo},#{pcInfo},#{status},#{data},now())
+		]]>
+	</insert>
+  
+  
+</mapper>

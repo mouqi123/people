@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<!-- saved from url=(0036)http://ibank.shikongma.cn/remittance -->
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport"
+	content="user-scalable=yes, width=device-width, initial-scale=1.333984375">
+<title>首页 | 激活插件 - 插件列表</title>
+
+<link rel="shortcut icon" href="${base}/res/ebanks/img/LOGO.ico">
+<link href="${base}/res/ebanks/css/bootstrap.min.css" rel="stylesheet"
+	media="screen">
+<link href="${base}/res/ebanks/css/order_manage_hue.css"
+	rel="stylesheet" media="screen">
+<link href="${base}/res/common/css/theme.css" rel="stylesheet"
+	type="text/css" />
+
+<script src="${base}/res/ebanks/js/jquery-1.9.1.min.js"
+	type="text/javascript"></script>
+<script src="${base}/res/ebanks/js/bootstrap.min.js"
+	type="text/javascript"></script>
+<script src="${base}/res/ebanks/js/controlPop.js" type="text/javascript"></script>
+<script src="${base}/res/ebanks/js/formVars.js" type="text/javascript"></script>
+<script src="${base}/res/ebanks/js/index.js" type="text/javascript"></script>
+<script src="${base}/res/ebanks/js/main.js" type="text/javascript"></script>
+<script src="${base}/res/ebanks/js/resize.js" type="text/javascript"></script>
+
+
+
+
+
+
+
+<style>
+body {
+	font-family: "Microsoft YaHei", Arial, sans-serif;
+}
+  .mycount{
+        	background: url('${base}/res/ebanks/img/icon_remittance.png') no-repeat center;
+        }
+        .mycount:hover{
+        	background: url('${base}/res/ebanks/img/icon_remittance_hover.png') no-repeat center;
+        }
+         .icon_account{
+        	background: url('${base}/res/ebanks/img/icon_account_hover.png') no-repeat center;
+        }
+        .icon_account:hover{
+        	background: url('${base}/res/ebanks/img/icon_account.png') no-repeat center;
+        }
+          .icon_card{
+        	background: url('${base}/res/ebanks/img/icon_card.png') no-repeat center;
+        }
+        .icon_card:hover{
+        	background: url('${base}/res/ebanks/img/icon_card_hover.png') no-repeat center;
+        }
+           .icon_loan{
+        	background: url('${base}/res/ebanks/img/icon_loan.png') no-repeat center;
+        }
+        .icon_loan:hover{
+        	background: url('${base}/res/ebanks/img/icon_loan_hover.png') no-repeat center;
+        }
+
+</style>
+
+
+</head>
+
+<body style="background: #f1f1f1;">
+
+
+
+
+
+
+
+
+
+	<div class="header">
+<div class="header-link">
+			<div class="header_content">
+				<div style="position: absolute; right: 0;">
+					<a href="javascript:void(0);">帮助中心</a> <span>|</span> <a
+						href="javascript:void(0);">English</a>
+				</div>
+			</div>
+		</div>
+
+    <div id="wrap-nav">
+        <div class="wrap-nav-container clearfix">
+            <div class="fl">
+                <div class="logo"></div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+
+
+	<div class="container">
+	   <div class="row center-block base-width clearfix">
+        <div class="pro_menu_a">
+            <div class="pro_menu_x" id="account">
+             <a class="icon_account" ></a>
+            </div>
+            <span>我的账户</span>
+        </div>
+        <div class="pro_menu_a">
+            <div class="pro_menu_x pro_menu_active_x" id="remittance">
+            	<a class="mycount"></a>
+                <!-- <a><img src="${base}/res/ebanks/img/icon_remittance.png"></a> -->
+            </div>
+            <span>转账汇款</span>
+        </div>
+        <div class="pro_menu_a">
+            <div class="pro_menu_x" id="ActPlugin">
+          	<a class="icon_card"></a>
+              <!--  <a><img src="${base}/res/ebanks/img/icon_card.png"></a> --> 
+            </div>
+            <span>激活插件</span>
+        </div>
+        <div class="pro_menu_a">
+            <div class="pro_menu_x" id="loan">
+            	<a class="icon_loan"></a>
+               <!-- <a><img src="${base}/res/ebanks/img/icon_loan.png"></a> --> 
+            </div>
+            <span>二维码支付</span>
+        </div>
+    </div>
+	</div>
+
+	<script type="text/javascript" src="${base}/res/ebanks/img/index.js"></script>
+	<script type="text/javascript"
+		src="${base}/res/ebanks/img/controlPop.js"></script>
+	<script type="text/javascript">
+	var flip = 0;
+	var tip = true;
+	
+	function getTableForm() {
+		return document.getElementById('tableForm');
+	}
+	function activate(sotpId){
+		        $("#sotpId").val(sotpId);
+		
+		        if (flip++ % 2 == 0) {
+		            $("#btnQueryBalance").html("隐藏");
+		            $("#balance").show();
+		        } else {
+		            $("#btnQueryBalance").html("激活");
+		            $("#balance").hide();
+		        }
+	}
+	
+	function goPage(){
+		var sotpId =  $("#sotpId").val();
+		var sotpCode = $("#sotpCode").val();
+	    var param="sotpId="+sotpId+"&sotpCode="+sotpCode;
+	     jQuery.ajax({ 
+		        type:"post", 
+		        dataType:'json',
+		        url:"${base}/ebanks/back_activation.do", 
+		        data:param,
+		        success: function(data){
+		        	alert(data);
+		        }
+		    });
+		
+		
+		
+	}
+
+
+	$(function(){
+	    $("div[class*='pro_menu']").bind('click',function(){
+	        var id = $(this).prop("id");
+	        var $img = $(this).find("img");
+	        if(id=='remittance'){
+	            window.location.href="transfer.do";
+	        }else if(id=='loan'){
+	            window.location.href="scanPaycode.do";
+	        }else if(id=='ActPlugin'){
+	            window.location.href="actPlugin.do";
+	        }else if(id=='account'){
+	        	  window.location.href="account.do";
+	        }
+	    });
+
+	});
+
+</script>
+
+
+	<div class="container base-width">
+		<div class="row center-block pro_detail" id="step1"
+			style="height: 780px;">
+			<div class="box-positon">
+				<div class="rpos">当前位置：激活插件- 插件列表</div>
+			</div>
+			<div class="clearfix" style="height: 20px;"></div>
+
+
+
+			<form id="tableForm" method="post"  action="back_activation.do">
+				<input type="hidden" name="page" value="${page!}" /> <@p.table
+				value=pagination;act,i,has_next><#rt/> <@p.column title="<input
+					type='checkbox' onclick='Pn.checkbox(\"ids\",this.checked)' />"
+				width="20"> <input type='checkbox' name='ids' value='${act.sotpId}' /><#t/>
+				</@p.column><#t/> <@p.column
+				title="插件ID">${act.sotpId}</@p.column><#t/> <@p.column
+				title="设备名称">${act.modelName}</@p.column><#t/> <@p.column
+				title="设备型号">${act.modelType}</@p.column><#t/> <@p.column
+				title="注册时间">${act.time}</@p.column><#t/> <#if act.status=='1'>
+				<@p.column title="状态">未激活</@p.column><#t/> <#elseif act.status=='3'>
+				<@p.column title="状态">就绪</@p.column><#t/> <#elseif act.status=='4'>
+				<@p.column title="状态">锁定</@p.column><#t/> <#elseif act.status=='5'>
+				<@p.column title="状态">挂起</@p.column><#t/> <#elseif act.status=='6'>
+				<@p.column title="状态">作废</@p.column><#t/> </#if> <@p.column
+				code="global.operate" align="center"> <#assign params></#assign> <a
+					id="btnQueryBalance" class="pn-opt"
+					onclick="activate('${act.sotpId}')">激活</a> </@p.column><#t/>
+				</@p.table>
+				<script type="text/javascript">
+				function _gotoPage(pageNo) {
+					try{
+						var tableForm = getTableForm();
+						$("input[name=page]").val(pageNo);
+						tableForm.action="back_activation.do";
+						tableForm.onsubmit=null;
+						tableForm.submit();
+					} catch(e) {
+						alert('1');
+					}
+				}
+			</script>
+
+			
+<br>
+<br>
+<br>
+<br>
+<br>
+				<div class="d-line-space" id="balance" style="display: none;">
+					<span class=""
+						style="height: 40px; line-height: 40px; vertical-align: middle; color: red;">请输入激活码：</span>
+					<input  class="d-input-text" id="sotpCode"
+						name="sotpCode" type="text">  
+				<input type="hidden" id="sotpId" name="sotpId" value="11" >
+				<div class="enabled-btn form-btn" style="cursor:pointer;float: none;width: 80px;height: 45px;" onclick="goPage()">
+                    <a type="button">下一步</a>
+                </div>
+				</div>
+			</form>
+
+
+
+
+
+
+
+
+		</div>
+	</div>
+	  <div id="footer">
+        <p>©2013-2016 北京青年众人网络科技有限公司</p>
+    </div>
+
+
+
+
+
+</body>
+</html>

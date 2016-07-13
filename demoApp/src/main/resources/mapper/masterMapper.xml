@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="Master" >
+  <resultMap id="BaseResultMap" type="MasterDO" >
+    <id column="id" property="id" />
+    <result column="username" property="userName" />
+    <result column="realname" property="realName" />
+    <result column="password" property="password" />
+    <result column="email" property="email" />
+    <result column="mobile" property="mobile" />
+    <result column="status" property="status" />
+    <result column="roleId" property="roleId" />
+    <result column="create_user" property="createUser" />
+    <result column="create_date" property="createDate" />
+    <result column="modify_user" property="modifyUser" />
+    <result column="modify_date" property="modifyDate" />
+    <result column="login_fail_count" property="failCount" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, username,realname, password, email, mobile, status, roleId,create_user, create_date, modify_user, modify_date,login_fail_count
+  </sql>
+  
+  <sql id="where">
+  	<where>
+  	  status !=9 and username!='admin'
+  	  <if test="id!=null and id!='' and id!=0" >
+        AND id = #{id}
+      </if>
+  	  <if test="userName != null and userName !=''" >
+        AND username like '%${userName}%'
+      </if>
+      <if test="realName != null" >
+        AND realname like '%${realName}%'
+      </if>
+      <if test="status != null and status !=''" >
+        AND status = #{status}
+      </if>
+  	</where>
+  </sql>
+  
+  <select id="selectOneByName" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_system_user
+    where username = #{userName} and status != 9
+  </select>
+  
+	<!-- 清空Master登录失败次数 -->
+  <update id="cleanLoginFailCount"  parameterType="MasterDO">
+    update t_system_user set login_fail_count = 0
+  </update>
+</mapper>

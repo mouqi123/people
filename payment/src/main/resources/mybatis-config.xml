@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+	<settings>
+		<!-- <setting name="logImpl" value="LOG4J2" /> -->
+		<setting name="logImpl" value="STDOUT_LOGGING"/>
+	</settings>
+	<typeAliases>
+		<typeAlias alias="MasterDO" type="com.people.sotp.dataobject.MasterDO" />
+		<typeAlias alias="AuditLogDO" type="com.people.sotp.dataobject.AuditLogDO" />
+		<typeAlias alias="MemberDO" type="com.people.sotp.dataobject.MemberDO" />
+		<typeAlias alias="AccountManageDO" type="com.people.sotp.dataobject.AccountManageDO"/>
+		<typeAlias alias="AuthDO" type="com.people.sotp.dataobject.AuthDO"/>
+		<typeAlias alias="CardDO" type="com.people.sotp.dataobject.CardDO"/>
+		<typeAlias alias="TransactionTacticsDO" type="com.people.sotp.dataobject.TransactionTacticsDO"/>
+		<typeAlias alias="SotpAuthDO" type="com.people.sotp.dataobject.SotpAuthDO"/>
+		<typeAlias alias="DealTacticsDO" type="com.people.sotp.dataobject.DealTacticsDO"/>
+		<typeAlias alias="OrderDO" type="com.people.sotp.dataobject.OrderDO"/>
+		<typeAlias alias="DealLogDO" type="com.people.sotp.dataobject.DealLogDO"/>
+		<typeAlias alias="ApplyDO" type="com.people.sotp.dataobject.ApplyDO"/>
+		<typeAlias alias="SessionKeyDO" type="com.people.sotp.dataobject.SessionKeyDO"/>
+	</typeAliases>
+	<mappers>
+		<mapper resource="mapper/commonMapper.xml"/>
+		<mapper resource="mapper/masterMapper.xml"/>
+		<mapper resource="mapper/auditlogMapper.xml"/>
+		<!-- 用户管理 -->
+		<mapper resource="mapper/memberMapper.xml"/>
+		<!-- 账户管理 -->
+		<mapper resource="mapper/accountManageMapper.xml"/>
+		<!-- 认证管理 -->
+		<mapper resource="mapper/authMapper.xml"/>
+		<!-- 银行卡管理 -->
+		<mapper resource="mapper/cardMapper.xml"/>
+		<!-- 服务器是设置 -->
+		<mapper resource="mapper/sotpAuthMapper.xml"/>
+		<!-- 交易策略 -->
+		<mapper resource="mapper/dealTacticsMapper.xml"/>
+		<!-- 网银 -->
+		<mapper resource="mapper/orderMapper.xml"/>
+		<!-- 应用管理 -->
+		<mapper resource="mapper/applyMapper.xml"/>
+		<!-- 接口xml -->
+		<mapper resource="mapper/sotpMapper.xml"/>
+		
+	</mappers>
+</configuration>

@@ -1,0 +1,29 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+		<title></title>
+		<#include "/jeecms_sys/head.html"/>
+		<script type="text/javascript">
+		$(function(){
+			Cms.lmenu('lmenu');
+		});
+		function eBanks(){
+			document.getElementById("autolink").click(); 
+		}
+		<#if ebanks??>
+		window.onload=eBanks;
+		 </#if>
+		</script>
+	</head>
+	<body class="lbody">
+		<div class="left">
+		<#include "/jeecms_sys/date.html"/>
+		   	 <ul class="w-lful">
+				<!--  <li><a href="user_right.do" target="rightFrame"><@s.m "global.admin.index"/></a></li>-->
+				<li><a id="autolink" href="../ebanks/v_list.do" target="rightFrame">购物</a></li>
+				<li><a id="autolink" href="../ebanks/v_activationList.do" target="rightFrame">激活插件</a></li>
+		     </ul>
+		</div>
+	</body>
+</html>

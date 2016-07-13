@@ -1,0 +1,265 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>JEECMS Administrator's Control Panel - powered by
+			jeecms</title> <#include "/jeecms_sys/head.html"/>
+		<style type="text/css">
+* {
+	margin: 0;
+	padding: 0
+}
+
+a:focus {
+	outline: none;
+}
+
+html {
+	height: 100%;
+	overflow: hidden;
+}
+
+body {
+	height: 100%;
+}
+
+#top { #
+	background-color: #1d63c6;
+	background: url(${base}/res/jeecms/img/admin/top_back.png) repeat;
+	height: 69px;
+	width: 100%;
+}
+
+.logo {
+	width: 215px;
+	height: 69px;
+}
+
+.topbg {
+	background: url(${base}/res/jeecms/img/admin/top-tbg.png) no-repeat;
+	height: 38px;
+}
+
+.login-welcome {
+	padding-left: 20px;
+	color: #fff;
+	font-size: 12px;
+	background: url(${base}/res/jeecms/img/admin/top_back.png) repeat;
+}
+
+.login-welcome a:link,.login-welcome a:visited {
+	color: #fff;
+	text-decoration: none;
+}
+
+#welcome {
+	color: #FFFFFF;
+	padding: 0 30px 0 5px;
+}
+
+#logout {
+	color: #FFFFFF;
+	padding-left: 5px;
+}
+
+.nav {
+	height: 31px;
+	overflow: hidden;
+}
+
+.nav-menu {
+	background: url(${base}/res/jeecms/img/admin/bg.png) repeat-x;
+	height: 31px;
+	list-style: none;
+	padding-left: 20px;
+	font-size: 14px;
+}
+
+.nav .current {
+	background: url(${base}/res/jeecms/img/admin/navcurrbg.gif) no-repeat
+		0px 2px;
+	background-size:90px 31px;
+	color: #fff;
+	width: 90px;
+	text-align: center;
+}
+
+.nav .current a {
+	color: #fff;
+}
+
+.nav-menu li {
+	height: 31px;
+	text-align: center;
+	line-height: 31px;
+	float: left;
+}
+
+.nav-menu li a {
+	color: #2b2b2b;
+	font-weight: bold;
+}
+
+.nav-menu li.sep {
+	background: url(${base}/res/jeecms/img/admin/step.png) no-repeat;
+	width: 2px;
+	height: 31px;
+	margin: 0px 5px;
+}
+
+.nav .normal {
+	width: 90px;
+	text-align: center;
+}
+
+.top-bottom {
+	width: 100%;
+	background: url(${base}/res/jeecms/img/admin/bg.png) repeat-x 0px -34px;
+	height: 3px;
+}
+
+.undis {
+	display: none;
+}
+
+.dis {
+	display: block;
+}
+</style>
+
+		<script type="text/javascript">
+		function g(o) {
+			return document.getElementById(o);
+		}
+		
+		function HoverLi(id) {
+			$("li[id^='tb_']").each(function(){
+				$(this).removeClass("current");
+				$(this).addClass("normal");
+			});
+			$("#tb_"+id).removeClass("normal");
+			$("#tb_"+id).addClass("current");
+		}
+		
+		function countUnreadMsg() {
+			 $.post("message/v_countUnreadMsg.do", {
+				}, function(data) {
+					if(data.result){
+						 $("#countDiv").html(""+data.count+"");
+					}else{
+						alert("<@s.m 'cmsMessage.noLogin'/>");
+					}
+				}, "json");
+			 setTimeout( "countUnreadMsg() ",1000*60*10);    
+		}
+		
+		$(function() {
+			$('a').bind("focus", function(){   
+			    $(this).blur();   
+			}); 
+			countUnreadMsg();
+		});
+		
+		setTimeout( "countUnreadMsg() ",1000*60*10);
+		
+		function mapDialog() {
+			var result=window.showModalDialog("map.do","","dialogHeight:600px;dialogWidth:800px;center:yes;resizable: yes;");
+			if (result!=null) {
+				var href=result.split(";")[0];
+				var target=result.split(";")[1];
+				if (target=="rightFrame") {
+					window.parent.mainFrame.document.getElementById(target).src=href;
+					var rightFrameSrc=window.parent.mainFrame.document.getElementById(target).src;
+					if (rightFrameSrc.indexOf("frame")>=0) {
+						window.parent.mainFrame.document.getElementById(target).src=rightFrameSrc.split("frame/")[0]+rightFrameSrc.split("frame/")[1];
+					}
+				}
+				else {
+					window.parent.document.getElementById(target).src=href;
+				}
+			}
+		}
+		function eBanks(){
+			document.getElementById("autolink").click(); 
+		}
+		<#if ebanks??>
+		window.onload=eBanks;
+		 </#if>
+		</script>
+	</head>
+	<body>
+		<div id="top">
+			<div class="top">
+				<table width="100%" border="0" cellspacing="0" cellpadding="0">
+					<tr>
+						<td width="215">
+							<div class="logo">
+								<img src="${base}/res/jeecms/img/admin/logo.png"
+									style="width: 206px; height: 40px; margin: 20px 0 0 5px;" />
+							</div>
+						</td>
+						<td valign="top">
+							<div class="topbg">
+								<div class="login-welcome">
+									<table width="100%" border="0" cellspacing="0" cellpadding="0">
+										<tr>
+											<td width="420" height="38">
+												<img src="${base}/res/jeecms/img/admin/welconlogin-icon.png" />
+												<span id="welcome"><@s.ma code="global.admin.welcome"
+													args=[user.userName!]/></span>
+											</td>
+											<td align="right">
+
+											</td>
+											<td width="30">
+													<a href="javascript:location.href='${base}/login/logout.do';"><@s.m "global.admin.logout"/></a>
+											</td>
+										</tr>
+									</table>
+								</div>
+								<div class="nav">
+									<table width="100%" border="0" cellspacing="0" cellpadding="0">
+										<tr>
+											<td
+												style="background-image: url('${base}/res/jeecms/img/admin/nav-left.png')"
+												width="14" height="31"></td>
+											<td>
+												<ul class="nav-menu">
+													<li class="normal" id="tb_10" onclick="HoverLi(10);">
+														<a href="${base}/frame/user_main.do" target="mainFrame">用户管理</a>
+													</li>
+													<li class="sep"></li>
+													<li class="normal" id="tb_20" onclick="HoverLi(20);">
+														<a href="${base}/frame/deal_main.do" target="mainFrame">交易管理</a>
+													</li>
+													<li class="sep"></li>
+													<li class="normal" id="tb_60" onclick="HoverLi(60);">
+														<a href="${base}/frame/log_main.do" target="mainFrame">日志管理</a>
+													</li>
+													<li class="sep"></li>
+													<li class="normal" id="tb_90" onclick="HoverLi(90);">
+														<a href="${base}/frame/config_main.do" target="mainFrame">系统管理</a>
+													</li>
+													<li class="sep"></li>
+														<li class="normal" id="tb_30" onclick="HoverLi(30);">
+														<a id="autolink" href="${base}/frame/eBanks_main.do" target="mainFrame"><span>网银管理</span></a>
+													</li>
+													<li class="sep"></li>
+														<li class="normal" id="tb_40" onclick="HoverLi(40);">
+														<a id="autolink" href="${base}/frame/apply_main.do" target="mainFrame"><span>应用管理</span></a>
+													</li>
+													<li class="sep"></li>
+												</ul>
+											</td>
+										</tr>
+									</table>
+								</div>
+							</div>
+						</td>
+					</tr>
+				</table>
+			</div>
+		</div>
+		<div class="top-bottom"></div>
+	</body>
+</html>

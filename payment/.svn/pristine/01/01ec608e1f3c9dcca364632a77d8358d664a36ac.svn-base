@@ -1,0 +1,39 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<title></title>
+<#include "/jeecms_sys/head.html"/>
+<script type="text/javascript">
+	$(function() {
+		$("#jvForm").validate();
+	});
+	$(document).ready(function() {
+	});
+</script>
+<style type="text/css">
+.perm-container{}
+.perm-layout-1{padding:3px 0;}
+.perm-layout-2{padding-left:30px;}
+</style>
+</head>
+<body>
+<div class="box-positon">
+	<div class="rpos"></div>
+		<form class="ropt">
+			<input type="submit" value="<@s.m "global.backToList"/>" onclick="this.form.action='v_list.do';" class="return-button"/>
+		</form>
+		<div class="clear"></div>
+</div>
+<div class="body-box">
+<@p.form id="jvForm" action="o_update.do" labelWidth="20">
+	
+<@p.select colspan="1" label="手机银行登录" width="50"  value=AuthDO.login name="login" list={"0":"关闭","1":"开通"} />
+<@p.select colspan="1" label="e支付" width="50"  value=AuthDO.ePay name="ePay" list={"0":"关闭","1":"开通"} /><@p.tr/>
+<@p.select colspan="1" label="一键支付" width="50"  value=AuthDO.onePay name="onePay" list={"0":"关闭","1":"开通"} />
+<@p.select colspan="1" label="所属人" name="memberId"  value=AuthDO.memberId list=groupList listKey="id" listValue="userName" required="true"/><@p.tr/>
+<@p.td colspan="2"><@p.hidden name="id" value=AuthDO.id/><@p.submit code="global.submit"  /> &nbsp; <@p.reset code="global.reset"/></@p.td>
+</@p.form>
+</div>
+</body>
+</html>

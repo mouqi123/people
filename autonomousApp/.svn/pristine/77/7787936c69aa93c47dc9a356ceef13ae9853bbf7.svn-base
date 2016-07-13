@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+	<settings>
+		<!-- <setting name="logImpl" value="LOG4J2" /> -->
+		<setting name="logImpl" value="STDOUT_LOGGING"/>
+	</settings>
+	<typeAliases>
+		<typeAlias alias="MasterDO" type="com.people.sotp.dataobject.MasterDO" />
+		<typeAlias alias="AuditLogDO" type="com.people.sotp.dataobject.AuditLogDO" />
+		<typeAlias alias="MemberDO" type="com.people.sotp.dataobject.MemberDO" />
+		<typeAlias alias="SotpAuthDO" type="com.people.sotp.dataobject.SotpAuthDO"/>
+		<typeAlias alias="ApplyDO" type="com.people.sotp.dataobject.ApplyDO"/>
+		<typeAlias alias="LoginLogDO" type="com.people.sotp.dataobject.LoginLogDO"/>
+		<typeAlias alias="UserFeedbackDO" type="com.people.sotp.dataobject.UserFeedbackDO"/>
+		
+	</typeAliases>
+	<mappers>
+		<mapper resource="mapper/commonMapper.xml"/>
+		<mapper resource="mapper/masterMapper.xml"/>
+		<mapper resource="mapper/auditlogMapper.xml"/>
+		<mapper resource="mapper/memberMapper.xml"/>
+		<mapper resource="mapper/sotpAuthMapper.xml"/>
+		<mapper resource="mapper/applyMapper.xml"/>
+		<mapper resource="mapper/userfeedbackMapper.xml"/>
+		<mapper resource="mapper/loginlogMapper.xml"/>
+	</mappers>
+</configuration>

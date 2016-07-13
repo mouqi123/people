@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>陆东方专用页面</title>
+</head>
+<body>
+ 
+ <form action="v_ldf.do"  method="post">
+		 <span>00:</span>  <input name="aa" type="text" style="width:90%"><br>
+		 <br>
+		 <span>01:</span>  <input name="bb" type="text" style="width:90%"><br>
+		 <br>
+		 <span>02:</span>  <input name="cc" type="text" style="width:90%"><br>
+		  <br>
+		 <span>03:</span>  <input name="dd" type="text" style="width:90%"><br>
+		  <br>
+		 <span>04:</span>  <input name="ee" type="text" style="width:90%"><br>
+		  <br>
+		 <span>05:</span>  <input name="ff" type="text" style="width:90%"><br>
+		  <br>
+		 <span>06:</span>  <input name="gg" type="text" style="width:90%"><br>
+		  <br>
+		 <span>07:</span>  <input name="hh" type="text" style="width:90%"><br>
+		  <br>
+		 <span>08:</span>  <input name="ii" type="text" style="width:90%"><br>
+		  <br>
+		 <span>09:</span>  <input name="jj" type="text" style="width:90%"><br>
+		 
+		 <input type="submit" value="转化">
+		 
+		</form> 
+</body>
+</html>

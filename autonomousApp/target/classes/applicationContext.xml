@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+						   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
+						   http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+						   http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd">
+
+
+
+	<!-- 部署文件定义 mysql-->
+	<bean id="propertyConfigurer"
+		class="org.springframework.beans.factory.config.PreferencesPlaceholderConfigurer">
+		<property name="ignoreResourceNotFound" value="true" />
+		<property name="locations">
+			<list>
+				<value>classpath:properties/database.properties</value>
+				<value>classpath:properties/config.properties</value>
+			</list>
+		</property>
+	</bean>
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="configLocation" value="classpath:mybatis-config.xml" />
+	</bean>
+	<!-- end -->
+	
+	<!-- 启用spring注解支持 -->
+	<context:annotation-config />
+	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName" value="${jdbc.driverClass}" />
+		<property name="url" value="${jdbc.jdbcurl}" />
+	</bean>
+
+	<!-- 自动扫描组件，这里要把controler下面的 controller去除，他们是在spring-servlet.xml中配置的，如果不去除会影响事务管理的。   -->  
+ 	<context:component-scan base-package="com.people.sotp">  
+      <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller" />   
+ 	</context:component-scan>
+	<!-- 激活组件扫描功能,在包cn.ysh.studio.spring.aop及其子包下面自动扫描通过注解配置的组件 -->
+	<context:component-scan base-package="com.people.sotp" />
+
+	<!-- 定义事务管理器（声明式的事务） -->
+	<bean id="transactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	<tx:annotation-driven transaction-manager="transactionManager" />
+
+	<!-- <aop:config> 
+		<aop:pointcut id="allManagerMethod" expression="execution(* 
+			com.people.sotp.*.service.*.*(..))" /> 
+		<aop:advisor pointcut-ref="allManagerMethod" advice-ref="txAdvice" /> 
+	</aop:config> -->
+	<!-- 激活自动代理功能 -->
+	<!-- <aop:aspectj-autoproxy proxy-target-class="true" /> -->
+	<!-- 导入redis配置文件 -->
+	<import resource="spring-redis.xml" />
+	<!-- 全局参数 -->
+	<bean id="globalParam" class="com.people.sotp.commons.base.GlobalParam">
+		<property name="REDIS_FLAG" value="true" />
+	</bean>
+</beans>

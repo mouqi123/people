@@ -1,0 +1,79 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+	<title></title>
+	<#include "/jeecms_sys/head.html"/>
+	<script type="text/javascript">
+	function getTableForm() {
+		return document.getElementById('tableForm');
+	}
+	
+	function optDelete() {
+		if(Pn.checkedCount('ids')<=0) {
+			alert("<@s.m 'error.checkRecord'/>");
+			return;
+		}
+		
+		if(!confirm("<@s.m 'global.confirm.delete'/>")) {
+			return;
+		}
+		
+		var f = getTableForm();
+		f.action="o_delete.do";
+		f.submit();
+	}
+	function optAdd() {
+		var f = getTableForm();
+		f.action="v_add.do";
+		f.submit();
+	}
+	</script>
+</head>
+<body>
+	<div class="box-positon">
+		<div class="rpos">当前位置：日志管理- 管理员操作日志</div>
+		<div class="clear"></div>
+	</div>
+	<div class="body-box">
+		<form action="v_list.do" method="post" style="padding-top:5px;">
+			<div>
+			</div>
+		</form>
+		<form id="tableForm" method="post">
+			<input type="hidden" name="page" value="${page!}"/>
+			<@p.table value=pagination;log,i,has_next><#rt/>
+				<@p.column title="<input type='checkbox' onclick='Pn.checkbox(\"ids\",this.checked)'/>" width="20">
+					<input type='checkbox' name='ids' value='${log.id}'/><#t/>
+				</@p.column><#t/>
+				<@p.column title="ID">${log.id}</@p.column><#t/>
+				<@p.column code="源ip">${log.srcip!}</@p.column><#t/>
+				<@p.column code="目的ip">${log.serverip!}</@p.column><#t/>
+				<@p.column code="目的端口">${log.serverport!}</@p.column><#t/>
+				<@p.column code="操作时间">${log.opttime!}</@p.column><#t/>
+				<@p.column code="操作结果">${log.status!}</@p.column><#t/>
+				<@p.column code="操作描述">${log.description!}</@p.column><#t/>
+				<@p.column code="global.operate" align="center">
+				<#assign params></#assign>
+				</@p.column><#t/>
+			</@p.table>
+			
+			<script type="text/javascript">
+function _gotoPage(pageNo) {
+	try{
+		var tableForm = getTableForm();
+		$("input[name=page]").val(pageNo);
+		tableForm.action="getAuditlogList.do";
+		tableForm.onsubmit=null;
+		tableForm.submit();
+	} catch(e) {
+		alert('_gotoPage(pageNo)方法出错');
+	}
+}
+</script>
+			
+		</form>
+	</div>
+	<#include "/common/alert_message.html"/>
+</body>
+</html>

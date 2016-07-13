@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="common" >  
+  <sql id="pageUtil">
+  	limit 
+  	<choose>
+  		<when test="pageNo!=null and pageNo!=''">#{startNum}</when>
+  		<otherwise>0</otherwise>
+  	</choose>,
+  	<choose>
+  		<when test="pagesize!=null and pagesize!=''">#{pagesize}</when>
+  		<otherwise>10</otherwise>
+  	</choose>
+  </sql>
+  <sql id="sequence">
+  	  <!-- MySQL -->     
+          select LAST_INSERT_ID() as value
+      <!-- Oracle SEQUENCE Example using .NET 1.1 System.Data.OracleClient -->  
+      <!-- 
+        SELECT STOCKIDSEQUENCE.NEXTVAL AS VALUE FROM DUAL 
+	  -->
+	  <!-- Microsoft SQL Server IDENTITY Column Example -->
+      <!--  
+     	 select @@IDENTITY as value  
+       --> 
+  </sql>
+  
+  
+  <!-- 用户验证在表中是佛已经存在该数据 -->
+  <select id="isExit" parameterType="map" resultType="int">
+  
+  select count(*) from ${tablename} 
+  
+  where ${keyname1} = #{keyvalue1}
+  
+  <if test="keyname2 != null">
+  
+  and ${keyname2} = ${keyvalue2}
+  
+  </if>
+  
+  	
+  </select>
+  
+  
+</mapper>

@@ -1,0 +1,20 @@
+
+
+
+
+
+ 	<link rel="shortcut icon" href="${base}/res/ebanks/img/LOGO.ico">
+    <link href="${base}/res/ebanks/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="${base}/res/ebanks/css/order_manage_hue.css" rel="stylesheet" media="screen">
+   
+    <script src="${base}/res/ebanks/js/jquery-1.9.1.min.js" type="text/javascript"></script>
+    <script src="${base}/res/ebanks/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="${base}/res/ebanks/js/controlPop.js" type="text/javascript"></script>
+    <script src="${base}/res/ebanks/js/formVars.js" type="text/javascript"></script>
+    <script src="${base}/res/ebanks/js/index.js" type="text/javascript"></script> 
+    <script src="${base}/res/ebanks/js/main.js" type="text/javascript"></script>
+    <script src="${base}/res/ebanks/js/resize.js" type="text/javascript"></script>
+    
+    
+    
+  

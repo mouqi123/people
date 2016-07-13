@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="Log" >
+  <resultMap id="transferLogBaseResultMap" type="TransferLogDO" >
+    <id column="id" property="id" />
+      <result column="user_name" property="userName" />
+    <result column="peer_name" property="peerName" />
+    <result column="peer_count" property="peerCount" />
+    <result column="trans_money" property="transMoney" />
+    <result column="phone_model" property="phoneModel" />
+    <result column="transfer_time" property="transferTime" />
+    <result column="status" property="status" />
+    <result column="type" property="type" />
+    <result column="trade_num" property="tradeNum" />
+    <result column="ipAddress" property="ipAddress" />
+  </resultMap>
+  
+    <resultMap id="LoginLogBaseResultMap" type="LoginLogDO" >
+    <id column="id" property="id" />
+    <result column="user_name" property="userName" />
+    <result column="address" property="address" />
+    <result column="phone_model" property="phoneModel" />
+    <result column="status" property="status" />
+    <result column="login_time" property="loginTime" />
+  </resultMap>
+  
+  
+  
+  <sql id="LoginLog_Base_Column_List" >
+     user_name,  address, phone_model,status,login_time
+  </sql>
+  
+  <sql id="TransferLog_Base_Column_List" >
+   peer_name, peer_count, trans_money, phone_model, transfer_time,status,type,trade_num,ipAddress
+  </sql>
+  
+  <sql id="where">
+  	<where>
+  	   <if test="userName!=null and userName!=''" >
+        AND user_name = #{userName}
+       </if>
+  	</where>
+  </sql>
+  <select id="selectLoginLogList" resultMap="LoginLogBaseResultMap" parameterType="map" >
+   select 
+    <include refid="LoginLog_Base_Column_List" />
+   from  tb_loginlog
+    <include refid="where"/>
+    ORDER BY login_time desc
+  </select>
+  
+  <select id="selectTransferLogList" resultMap="transferLogBaseResultMap" parameterType="map" >
+   select 
+    <include refid="TransferLog_Base_Column_List" />
+    from tb_transferlog
+    <include refid="where"/>
+    ORDER BY login_time desc
+  </select>
+  
+  
+  
+  <insert id="addLoginLog" parameterType="loginLogDO" >
+    insert into tb_loginlog
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="userName != null and userName != ''" >
+        user_name,
+      </if>
+      <if test="address != null and address != ''" >
+        address,
+      </if>
+      <if test="phoneModel != null and phoneModel != ''" >
+        phone_model,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="loginTime != null and loginTime != ''" >
+        login_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="userName != null and userName != ''" >
+        #{userName},
+      </if>
+      <if test="address != null and address != ''" >
+        #{address},
+      </if>
+      <if test="phoneModel != null and phoneModel != ''" >
+        #{phoneModel},
+      </if>
+      <if test="status != null " >
+        #{status},
+      </if>
+      <if test="loginTime != null and loginTime != ''" >
+        #{loginTime},
+      </if>
+    </trim>
+  </insert>
+  
+  
+  <insert id="addTransferLog" parameterType="loginLogDO" >
+    insert into tb_transferlog
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="userName != null and userName != ''" >
+        user_name,
+      </if>
+      <if test="peerName != null and peerName != ''" >
+        peer_name,
+      </if>
+      <if test="peerCount != null and peerCount != ''" >
+        peer_count,
+      </if>
+      <if test="transMoney != null and transMoney != ''" >
+        trans_money,
+      </if>
+      <if test="phoneModel != null and phoneModel != ''" >
+        phone_model,
+      </if>
+       <if test="transferTime != null and transferTime != ''" >
+        transfer_time,
+      </if>
+       <if test="status != null " >
+        status,
+      </if>
+      <if test="type != null " >
+        type,
+      </if>
+     <if test="tradeNum != null and tradeNum != ''" >
+        trade_num,
+      </if>
+       <if test="ipAddress != null and ipAddress != ''" >
+        ipAddress,
+      </if>
+      
+      
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="userName != null and userName != ''" >
+        #{userName},
+      </if>
+      <if test="peerName != null and peerName != ''" >
+        #{peerName},
+      </if>
+      <if test="peerCount != null and peerCount != ''" >
+        #{peerCount},
+      </if>
+      <if test="transMoney != null and transMoney != ''" >
+        #{transMoney},
+      </if>
+      <if test="phoneModel != null and phoneModel != ''" >
+        #{phoneModel},
+      </if>
+          <if test="transferTime != null and transferTime != ''" >
+        #{transferTime},
+      </if>
+          <if test="status != null " >
+        #{status},
+      </if>
+         <if test="type != null " >
+        #{type},
+      </if>
+        <if test="tradeNum != null and tradeNum != ''" >
+        #{tradeNum},
+      </if>
+      <if test="ipAddress != null and ipAddress != ''" >
+        #{ipAddress},
+      </if>
+    </trim>
+  </insert>
+  
+  
+  
+</mapper>

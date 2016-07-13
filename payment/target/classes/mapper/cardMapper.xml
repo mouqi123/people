@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="Card" >
+  <resultMap id="BaseResultMap" type="CardDO" >
+    <id column="id" property="id" />
+    <result column="card_number" property="cardNumber" />
+    <result column="card_pwd" property="cardPwd" />
+    <result column="card_type" property="cardType" />
+    <result column="pay_pwd" property="payPwd" />
+    <result column="money" property="money" />
+    <result column="phone" property="phone" />
+    <result column="name" property="name" />
+    <result column="identity_type" property="identityType" />
+    <result column="identity_number" property="identityNumber" />
+    <result column="status" property="status" />
+    <result column="create_time" property="createTime" />
+    <result column="one_key_status" property="oneKeyStatus" />
+    
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id,card_number,card_pwd,card_type,pay_pwd,money,phone,name,identity_type,identity_number,status,one_key_status,create_time
+  </sql>
+  
+   <sql id="where">
+  	<where>
+  	  <if test="id!=null and id!='' and id!=0" >
+        AND id = #{id}
+      </if>
+      <if test="phone!=null and phone!=''" >
+        AND phone = #{phone}
+      </if>
+       <if test="cardNumber!=null and cardNumber!=''" >
+        AND card_number = #{cardNumber}
+      </if>
+      <if test="payPwd!=null and payPwd!=''" >
+        AND pay_pwd = #{payPwd}
+      </if>
+      
+  	</where>
+  </sql>
+  
+  
+  <select id="selectCardCount" resultType="Integer" parameterType="map" >
+  	select count(*)
+  	from tb_card
+  	 <include refid="where"/>
+  </select>
+  <select id="selectCardList" resultMap="BaseResultMap" parameterType="map" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_card
+    <include refid="where"/>
+     <include refid="common.pageUtil"/>
+  </select>
+  <select id="selectOneCard" resultMap="BaseResultMap" parameterType="map" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_card
+     <include refid="where"/>
+  </select>
+  	
+  	 <insert id="addCard" parameterType="CardDO" >
+    	insert into tb_card
+      <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="cardNumber != null" >
+        card_number,
+      </if>
+      <if test="cardPwd != null" >
+        card_pwd,
+      </if>
+      <if test="cardType != null" >
+        card_type,
+      </if>
+      <if test="payPwd != null" >
+        pay_pwd,
+      </if>
+      <if test="money != null" >
+        money,
+      </if>
+      <if test="phone != null" >
+        phone,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="identityType != null" >
+        identity_type,
+      </if>
+      <if test="identityNumber != null" >
+        identity_number,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+        <if test="oneKeyStatus != null" >
+        one_key_status,
+      </if>
+         create_time,
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id},
+      </if>
+      <if test="cardNumber != null" >
+        #{cardNumber},
+      </if>
+      <if test="cardPwd != null" >
+        #{cardPwd},
+      </if>
+      <if test="cardType != null" >
+        #{cardType},
+      </if>
+      <if test="payPwd != null" >
+        #{payPwd},
+      </if>
+      <if test="money != null" >
+        #{money},
+      </if>
+      <if test="phone != null" >
+        #{phone},
+      </if>
+      <if test="name != null" >
+        #{name},
+      </if>
+      <if test="identityType != null" >
+        #{identityType},
+      </if>
+      <if test="identityNumber != null" >
+        #{identityNumber},
+      </if>
+      <if test="status != null" >
+        #{status},
+      </if>
+      <if test="oneKeyStatus != null" >
+        #{oneKeyStatus},
+      </if>
+      now()
+    </trim>
+  </insert>
+  	 <update id="updateCard" parameterType="CardDO" >
+    update tb_card
+    <set >
+      <if test="phone != null and phone != ''" >
+        phone = #{phone},
+      </if>
+        <if test="identityType != null and identityType != ''" >
+        identity_type = #{identityType},
+      </if>
+        <if test="identityNumber != null and identityNumber != ''" >
+        identity_number = #{identityNumber},
+      </if>
+        <if test="payPwd != null and payPwd != ''" >
+        pay_pwd = #{payPwd},
+      </if>
+        <if test="money != null and money != ''" >
+        money = #{money},
+      </if>
+     
+    </set>
+    where id = #{id}
+  </update>
+    <delete id="deleteCard" parameterType="CardDO" >
+    delete from tb_card
+    <where>
+      <if test="id != null" >
+        id = #{id}
+      </if>
+    </where>
+  </delete>
+  	
+</mapper>

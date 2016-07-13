@@ -1,0 +1,69 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+	<title></title>
+	<#include "/jeecms_sys/head.html"/>
+	<script type="text/javascript">
+	function getTableForm() {
+		return document.getElementById('tableForm');
+	}
+	
+	function optDelete() {
+		if(Pn.checkedCount('ids')<=0) {
+			alert("<@s.m 'error.checkRecord'/>");
+			return;
+		}
+		
+		if(!confirm("<@s.m 'global.confirm.delete'/>")) {
+			return;
+		}
+		
+		var f = getTableForm();
+		f.action="o_delete.do";
+		f.submit();
+	}
+	function optAdd() {
+		var f = getTableForm();
+		f.action="v_add.do";
+		f.submit();
+	}
+	</script>
+</head>
+<body>
+	<div class="box-positon">
+		<div class="rpos">当前位置：用户管理 - 账户管理</div>
+		<div class="clear"></div>
+	</div>
+	<div class="body-box">
+	<form action="v_list.do" method="post" style="padding-top:5px;">
+			<div>
+				用户姓名: <input type="text" name="queryAppName" value="${queryAppName!}" style="width:100px"/>
+						<input class="query" type="submit" value="<@s.m "global.query"/>"/>
+			</div>
+		</form>
+		<form id="tableForm" method="post">
+			<input type="hidden" name="page" value="${page!}"/>
+			<@p.table value=pagination;model,i,has_next><#rt/>
+				<@p.column title="<input type='checkbox' onclick='Pn.checkbox(\"ids\",this.checked)'/>" width="20">
+					<input type='checkbox' name='ids' value='${model.id}'/><#t/>
+				</@p.column><#t/>
+				<@p.column title="ID">${model.id}</@p.column><#t/>
+				<@p.column code="所属用户">${model.memberId}</@p.column><#t/>
+				<@p.column code="账户类型">${model.accountType}</@p.column><#t/>
+				<@p.column code="账户名称">${model.accountName}</@p.column><#t/>
+				<@p.column code="创建时间">${model.createTime}</@p.column><#t/>
+				<@p.column code="global.operate" align="center">
+				<#assign params>&page=${page!}</#assign>
+					<a href="v_edit.do?id=${model.id}" class="pn-opt"><@s.m "global.edit"/></a> | <#rt/>
+					<a href="o_delete.do?ids=${model.id}" onclick="if(!confirm('<@s.m "global.confirm.delete"/>')) {return false;}" class="pn-opt"><@s.m "global.delete"/></a><#t/>
+				</@p.column><#t/>
+			</@p.table>
+			<div style="margin-top:15px;">
+				<input class="del-button" type="button" value="<@s.m "global.delete"/>" onclick="optDelete();"/>
+			</div>
+		</form>
+	</div>
+	<#include "/common/alert_message.html"/>
+</body>
+</html>

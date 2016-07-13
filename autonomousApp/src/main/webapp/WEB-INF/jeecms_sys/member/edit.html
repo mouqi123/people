@@ -1,0 +1,40 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<title></title>
+<#include "/jeecms_sys/head.html"/>
+<script type="text/javascript">
+	$(function() {
+		$("#jvForm").validate();
+	});
+	$(document).ready(function() {
+	});
+</script>
+<style type="text/css">
+.perm-container{}
+.perm-layout-1{padding:3px 0;}
+.perm-layout-2{padding-left:30px;}
+</style>
+</head>
+<body>
+<div class="box-positon">
+	<div class="rpos"></div>
+		<form class="ropt">
+			<input type="submit" value="<@s.m "global.backToList"/>" onclick="this.form.action='v_list.do';" class="return-button"/>
+		</form>
+		<div class="clear"></div>
+</div>
+<div class="body-box">
+<@p.form id="jvForm" action="o_update.do" labelWidth="20">
+	<@p.text colspan="1" width="50" label="用户姓名" name="userName" value=MemberDO.userName required="true" class="required" maxlength="20"/>
+	<@p.text colspan="1" width="50" label="手机号" name="phone" value=MemberDO.phone required="true" class="required mobile" maxlength="20"/><@p.tr/>
+	<@p.password width="50" colspan="1" label="cmsUser.password" id="pwd" name="userPwd" maxlength="100" required="true" class="required"/>
+	<@p.password width="50" colspan="1" label="cmsUser.pwdAgain" required="true" equalTo="#pwd"/><@p.tr/>
+	<@p.select colspan="1" label="证件类型" width="50"  value=MemberDO.identityType name="identityType" list={"0":"身份证","1":"护照"} />
+<@p.text colspan="1" width="50" label="证件号码" value=MemberDO.identityNumber name="identityNumber" required="true" class="required"/><@p.tr/>
+<@p.td colspan="2"><@p.hidden name="id" value=MemberDO.id/><@p.submit code="global.submit"  /> &nbsp; <@p.reset code="global.reset"/></@p.td>
+</@p.form>
+</div>
+</body>
+</html>

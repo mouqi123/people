@@ -1,0 +1,58 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title>自主App管理</title>
+	<#include "/jeecms_sys/head.html"/>
+	<script type="text/javascript">
+	if (top != this) {
+		top.location=this.location;
+	}
+	  function changeValidateCode() {
+		   var imgSrc = $("#picCheck");
+		   var src = imgSrc.attr("src");
+		   var rom = new Date();
+		   imgSrc.attr("src", src+rom);
+	   }
+	
+	</script>
+</head>
+<body style="background:url(${base}/res/education/img/login/bg.jpg) repeat-x #bfdef8;">
+	<form id="jvForm" action="${base}/login/userLogin.do" method="post">
+	<#if returnUrl??>
+	<input type="hidden" name="returnUrl" value="${returnUrl}" />
+	</#if> <#if processUrl??>
+	<input type="hidden" name="processUrl" value="${processUrl}" />
+	</#if>
+	<div class="loginmain2">
+		<div class="main">
+        	<span class="title">自主App管理</span>
+        	<div class="lefterror">
+				<#if message??>
+				<ul>
+					<li>
+						<font color="red" style="margin:0px 0 0 -10px;float:left;">${message}</font>
+					</li>
+				</ul>
+				</#if>
+			</div>
+            <div class="leftlogin">
+                <font color="white">用户名：</font>
+                <input type="input" id="username" value="admin" name="loginname" maxlength="80" />
+                <div style="clear:both"></div>
+                <font color="white">密码：</font>
+                <input name="pwd" type="password" value="123qwe" id="password" maxlength="40" />
+            </div>
+            <input name="submit" type="submit" value="" class="buttlogin" style="cursor: pointer"/>
+            <div class="leftlogin">
+  			
+				<img class="imgcaptcha" id="picCheck" style="cursor: pointer" src="${base}/login/getRandomNum.do?d=" onclick="changeValidateCode()" />
+				<div style="clear:both"></div>
+				<font color="white">验证码：</font>
+				<input type="text" name="random" id="captcha" vld="{required:true}" />
+		
+            </div>
+        </div>
+    </div>
+</body>
+</html>
