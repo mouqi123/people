@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="Session">
+	<resultMap id="BaseResultSessionKeyMap" type="SessionKeyDO">
+		<id column="id" property="id" />
+		<id column="sotp_id" property="sotpId" />
+		<id column="randa" property="randa" />
+		<id column="randb" property="randb" />
+		<id column="session_key" property="sessionKey" />
+	</resultMap>
+
+
+	<sql id="Base_Column_List">
+		id,ip,post
+	</sql>
+	<sql id="Base_SessionKeyColumn_List">
+		id,sotp_id,randa,randb,session_key
+	</sql>
+
+	<select id="selectSessionKeyOne" resultMap="BaseResultSessionKeyMap"
+		parameterType="map">
+		select
+		<include refid="Base_SessionKeyColumn_List" />
+		from tb_session_key
+		where sotp_id=#{sotpId}
+	</select>
+
+
+	<insert id="addSessionKey" parameterType="SessionKeyDO">
+		insert into tb_session_key
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="sotpId!= null">
+				sotp_id,
+			</if>
+			<if test="randa != null">
+				randa,
+			</if>
+			<if test="randb != null">
+				randb,
+			</if>
+			<if test="sessionKey != null">
+				session_key,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="sotpId!= null">
+				#{sotpId},
+			</if>
+			<if test="randa != null">
+				#{randa},
+			</if>
+			<if test="randb != null">
+				#{randb},
+			</if>
+			<if test="sessionKey != null">
+				#{sessionKey},
+			</if>
+		</trim>
+	</insert>
+
+	<update id="editSessionKey" parameterType="SessionKeyDO">
+		update tb_session_key
+		<set>
+			<if test="sotpId!=null">
+				sotp_id = #{sotpId},
+			</if>
+			<if test="randa!=null and randa!=''">
+				randa = #{randa},
+			</if>
+			<if test="randb!=null and randb!=''">
+				randb = #{randb},
+			</if>
+			<if test="sessionKey!=null and sessionKey!=''">
+				session_key = #{sessionKey},
+			</if>
+		</set>
+		where sotp_id=#{sotpId}
+	</update>
+
+
+</mapper>

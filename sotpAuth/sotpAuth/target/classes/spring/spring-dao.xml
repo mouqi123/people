@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns="http://www.springframework.org/schema/beans"
+       xsi:schemaLocation="http://www.springframework.org/schema/aop
+            http://www.springframework.org/schema/aop/spring-aop-4.0.xsd   
+            http://www.springframework.org/schema/beans   
+            http://www.springframework.org/schema/beans/spring-beans-4.0.xsd   
+            http://www.springframework.org/schema/context   
+            http://www.springframework.org/schema/context/spring-context-4.0.xsd   
+
+
+            http://www.springframework.org/schema/tx   
+            http://www.springframework.org/schema/tx/spring-tx-4.0.xsd">
+
+    <context:component-scan base-package="com.peopleNet.sotp">
+        <context:exclude-filter type="annotation"
+                                expression="org.springframework.stereotype.Controller"/>
+    </context:component-scan>
+
+    <!-- 	<bean id="dataSource"
+            class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+            <property name="driverClassName" value="${jdbc.driverClassName}" />
+            <property name="url" value="${jdbc.url}" />
+        </bean> -->
+
+    <!-- 配置dbcp数据源 -->
+    <bean id="dataSource" destroy-method="close"
+          class="org.apache.commons.dbcp.BasicDataSource">
+        <property name="driverClassName" value="${jdbc.driverClass}"/>
+        <property name="url" value="${jdbc.jdbcUrl}"/>
+        <property name="username" value="${jdbc.user}"/>
+        <property name="password" value="${jdbc.password}"/>
+        <!-- 池启动时创建的连接数量 -->
+        <property name="initialSize" value="${jdbc.initialPoolSize}"/>
+        <!-- 同一时间可以从池分配的最多连接数量。设置为0时表示无限制。 -->
+        <property name="maxActive" value="${jdbc.maxPoolSize}"/>
+        <!-- 池里不会被释放的最多空闲连接数量。设置为0时表示无限制。 -->
+        <property name="maxIdle" value="${jdbc.maxIdleSize}"/>
+        <!-- 在不新建连接的条件下，池中保持空闲的最少连接数。 -->
+        <property name="minIdle" value="${jdbc.miniPoolSize}"/>
+        <!-- 设置自动回收超时连接 -->
+        <property name="removeAbandoned" value="true"/>
+        <!-- 自动回收超时时间(以秒数为单位) -->
+        <property name="removeAbandonedTimeout" value="${jdbc.removeAbandonedTimeout}"/>
+        <!-- 设置在自动回收超时连接的时候打印连接的超时错误 -->
+        <property name="logAbandoned" value="true"/>
+        <!-- 等待超时以毫秒为单位，在抛出异常之前，池等待连接被回收的最长时间（当没有可用连接时）。设置为-1表示无限等待。 -->
+        <property name="maxWait" value="${jdbc.maxWaitTime}"/>
+        <!--每**秒运行一次空闲连接回收器-->
+        <property name="timeBetweenEvictionRunsMillis" value="${jdbc.timeBetweenEvictionRunsMillis}"/>
+        <!--池中的连接空闲**秒后被回收-->
+        <property name="minEvictableIdleTimeMillis" value="${jdbc.minEvictableIdleTimeMillis}"/>
+        <!-- 在每次空闲连接回收器线程(如果有)运行时检查的连接数量，默认值就是3. -->
+        <property name="numTestsPerEvictionRun" value="${jdbc.numTestsPerEvictionRun}"/>
+        <!-- <property name="defaultAutoCommit" value="true"/> -->
+    </bean>
+
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="configLocation" value="classpath:mybatis-config.xml"/>
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+
+    <bean id="transactionManager"
+          class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+
+    <!-- mapper bean -->
+    <bean id="androidStatisticMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface"
+                  value="com.peopleNet.sotp.dal.dao.androidStatisticDtoMapper"/>
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <bean id="iosStatisticMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface"
+                  value="com.peopleNet.sotp.dal.dao.iosStatisticDtoMapper"/>
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <bean id="pluginInfoMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface"
+                  value="com.peopleNet.sotp.dal.dao.pluginInfoDtoMapper"/>
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <bean id="pluginUpdatePolicyMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface"
+                  value="com.peopleNet.sotp.dal.dao.pluginUpdatePolicyDtoMapper"/>
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <bean id="sotpVerifyPolicyMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface"
+                  value="com.peopleNet.sotp.dal.dao.sotpVerifyPolicyDtoMapper"/>
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <bean id="userInfoMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.peopleNet.sotp.dal.dao.userInfoDtoMapper"/>
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <bean id="winphoneStatisticMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface"
+                  value="com.peopleNet.sotp.dal.dao.winphoneStatisticDtoMapper"/>
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <bean id="invokeInfoMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface"
+                  value="com.peopleNet.sotp.dal.dao.invokeInfoDtoMapper"/>
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <bean id="pluginContentMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface"
+                  value="com.peopleNet.sotp.dal.dao.pluginContentDtoMapper"/>
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <bean id="authFeatureMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface"
+                  value="com.peopleNet.sotp.dal.dao.authFeatureDtoMapper"/>
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <bean id="pluginStatisticMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface"
+                  value="com.peopleNet.sotp.dal.dao.pluginStatisticDtoMapper"/>
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <bean id="RulePolicyMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface"
+                  value="com.peopleNet.sotp.dal.dao.RulePolicyDtoMapper"/>
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+
+    <bean id="appInfoMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface"
+                  value="com.peopleNet.sotp.dal.dao.appInfoDtoMapper"/>
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+
+    <bean id="appVersionInfoMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface"
+                  value="com.peopleNet.sotp.dal.dao.appVersionInfoDtoMapper"/>
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+
+    <bean id="userVerifyInfoMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface"
+                  value="com.peopleNet.sotp.dal.dao.userVerifyInfoDtoMapper"/>
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+
+    <bean id="authPolicyMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface"
+                  value="com.peopleNet.sotp.dal.dao.authPolicyDtoMapper"/>
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+ <bean id="verifyDataMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface"
+                  value="com.peopleNet.sotp.dal.dao.verifyDataDtoMapper"/>
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <tx:advice id="txAdvice-datasource" transaction-manager="transactionManager">
+        <tx:attributes>
+            <!-- <tx:method name="find*" read-only="true" /> -->
+            <tx:method name="insert*" propagation="REQUIRED"
+                       rollback-for="Exception"/>
+            <tx:method name="update*" propagation="REQUIRED"
+                       rollback-for="Exception"/>
+        </tx:attributes>
+    </tx:advice>
+    <aop:config>
+        <aop:pointcut id="txPointcut-datasource"
+                      expression="execution(* com.peopleNet.sotp.service.ITestTransaction.*(..))
+					or execution(* com.peopleNet.sotp.service.IDBOperationService.*(..))"/>
+        <aop:advisor advice-ref="txAdvice-datasource"
+                     pointcut-ref="txPointcut-datasource" order="3"/>
+    </aop:config>
+</beans>  

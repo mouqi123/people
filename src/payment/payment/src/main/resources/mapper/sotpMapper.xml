@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="Sotp">
+	<resultMap id="BaseResultMap" type="SotpAuthDO">
+		<id column="id" property="id" />
+		<result column="ip" property="ip" />
+		<result column="post" property="post" />
+	</resultMap>
+	<resultMap id="TransactionTacticsDOBaseResultMap" type="TransactionTacticsDO">
+		<id column="id" property="id" />
+		<id column="member_id" property="memberId" />
+		<id column="last_money" property="lastMoney" />
+		<id column="last_time" property="lastTime" />
+		<id column="pay_money" property="payMoney" />
+		<id column="limit_money" property="limitMoney" />
+		<id column="create_time" property="createTime" />
+	</resultMap>
+	<resultMap id="BaseResultSessionKeyMap" type="SessionKeyDO">
+		<id column="id" property="id" />
+		<id column="sotp_id" property="sotpId" />
+		<id column="randa" property="randa" />
+		<id column="randb" property="randb" />
+		<id column="session_key" property="sessionKey" />
+	</resultMap>
+
+
+	<sql id="Base_Column_List">
+		id,ip,post
+	</sql>
+	<sql id="Base_SessionKeyColumn_List">
+		id,sotp_id,randa,randb,session_key
+	</sql>
+
+
+	<sql id="openOnePaywhere">
+		<where>
+			<if test="card!=null and card!='' ">
+				card_number = #{card}
+			</if>
+			<if test="cardPwd!=null and cardPwd!=''">
+				AND card_pwd = #{cardPwd}
+			</if>
+			<if test="phoneNum!=null and phoneNum!=''">
+				AND phone = #{phoneNum}
+			</if>
+		</where>
+	</sql>
+	<select id="epayPolicy" resultType="java.lang.String"
+		parameterType="java.util.Map">
+		select limit_money
+		from tb_deal_tactics
+		where (select id from tb_member where
+		phone=#{phoneNum})=tb_deal_tactics.member_id
+	</select>
+
+	<select id="selectSessionKeyOne" resultMap="BaseResultSessionKeyMap"
+		parameterType="map">
+		select
+		<include refid="Base_SessionKeyColumn_List" />
+		from tb_session_key
+		where sotp_id=#{sotpId}
+	</select>
+
+	<select id="selectService" resultMap="BaseResultMap"
+		parameterType="map">
+		select
+		<include refid="Base_Column_List" />
+		from tb_sotpauth
+	</select>
+
+
+
+	<update id="openOnePay" parameterType="java.util.Map">
+		update tb_card
+		<set>
+			<if test="operate!=null">
+				one_key_status = #{operate},
+			</if>
+			<if test="money!=null and money!=''">
+				money = #{money},
+			</if>
+			<if test="payPwd!=null and payPwd!=''">
+				pay_pwd = #{payPwd},
+			</if>
+		</set>
+		<include refid="openOnePaywhere" />
+	</update>
+
+	<update id="updateoperateLimit" parameterType="java.util.Map">
+		update tb_deal_tactics
+		<set>
+			limit_money = #{limitMoney},
+		</set>
+		where (select id from tb_member where
+		phone=#{phoneNum})=tb_deal_tactics.member_id
+	</update>
+
+	<update id="businessOperate" parameterType="java.util.Map"
+		statementType="STATEMENT">
+		update tb_auth
+		<set>
+			${name} = ${operate},
+		</set>
+		where (select id from tb_member where
+		phone=${phoneNum})=tb_auth.member_id
+	</update>
+
+
+	<insert id="addHoldInfo" parameterType="java.util.Map">
+		insert into tb_holdinfo
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="phone!= null">
+				phone,
+			</if>
+			<if test="holdinfo != null">
+				holdinfo,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="phone!= null">
+				#{phone},
+			</if>
+			<if test="holdinfo != null">
+				#{holdinfo},
+			</if>
+		</trim>
+	</insert>
+
+
+
+	<insert id="addSessionKey" parameterType="SessionKeyDO">
+		insert into tb_session_key
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="sotpId!= null">
+				sotp_id,
+			</if>
+			<if test="randa != null">
+				randa,
+			</if>
+			<if test="randb != null">
+				randb,
+			</if>
+			<if test="sessionKey != null">
+				session_key,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="sotpId!= null">
+				#{sotpId},
+			</if>
+			<if test="randa != null">
+				#{randa},
+			</if>
+			<if test="randb != null">
+				#{randb},
+			</if>
+			<if test="sessionKey != null">
+				#{sessionKey},
+			</if>
+		</trim>
+	</insert>
+
+	<update id="editSessionKey" parameterType="SessionKeyDO">
+		update tb_session_key
+		<set>
+			<if test="sotpId!=null">
+				sotp_id = #{sotpId},
+			</if>
+			<if test="randa!=null and randa!=''">
+				randa = #{randa},
+			</if>
+			<if test="randb!=null and randb!=''">
+				randb = #{randb},
+			</if>
+			<if test="sessionKey!=null and sessionKey!=''">
+				session_key = #{sessionKey},
+			</if>
+		</set>
+		where sotp_id=#{sotpId}
+	</update>
+
+
+
+	<update id="editHoldInfo" parameterType="java.util.Map">
+		update tb_holdinfo
+		<set>
+			holdinfo = #{holdinfo},
+		</set>
+		where phone=${phone}
+	</update>
+
+	<select id="queryHoldInfoOne" resultType="java.lang.String"
+		parameterType="java.util.Map">
+		select holdinfo
+		from tb_holdinfo
+		where phone = ${phone}
+	</select>
+
+
+</mapper>

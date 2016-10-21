@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<!-- saved from url=(0036)http://ibank.shikongma.cn/remittance -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta name="viewport" content="user-scalable=yes, width=device-width, initial-scale=1.333984375">
+    <title>首页 | 个人网银 - 扫码支付</title>
+    
+      <#include "/jeecms_sys/ebanks.html"/>
+
+
+    <style>
+        body {
+            font-family: "Microsoft YaHei", Arial, sans-serif;
+        }
+        
+            .mycount{
+        	background: url('${base}/res/ebanks/img/icon_remittance.png') no-repeat center;
+        }
+        .mycount:hover{
+        	background: url('${base}/res/ebanks/img/icon_remittance_hover.png') no-repeat center;
+        }
+         .icon_account{
+        	background: url('${base}/res/ebanks/img/icon_account_hover.png') no-repeat center;
+        }
+        .icon_account:hover{
+        	background: url('${base}/res/ebanks/img/icon_account.png') no-repeat center;
+        }
+          .icon_card{
+        	background: url('${base}/res/ebanks/img/icon_card.png') no-repeat center;
+        }
+        .icon_card:hover{
+        	background: url('${base}/res/ebanks/img/icon_card_hover.png') no-repeat center;
+        }
+           .icon_loan{
+        	background: url('${base}/res/ebanks/img/icon_loan.png') no-repeat center;
+        }
+        .icon_loan:hover{
+        	background: url('${base}/res/ebanks/img/icon_loan_hover.png') no-repeat center;
+        }
+    </style>
+   
+
+
+</head>
+
+<body style="background: #f1f1f1;">
+
+
+
+
+
+
+
+
+
+<div class="header">
+    <div class="header-link">
+        <div class="container">
+            <div class="row">
+
+                <div class="col-md-9 col-sm-9 col-xs-12 text-right">
+
+
+                    <span><a href="javascript:void(0);">帮助中心</a></span>
+                    <span>|</span>
+                    <span><a href="javascript:void(0);">English</a></span>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="wrap-nav">
+        <div class="wrap-nav-container clearfix">
+            <div class="fl">
+                <div class="logo"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="container">
+     <div class="row center-block base-width clearfix">
+        <div class="pro_menu_a">
+            <div class="pro_menu_x" id="account">
+             <a class="icon_account" ></a>
+            </div>
+            <span>我的账户</span>
+        </div>
+        <div class="pro_menu_a">
+            <div class="pro_menu_x pro_menu_active_x" id="remittance">
+            	<a class="mycount"></a>
+                <!-- <a><img src="${base}/res/ebanks/img/icon_remittance.png"></a> -->
+            </div>
+            <span>转账汇款</span>
+        </div>
+        <div class="pro_menu_a">
+            <div class="pro_menu_x" id="ActPlugin">
+          	<a class="icon_card"></a>
+              <!--  <a><img src="${base}/res/ebanks/img/icon_card.png"></a> --> 
+            </div>
+            <span>激活插件</span>
+        </div>
+        <div class="pro_menu_a">
+            <div class="pro_menu_x" id="loan">
+            	<a class="icon_loan"></a>
+               <!-- <a><img src="${base}/res/ebanks/img/icon_loan.png"></a> --> 
+            </div>
+            <span>二维码支付</span>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript" src="${base}/res/ebanks/js/index.js"></script>
+<script type="text/javascript" src="${base}/res/ebanks/js/controlPop.js"></script>
+<script type="text/javascript">
+
+$(function(){
+    $("div[class*='pro_menu']").bind('click',function(){
+        var id = $(this).prop("id");
+        var $img = $(this).find("img");
+        if(id=='remittance'){
+            window.location.href="transfer.do";
+        }else if(id=='loan'){
+            window.location.href="scanPaycode.do";
+        }else if(id=='ActPlugin'){
+            window.location.href="actPlugin.do";
+        }else if(id=='account'){
+        	  window.location.href="account.do";
+        }
+    });
+
+});
+
+
+</script>
+
+
+<div class="container base-width">
+    <div class="row center-block pro_detail" id="step1" style="height:780px;">
+        <div class="detail-title col-md-offset-1">
+            <span>首页</span>&nbsp;&gt;&nbsp;<span class="detail_name">个人网银</span>&nbsp;&gt;&nbsp;<span class="detail_name">扫码支付</span>
+        </div>
+        <div class="clearfix" style="height:20px;">
+        </div>
+
+        <form method="post" class="fullfill-info-form">
+            <div class="d-line-space">
+            <img class="imgcaptcha" id="picCheck" style="cursor: pointer;width: 200px;height: 200px" src="${base}/ebanks/getQRCode.do"  />
+            </div>
+          
+          
+        </form>
+    </div>
+
+</div>
+
+
+
+
+
+  <div id="footer">
+        <p>©2013-2016 北京青年众人网络科技有限公司</p>
+    </div>
+
+
+
+
+
+</body></html>

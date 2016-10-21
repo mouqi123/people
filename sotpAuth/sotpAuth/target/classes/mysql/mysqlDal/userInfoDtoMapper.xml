@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.peopleNet.sotp.dal.dao.userInfoDtoMapper">
+    <resultMap id="BaseResultMap" type="com.peopleNet.sotp.dal.model.userInfoDto">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="user_id" property="userId" jdbcType="VARCHAR"/>
+        <result column="user_name" property="userName" jdbcType="VARCHAR"/>
+        <result column="user_pwd" property="userPwd" jdbcType="VARCHAR"/>
+        <result column="user_identitytype" property="userIdentitytype"
+                jdbcType="VARCHAR"/>
+        <result column="user_identitynum" property="userIdentitynum"
+                jdbcType="VARCHAR"/>
+        <result column="user_phone" property="userPhone" jdbcType="VARCHAR"/>
+        <result column="real_name" property="realName" jdbcType="VARCHAR"/>
+        <result column="gender" property="gender" jdbcType="VARCHAR"/>
+        <result column="app_code" property="appId" jdbcType="VARCHAR"/>
+        <result column="user_address" property="userAddress" jdbcType="VARCHAR"/>
+        <result column="user_mail" property="userMail" jdbcType="VARCHAR"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, user_id, user_name, user_pwd, user_identitytype,
+        user_identitynum,
+        user_phone,real_name，gender，app_code,
+        user_address, user_mail
+    </sql>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap"
+            parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from t_user_info
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+    <select id="selectByUserId" resultMap="BaseResultMap"
+            parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from t_user_info
+        where user_id = #{userId,jdbcType=VARCHAR}
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete from
+        t_user_info
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+    <insert id="insert" parameterType="com.peopleNet.sotp.dal.model.userInfoDto">
+        insert into t_user_info (id,
+        user_id, user_name,
+        user_pwd, user_identitytype, user_identitynum,
+        user_phone, user_address, user_mail
+        )
+        values (#{id,jdbcType=INTEGER},
+        #{userId,jdbcType=VARCHAR},
+        #{userName,jdbcType=VARCHAR},
+        #{userPwd,jdbcType=VARCHAR}, #{userIdentitytype,jdbcType=VARCHAR},
+        #{userIdentitynum,jdbcType=VARCHAR},
+        #{userPhone,jdbcType=VARCHAR},
+        #{userAddress,jdbcType=VARCHAR}, #{userMail,jdbcType=VARCHAR}
+        )
+    </insert>
+    <insert id="insertSelective" parameterType="com.peopleNet.sotp.dal.model.userInfoDto">
+        insert into t_user_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="userId != null">
+                user_id,
+            </if>
+            <if test="userName != null">
+                user_name,
+            </if>
+            <if test="userPwd != null">
+                user_pwd,
+            </if>
+            <if test="userIdentitytype != null">
+                user_identitytype,
+            </if>
+            <if test="userIdentitynum != null">
+                user_identitynum,
+            </if>
+            <if test="userPhone != null">
+                user_phone,
+            </if>
+            <if test="userAddress != null">
+                user_address,
+            </if>
+            <if test="userMail != null">
+                user_mail,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="userId != null">
+                #{userId,jdbcType=VARCHAR},
+            </if>
+            <if test="userName != null">
+                #{userName,jdbcType=VARCHAR},
+            </if>
+            <if test="userPwd != null">
+                #{userPwd,jdbcType=VARCHAR},
+            </if>
+            <if test="userIdentitytype != null">
+                #{userIdentitytype,jdbcType=VARCHAR},
+            </if>
+            <if test="userIdentitynum != null">
+                #{userIdentitynum,jdbcType=VARCHAR},
+            </if>
+            <if test="userPhone != null">
+                #{userPhone,jdbcType=VARCHAR},
+            </if>
+            <if test="userAddress != null">
+                #{userAddress,jdbcType=VARCHAR},
+            </if>
+            <if test="userMail != null">
+                #{userMail,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.peopleNet.sotp.dal.model.userInfoDto">
+        update t_user_info
+        <set>
+            <if test="userId != null">
+                user_id = #{userId,jdbcType=VARCHAR},
+            </if>
+            <if test="userName != null">
+                user_name = #{userName,jdbcType=VARCHAR},
+            </if>
+            <if test="userPwd != null">
+                user_pwd = #{userPwd,jdbcType=VARCHAR},
+            </if>
+            <if test="userIdentitytype != null">
+                user_identitytype = #{userIdentitytype,jdbcType=VARCHAR},
+            </if>
+            <if test="userIdentitynum != null">
+                user_identitynum = #{userIdentitynum,jdbcType=VARCHAR},
+            </if>
+            <if test="userPhone != null">
+                user_phone = #{userPhone,jdbcType=VARCHAR},
+            </if>
+            <if test="userAddress != null">
+                user_address = #{userAddress,jdbcType=VARCHAR},
+            </if>
+            <if test="userMail != null">
+                user_mail = #{userMail,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.peopleNet.sotp.dal.model.userInfoDto">
+        update t_user_info
+        <set>
+            <if test="userId != null">
+                user_id = #{userId,jdbcType=VARCHAR},
+            </if>
+            <if test="userName != null">
+                user_name = #{userName,jdbcType=VARCHAR},
+            </if>
+            <if test="userPhone != null">
+                user_phone = #{userPhone,jdbcType=VARCHAR},
+            </if>
+            <if test="realName != null">
+                real_Name = #{realName,jdbcType=VARCHAR},
+            </if>
+            <if test="gender != null">
+                gender = #{gender,jdbcType=VARCHAR}
+            </if>
+        </set>
+        where user_phone = #{userPhone,jdbcType=VARCHAR} and app_code =
+        #{appId,jdbcType=VARCHAR}
+    </update>
+
+    <insert id="insertIfNotExist">
+        INSERT INTO t_user_info(user_id, user_phone, app_code) SELECT
+        #{userId,jdbcType=VARCHAR},#{userPhone,jdbcType=VARCHAR},#{appId,jdbcType=VARCHAR} from dual WHERE NOT EXISTS
+        (SELECT 1 FROM t_user_info WHERE user_phone = #{userPhone,jdbcType=VARCHAR} and app_code =
+        #{appId,jdbcType=VARCHAR})
+    </insert>
+</mapper>

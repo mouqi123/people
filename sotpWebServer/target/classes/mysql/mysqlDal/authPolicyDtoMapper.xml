@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.peopleNet.sotp.dal.dao.authPolicyDtoMapper">
+    <resultMap id="BaseResultMap" type="com.peopleNet.sotp.dal.model.authPolicyDto">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="service_code" property="serviceCode" jdbcType="VARCHAR"/>
+        <result column="service_name" property="serviceName" jdbcType="VARCHAR"/>
+        <result column="service_desc" property="serviceDesc" jdbcType="VARCHAR"/>
+        <result column="status" property="status" jdbcType="INTEGER"/>
+        <result column="busi_id" property="busiId" jdbcType="INTEGER"/>
+        <result column="auth_factor_num" property="authFactorNum" jdbcType="INTEGER"/>
+        <result column="dynamic_policy" property="dynamicPolicy" jdbcType="INTEGER"/>
+        <result column="service_type" property="serviceType" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        service_code, service_name, status, service_desc,
+        busi_id, auth_factor_num, dynamic_policy, service_type
+    </sql>
+
+    <select id="selectAuthPolicyDtoByAppId" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_service_info service left join t_auth_factor_service auth
+        on auth.service_id=service.id
+        where auth.app_code=#{appId,jdbcType=VARCHAR}
+        and service.service_code=#{businessName,jdbcType=VARCHAR}
+    </select>
+
+    <select id="selectAuthPolicyDtoListByAppId" resultMap="BaseResultMap">
+        select
+        service.id, service.service_code, service.service_name, service.status,
+        service.service_desc, service.auth_factor_num,service.dynamic_policy,service.service_type
+        from t_service_info service left join t_auth_factor_service t on service.id=t.service_id
+        <where>
+            <if test="appId != '' and appId != null">
+                and t.app_code = #{appId,jdbcType=VARCHAR}
+            </if>
+        </where>
+    </select>
+</mapper>

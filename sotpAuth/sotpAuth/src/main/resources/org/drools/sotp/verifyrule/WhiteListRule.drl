@@ -1,0 +1,76 @@
+package org.drools.sotp.verifyrule
+
+import com.peopleNet.sotp.vo.UserAuthMsg;
+import com.peopleNet.sotp.vo.RiskControlResult;
+import com.peopleNet.sotp.vo.UserRuleInfo;
+import com.peopleNet.sotp.vo.UserTrustLibInfo;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map
+import com.peopleNet.sotp.util.StringUtils;
+import com.peopleNet.sotp.constant.Constant;
+import com.peopleNet.sotp.util.CommonConfig
+import java.util.List;
+
+
+
+//---- 白名单规则 start ----//
+/*
+ * 判断当前请求是否需要继续匹配规则
+ * 当匹配白名单时,verifyRuleResult成员变量会置为-1000;
+ * 当匹配黑名单及其他不允许认证通过的规则时,verifyRuleResult会被置为 1000;
+ * 以上两种情况,不需要继续匹配,因为已经得到了确定结果
+ */
+function Boolean needMatchWhitedRule( RiskControlResult riskResult) {
+    int verifyRuleResult = riskResult.getRiskScore();
+    if (verifyRuleResult > -1000 && verifyRuleResult < 1000) {
+        return true;
+    }
+    return false;
+}
+
+function void printWhiteList(UserAuthMsg authMsg) {
+    List<String> list1 = CommonConfig.getWhiteList("WHITE_PHONE_NUMBER_LIST");
+    System.out.println(list1.toString());
+    List<String> list2 = CommonConfig.getWhiteList("WHITE_USERID_LIST");
+    System.out.println(list2.toString());
+
+    System.out.println(authMsg.getPhoneNum());
+    System.out.println(authMsg.getUserId());
+    System.out.println(CommonConfig.getWhiteList("WHITE_PHONE_NUMBER_LIST").indexOf(authMsg.getPhoneNum()));
+    System.out.println(CommonConfig.getWhiteList("WHITE_USERID_LIST").indexOf(authMsg.getUserId()));
+}
+
+rule printWhiteList
+    salience 1000
+    enabled false
+    when
+        //eval(true)
+        $userRequest : UserAuthMsg()
+    then
+        printWhiteList($userRequest);
+end
+
+// 属于大类 WHITE0001
+// 本规则编号  white0001
+
+rule whitelist
+    salience 500
+    lock-on-active true
+    enabled false
+    when
+        //System.out.println("22432")
+        $userRequest : UserAuthMsg(
+                             (CommonConfig.getWhiteList("WHITE_PHONE_NUMBER_LIST") contains phoneNum
+                           || CommonConfig.getWhiteList("WHITE_USERID_LIST") contains userId))
+        $riskResult : RiskControlResult()
+        eval(needMatchWhitedRule($riskResult))
+    then
+        System.out.println("whitelist rule effects.");
+        // 使用modify修改成员变量,可以自动更新到当前的working memory当中
+        modify($riskResult){
+            setRiskScore(-1000),
+            addMatchedRule("WHITE0001", "white0001")
+        }
+end
+//---- 白名单规则 end ----//

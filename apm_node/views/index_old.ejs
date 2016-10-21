@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="zh-cn" ng-app="myApp">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title><%= title %></title>
+    <link href="/bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/main.css" rel="stylesheet">
+    <link href="/css/index.css" rel="stylesheet">
+</head>
+
+<body>
+
+<div class="header">
+    <a>APM</a>可视化展示
+</div>
+<div class="my_nav" ng-controller="MenuCtrl">
+    <ul id="theNav" class="nav nav-stacked firstmenu">
+        <!--<li role="presentation" ng-click="toggleMenu(m.url)" ng-class="{active: m.active}" ng-repeat="m in menuList"><a href="./#/{{m.url}}.html" ng-bind="m.name"></a></li>-->
+        <li ng-repeat="m1 in menuList" ng-class="{active: m1.active}" ng-click="toggleMenu1(m1)">
+            <a href="#systemSetting" class="nav-header collapsed" data-toggle="collapse">
+                <i class="glyphicon glyphicon-cog"></i>
+                <span ng-bind="m1.name"></span>
+                <span class="pull-right glyphicon glyphicon-chevron-toggle"></span>
+            </a>
+            <ul class="nav nav-list collapse secondmenu text-center">
+                <!--<li role="presentation" ng-click="toggleMenu(m1, m2)" ng-class="{active: m2.active}" ng-repeat="m2 in m1.members"><a href="./#/{{m2.url}}.html" ng-bind="m2.name"></a></li>-->
+                <li ng-click="toggleMenu2(m1, m2)" ng-repeat="m2 in m1.members" ng-class="{active: m2.active}"><a ng-href="{{'./#/' + m1.prefix + '/' + m2.url}}" ng-bind="m2.name">{{ m2.name }}</a></li>
+            </ul>
+        </li>
+    </ul>
+</div>
+<div class="main container-fluid" style="padding: 20px;" ng-view><!--main-->
+</div>
+<script src="/bower_components/angular/angular.min.js"></script>
+<script src="/bower_components/angular-route/angular-route.min.js"></script>
+<script src="/bower_components/jquery/dist/jquery.min.js"></script>
+<script src="/bower_components/bootstrap/dist/js/bootstrap.js"></script>
+<script src="/lib/ui-bootstrap-tpls.js"></script>
+<script src="/angular_components/app.js"></script>
+<script src="/angular_components/controllers/tplsController.js"></script>
+<script src="/angular_components/controllers/view1Controller.js"></script>
+<script src="/angular_components/controllers/view2Controller.js"></script>
+<script src="/angular_components/controllers/view3Controller.js"></script>
+<script src="/angular_components/controllers/view4Controller.js"></script>
+<script src="/angular_components/controllers/view5Controller.js"></script>
+<script src="/angular_components/controllers/view6Controller.js"></script>
+
+<script src="/angular_components/directives/directives.js"></script>
+<script src="/angular_components/filters/filters.js"></script>
+<script src="/angular_components/services/services.js"></script>
+
+<script>
+</script>
+</body>
+</html>
+

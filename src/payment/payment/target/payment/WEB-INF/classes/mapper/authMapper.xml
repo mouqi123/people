@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="Auth" >
+  <resultMap id="BaseResultMap" type="AuthDO" >
+    <id column="id" property="id" />
+    <result column="member_id" property="memberId" />
+    <result column="login" property="login" />
+    <result column="onepay" property="onePay" />
+    <result column="epay" property="ePay" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id,member_id,login,onepay,epay
+  </sql>
+  
+   <sql id="where">
+  	<where>
+  	  <if test="id!=null and id!='' and id!=0" >
+        AND id = #{id}
+      </if>
+       <if test="memberId!=null and memberId!=''" >
+        AND member_id = #{memberId}
+      </if>
+  	</where>
+  </sql>
+  
+  
+  <select id="selectAuthCount" resultType="Integer" parameterType="map" >
+  	select count(*)
+  	from tb_auth
+  </select>
+  <select id="selectAuthList" resultMap="BaseResultMap" parameterType="map" >
+   SELECT  
+   tb_auth.id,tb_member.user_name as member_id,tb_auth.login,tb_auth.onepay,tb_auth.epay 
+   from tb_auth ,tb_member 
+   where tb_member.id=tb_auth.member_id
+  <include refid="common.pageUtil"/>
+  </select>
+  
+  
+  <select id="selectAuthOne" resultMap="BaseResultMap" parameterType="map" >
+   SELECT  
+   <include refid="Base_Column_List" />
+   from tb_auth
+    <include refid="where"/>
+  </select>
+  
+  
+  
+  
+   <select id="getBindlist" resultMap="BaseResultMap"  parameterType="java.util.Map" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_auth 
+    where 
+    (select id from tb_member where phone=#{phoneNum})=tb_auth.member_id 
+ </select>
+  
+  
+  
+  	
+  	 <insert id="addAuth" parameterType="AuthDO" >
+    	insert into tb_auth
+      <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="memberId != null" >
+        member_id,
+      </if>
+      <if test="login != null" >
+        login,
+      </if>
+      <if test="onePay != null" >
+        onepay,
+      </if>
+      <if test="ePay != null" >
+        epay,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id},
+      </if>
+      <if test="memberId != null" >
+        #{memberId},
+      </if>
+      <if test="login != null" >
+        #{login},
+      </if>
+      <if test="onePay != null" >
+        #{onePay},
+      </if>
+      <if test="ePay != null" >
+        #{ePay},
+      </if>
+     
+    </trim>
+  </insert>
+  	  <update id="updateAuth" parameterType="AuthDO" >
+    update tb_auth
+    <set >
+      <if test="memberId != null" >
+        member_id = #{memberId},
+      </if>
+      <if test="login != null  " >
+        login = #{login},
+      </if>
+        <if test="onePay != null " >
+        onepay = #{onePay},
+      </if>
+        <if test="ePay != null " >
+        epay = #{ePay},
+      </if>
+    </set>
+    where id = #{id}
+  </update>
+    <delete id="deleteAuth" parameterType="AuthDO" >
+    delete from tb_auth
+    <where>
+      <if test="id != null" >
+        id = #{id}
+      </if>
+    </where>
+  </delete>
+  	
+</mapper>

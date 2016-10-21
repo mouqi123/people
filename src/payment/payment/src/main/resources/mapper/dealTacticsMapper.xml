@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="DealTactics" >
+  <resultMap id="BaseResultMap" type="DealTacticsDO" >
+    <id column="id" property="id" />
+    <result column="member_id" property="memberId" />
+    <result column="last_money" property="lastMoney" />
+    <result column="last_time" property="lastTime" />
+    <result column="pay_money" property="payMoney" />
+    <result column="limit_money" property="limitMoney" />
+    <result column="create_time" property="createTime" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id,member_id,last_money,last_time,pay_money,limit_money,create_time
+  </sql>
+  
+   <sql id="where">
+  	<where>
+  	  <if test="id!=null and id!='' and id!=0" >
+        AND id = #{id}
+      </if>
+  	</where>
+  </sql>
+  
+  
+  <select id="selectDealTacticsCount" resultType="Integer" parameterType="map" >
+  	select count(*)
+  	from tb_deal_tactics
+  </select>
+  <select id="selectDealTacticsList" resultMap="BaseResultMap" parameterType="map" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_deal_tactics
+    <include refid="where"/>
+     <include refid="common.pageUtil"/>
+  </select>
+  	
+  	
+  	 <select id="selectDealTacticsOne" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    select 
+    <include refid="Base_Column_List" />
+     from tb_deal_tactics
+     where (select id from tb_member where phone=#{phoneNum})=tb_deal_tactics.member_id
+  </select>
+  	
+  	
+  	 <insert id="addDealTactics" parameterType="DealTacticsDO" >
+    	insert into tb_deal_tactics
+      <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="memberId != null" >
+        member_id,
+      </if>
+      <if test="lastMoney != null" >
+        last_money,
+      </if>
+      <if test="lastTime != null" >
+        last_time,
+      </if>
+       <if test="payMoney != null" >
+        pay_money,
+      </if>
+       <if test="limitMoney != null" >
+        limit_money,
+      </if>
+         create_time,
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id},
+      </if>
+      <if test="memberId != null" >
+        #{memberId},
+      </if>
+      <if test="lastMoney != null" >
+        #{lastMoney},
+      </if>
+      <if test="lastTime != null" >
+        #{lastTime},
+      </if>
+       <if test="payMoney != null" >
+        #{payMoney},
+      </if>
+       <if test="limitMoney != null" >
+        #{limitMoney},
+      </if>
+      now()
+    </trim>
+  </insert>
+  	  <update id="updateDealTactics" parameterType="DealTacticsDO" >
+    update tb_deal_tactics
+    <set >
+      <if test="lastMoney != null and lastMoney != ''" >
+        last_money = #{lastMoney},
+      </if>
+      <if test="lastTime != null and lastTime != ''" >
+        last_time = #{lastTime},
+      </if>
+        <if test="payMoney != null and payMoney != ''" >
+        pay_money = #{payMoney},
+      </if>
+       <if test="limitMoney != null and limitMoney != ''" >
+        limit_money = #{limitMoney},
+      </if>
+      
+     
+    </set>
+   <where>
+      <if test="id != null  and id!= 0 " >
+        id = #{id}
+      </if>
+      <if test="memberId != null" >
+        member_id = #{memberId}
+      </if>
+    </where>
+  </update>
+    <delete id="deleteDealTactics" parameterType="DealTacticsDO" >
+    delete from tb_deal_tactics
+    <where>
+      <if test="id != null" >
+        id = #{id}
+      </if>
+    </where>
+  </delete>
+  	
+</mapper>

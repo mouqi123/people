@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- monitorInterval表示log4j2每隔固定秒数监控该配置文件是否有变化，若有变化，则重新加载  -->
+<!-- <Configuration status="WARN" packages="org.apache.logging.log4j.test" 
+	monitorInterval="30"> -->
+<Configuration status="WARN" packages="org.apache.logging.log4j.test">
+    <Properties>
+        <Property name="BaseDir">/home/work/log</Property>
+    </Properties>
+    <Appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+            <ThresholdFilter level="trace" onMatch="ACCEPT"
+                             onMismatch="DENY"/>
+            <PatternLayout
+                    pattern="[%d{yyyy-MM-dd HH:mm:ss.SSS}] [%-5level] [%l] [%t] [sotp] - %msg%xEx%n"/>
+        </Console>
+        <RollingFile name="AppRollingFile" fileName="${BaseDir}/default.log"
+                     filePattern="${BaseDir}/default-%d{yyyy-MM-dd}-%i.log.gz">
+            <PatternLayout>
+                <Pattern>[%d{yyyy-MM-dd HH:mm:ss.SSS}] [%-5level] [%l] [%t] [sotp] - %msg%xEx%n</Pattern>
+            </PatternLayout>
+            <Policies>
+                <TimeBasedTriggeringPolicy/>
+                <SizeBasedTriggeringPolicy size="200 MB"/>
+            </Policies>
+            <DefaultRolloverStrategy max="1000"/>
+        </RollingFile>
+        <RollingFile name="ErrorRollingFile" fileName="${BaseDir}/error.log"
+                     filePattern="${BaseDir}/error-%d{yyyy-MM-dd}-%i.log.gz">
+            <ThresholdFilter level="ERROR" onMatch="ACCEPT"
+                             onMismatch="DENY"/>
+            <PatternLayout>
+                <Pattern>[%d{yyyy-MM-dd HH:mm:ss.SSS}] [%-5level] [%l] [%t] [sotp] - %msg%xEx%n</Pattern>
+            </PatternLayout>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1"/>
+                <SizeBasedTriggeringPolicy size="20 MB"/>
+            </Policies>
+            <DefaultRolloverStrategy max="1000"/>
+        </RollingFile>
+        <Flume name="eventLoggerByFlume" compress="false">
+            <Agent host="127.0.0.1" port="41414" />
+            <PatternLayout>
+                <Pattern>[%d{yyyy-MM-dd HH:mm:ss.SSS}] [%-5level] [%l] [%t] [sotp] - %msg%xEx%n</Pattern>
+            </PatternLayout>
+            <!--<RFC5424Layout enterpriseNumber="18060" includeMDC="true" appName="MyApp" />-->
+        </Flume>
+    </Appenders>
+    <Loggers>
+        <Root level="debug">
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="AppRollingFile"/>
+            <AppenderRef ref="ErrorRollingFile"/>
+            <!--<AppenderRef ref="eventLoggerByFlume"/>-->
+        </Root>
+    </Loggers>
+</Configuration>

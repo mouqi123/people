@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <!-- <typeAliases> <typeAlias alias="StudentEntity" type="com.manager.data.model.StudentEntity"/>
+        </typeAliases> -->
+    <settings>
+        <setting name="logImpl" value="LOG4J2"/>
+    </settings>
+    <mappers>
+        <mapper resource="oracleDal/androidStatisticDtoMapper.xml"/>
+        <mapper resource="oracleDal/invokeInfoDtoMapper.xml"/>
+        <mapper resource="oracleDal/iosStatisticDtoMapper.xml"/>
+        <mapper resource="oracleDal/pluginInfoDtoMapper.xml"/>
+        <mapper
+                resource="oracleDal/pluginUpdatePolicyDtoMapper.xml"/>
+        <mapper resource="oracleDal/sotpVerifyPolicyDtoMapper.xml"/>
+        <mapper resource="oracleDal/userInfoDtoMapper.xml"/>
+        <mapper
+                resource="oracleDal/winphoneStatisticDtoMapper.xml"/>
+        <mapper resource="oracleDal/pluginContentDtoMapper.xml"/>
+        <mapper resource="oracleDal/authFeatureDtoMapper.xml"/>
+        <mapper resource="oracleDal/pluginStatisticDtoMapper.xml"/>
+        <mapper resource="oracleDal/RulePolicyDtoMapper.xml"/>
+        <mapper resource="oracleDal/appInfoDtoMapper.xml"/>
+        <mapper resource="oracleDal/appVersionInfoDtoMapper.xml"/>
+        <mapper resource="oracleDal/userVerifyInfoDtoMapper.xml"/>
+        <mapper resource="oracleDal/authPolicyDtoMapper.xml"/>
+        <mapper resource="oracleDal/verifyDataDtoMapper.xml"/>
+    </mappers>
+</configuration> 

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.peopleNet.sotp.dal.dao.verifyDataDtoMapper">
+<resultMap id="BaseResultMap"  type="com.peopleNet.sotp.dal.model.verifyDataDto" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="pid" property="pid" jdbcType="INTEGER" />
+    <result column="code" property="code" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="nodelevel" property="nodelevel" jdbcType="INTEGER" />
+    <result column="verify_desc" property="verifyDesc" jdbcType="VARCHAR" />
+    <result column="matching_rate" property="matchingRate" jdbcType="VARCHAR" />
+</resultMap>
+
+<select id="getVerifyDataList" resultMap="BaseResultMap"
+            parameterType="java.lang.String">
+    select data.id,matching_rate,pid,code,name,nodelevel,verify_desc from t_verify_data_item data right join 
+    t_app_verify_config config on data.id=config.verify_id
+    <where>
+        config.app_code = #{appId,jdbcType=VARCHAR}
+      and status=1
+    </where>
+</select>
+
+</mapper>

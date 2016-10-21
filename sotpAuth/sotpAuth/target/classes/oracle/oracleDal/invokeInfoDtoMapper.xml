@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.peopleNet.sotp.dal.dao.invokeInfoDtoMapper">
+    <resultMap id="BaseResultMap" type="com.peopleNet.sotp.dal.model.invokeInfoDto">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="user_id" property="userId" jdbcType="VARCHAR"/>
+        <result column="user_phone" property="userPhone" jdbcType="VARCHAR"/>
+        <result column="plugin_id" property="pluginId" jdbcType="VARCHAR"/>
+        <result column="interface_name" property="interfaceName" jdbcType="VARCHAR"/>
+        <result column="invokeTime" property="invoketime" jdbcType="TIMESTAMP"/>
+        <result column="location" property="location" jdbcType="VARCHAR"/>
+        <result column="ip" property="ip" jdbcType="VARCHAR"/>
+        <result column="status" property="status" jdbcType="INTEGER"/>
+        <result column="errorCode" property="errorcode" jdbcType="VARCHAR"/>
+        <result column="remark" property="remark" jdbcType="VARCHAR"/>
+        <result column="riskLevel" property="risklevel" jdbcType="INTEGER"/>
+        <result column="request_msg" property="requestMsg" jdbcType="VARCHAR"/>
+        <result column="response_msg" property="responseMsg" jdbcType="VARCHAR"/>
+        <result column="tableName" property="tableName" jdbcType="VARCHAR"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, user_id, user_phone, plugin_id, interface_name,
+        invokeTime, location,
+        ip, status,
+        errorCode, remark, riskLevel,
+        request_msg, response_msg
+    </sql>
+
+    <insert id="insert" parameterType="com.peopleNet.sotp.dal.model.invokeInfoDto">
+        insert into T_INVOKE_INFO_${tableName} (id,
+        user_id, user_phone,
+        plugin_id, interface_name, invokeTime,
+        location, ip,
+        status,
+        errorCode, remark, riskLevel,
+        request_msg, response_msg)
+        values
+        (#{id,jdbcType=INTEGER}, #{userId,jdbcType=VARCHAR},
+        #{userPhone,jdbcType=VARCHAR},
+        #{pluginId,jdbcType=VARCHAR},
+        #{interfaceName,jdbcType=VARCHAR}, #{invoketime,jdbcType=TIMESTAMP},
+        #{location,jdbcType=VARCHAR}, #{ip,jdbcType=VARCHAR},
+        #{status,jdbcType=INTEGER},
+        #{errorcode,jdbcType=VARCHAR},
+        #{remark,jdbcType=VARCHAR}, #{risklevel,jdbcType=INTEGER},
+        #{requestMsg,jdbcType=VARCHAR}, #{responseMsg,jdbcType=VARCHAR})
+    </insert>
+
+    <!-- <insert id="insertBatch" parameterType="java.util.List">
+        insert into T_INVOKE_INFO_${tableName} (user_id, user_phone,
+        plugin_id, 
+        interface_name, invokeTime,
+        location, ip, status,
+        errorCode, remark,
+        riskLevel,
+        request_msg, response_msg, app_code, busi_code)
+        <foreach collection="list" item="item" index="index"
+                 separator="UNION ALL">
+            SELECT
+            #{item.userId},#{item.userPhone},#{item.pluginId},#{item.interfaceName},#{item.invoketime},#{item.location},#{item.ip},#{item.status},#{item.errorcode},#{item.remark},#{item.risklevel},#{item.requestMsg},#{item.responseMsg},#{item.appCode},#{item.busiCode}
+            FROM DUAL
+        </foreach>
+    </insert> -->
+    <insert id="insertBatch" parameterType="java.util.Map">
+        insert into T_INVOKE_INFO_${tableName} (user_id, user_phone,
+        plugin_id,
+        interface_name, invokeTime,
+        location, ip, status,
+        errorCode, remark,
+        riskLevel,
+        request_msg, response_msg, app_code, busi_code)
+        <foreach collection="list" item="item" index="index"
+                 separator="UNION ALL">
+            SELECT
+            #{item.userId,jdbcType=VARCHAR},#{item.userPhone,jdbcType=VARCHAR},#{item.pluginId,jdbcType=VARCHAR},#{item.interfaceName,jdbcType=VARCHAR},#{item.invoketime},#{item.location,jdbcType=VARCHAR},#{item.ip,jdbcType=VARCHAR},#{item.status},#{item.errorcode,jdbcType=VARCHAR},#{item.remark,jdbcType=VARCHAR},#{item.risklevel},#{item.requestMsg,jdbcType=VARCHAR},#{item.responseMsg,jdbcType=VARCHAR},#{item.appCode,jdbcType=VARCHAR},#{item.busiCode,jdbcType=VARCHAR}
+            FROM DUAL
+        </foreach>
+    </insert>
+
+</mapper>

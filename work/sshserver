@@ -1,0 +1,24 @@
+ssh root@104.224.156.185 -p 27147
+scp -P 27147 -r fileXXX.XXX root@104.224.156.185:/opt/git
+
+挂载远程文件系统
+sudo sshfs sudo sshfs -o IdentityFile=/home/mackie/.ssh/sotpServer.pem ec2-user@ec2-54-222-202-170.cn-north-1.compute.amazonaws.com.cn:/ /mnt/mountpoint/
+sftp -i ~/.ssh/sotpServer.pem ec2-user@ec2-54-222-202-170.cn-north-1.compute.amazonaws.com.cn
+
+sudo ip link set eno1 mtu 1492 //设置链路层mtu
+
+ssh -i ~/.ssh/sotpServer.pem ec2-user@ec2-54-223-79-146.cn-north-1.compute.amazonaws.com.cn  //自主系统 54.223.79.146
+
+ssh people@123.56.4.215 -p 54522 //密码为zhongren234  , root 密码为SOTPsotp123 阿里云
+ssh root@192.168.1.157 //内网部署 密码sotp123  内部网络190(redis集群) 192 payment
+mysql -h 192.168.1.230 -u sotpadmin -p //密码sotp123
+
+ssh -i ~/.ssh/sotp_aws.pem ec2-user@ec2-54-223-98-138.cn-north-1.compute.amazonaws.com.cn //demoApp系統 ip 54.223.98.138
+ 192.168.1.121 3306 hive hive  //amp数据库
+
+
+
+
+认证系统、模拟系统： ssh -i ~/.ssh/epay.pem ec2-user@ec2-54-223-79-98.cn-north-1.compute.amazonaws.com.cn //工商银行54.223.79.98
+密码机  ：ssh -i ~/.ssh/epay.pem ec2-user@ec2-54-222-129-63.cn-north-1.compute.amazonaws.com.cn
+jdk、mysql、redis都已安装完成。 mysql 账号 sotpadmin/sotp123

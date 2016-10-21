@@ -1,0 +1,53 @@
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/" debug="false">	
+	<!-- 系统日志配置 -->
+	<appender name="SystemFileLog" class="org.apache.log4j.DailyRollingFileAppender">
+		<param name="File" value="/var/log/tomcat/demoApp/system.log" />
+		<!-- <param name="File" value="${catalina.home}/sotpUimc/system.log" /> -->
+		<param name="Append" value="true" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="[%d{yyyy-MM-dd HH:mm:ss.SSS}] [%-5p] [%l] [%t] [sotp] - %m%n" />
+		</layout>
+	</appender>
+	
+	<!-- 通用日志配置将日志输出到控制台 -->
+	<appender name="Console" class="org.apache.log4j.ConsoleAppender">
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="[%d{yyyy-MM-dd HH:mm:ss.SSS}] [%-5p] [%l] [%t] [sotp] - %m%n" />
+		</layout>
+	</appender>
+	
+	<appender name="IBATIS" class="org.apache.log4j.ConsoleAppender">
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="[%d{yyyy-MM-dd HH:mm:ss.SSS}] [%-5p] [%l] [%t] [sotp] - %m%n" />
+		</layout>
+		<filter class="org.apache.log4j.varia.LevelRangeFilter">
+			<param name="LevelMin" value="DEBUG" />
+			<param name="LevelMax" value="ERROR" />
+		</filter>
+	</appender>
+
+	<logger name="java.sql" additivity="false">
+		<level value="INFO" />
+		<appender-ref ref="IBATIS" />
+	</logger>
+	<!-- <logger name="com.ibatis" additivity="false">
+		<level value="INFO" />
+		<appender-ref ref="IBATIS" />
+	</logger> -->
+    <!-- 
+		Spring日志
+	 -->
+<!-- 	<logger name="org.springframework" additivity="false">
+        <level value="DEBUG"/>
+        <appender-ref ref="Console"/>
+    </logger> -->
+	
+	<!-- 全局配置 -->
+	<root>
+		<priority value="info" />
+		<appender-ref ref="Console" />
+		<appender-ref ref="IBATIS" />
+		<appender-ref ref="SystemFileLog" />
+	</root>
+</log4j:configuration>

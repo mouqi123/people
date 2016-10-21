@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="Order" >
+  <resultMap id="BaseResultMap" type="OrderDO" >
+    <id column="id" property="id" />
+    <result column="member_id" property="memberId" />
+    <result column="order_number" property="orderNumber" />
+    <result column="order_money" property="orderMoney" />
+    <result column="order_start" property="orderStart" />
+    <result column="order_end" property="orderEnd" />
+    <result column="order_status" property="orderStatus" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id,member_id,order_number,order_money,order_start,order_end,order_status
+  </sql>
+  
+   <sql id="where">
+  	<where>
+  	  <if test="id!=null and id!='' and id!=0" >
+        AND id = #{id}
+      </if>
+  	</where>
+  </sql>
+   <sql id="selectOrderOnewhere">
+  	<where>
+  	  <if test="phoneNum!=null and id!=''" >
+     (select id from tb_member where phone=#{phoneNum})=tb_order.member_id
+      </if>
+  	</where>
+  </sql>
+  
+  
+  <select id="selectOrderCount" resultType="Integer" parameterType="map" >
+  	select count(*)
+  	from tb_order
+  </select>
+  <select id="selectOrderList" resultMap="BaseResultMap" parameterType="map" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_order
+    <include refid="where"/>
+     <include refid="common.pageUtil"/>
+  </select>
+  	
+  	<select id="selectOrderOne" resultMap="BaseResultMap" parameterType="map" >
+    select 
+   <include refid="Base_Column_List" />
+    from tb_order 
+   <include refid="selectOrderOnewhere"/>
+  </select>
+  	
+  	
+  	
+  	
+  	 <insert id="addOrder" parameterType="OrderDO" >
+    	insert into tb_order
+      <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="memberId != null" >
+        member_id,
+      </if>
+      <if test="orderNumber != null" >
+        order_number,
+      </if>
+      <if test="orderMoney != null" >
+        order_money,
+      </if>
+        order_start,
+        order_end,
+      <if test="orderStatus != null" >
+        order_status,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="memberId != null" >
+        #{memberId},
+      </if>
+      <if test="orderNumber != null" >
+        #{orderNumber},
+      </if>
+      <if test="orderMoney != null" >
+        #{orderMoney},
+      </if>
+      now(),
+      now(),
+       <if test="orderStatus != null" >
+        #{orderStatus},
+      </if>
+    </trim>
+  </insert>
+  	  <update id="updateOrder" parameterType="OrderDO" >
+    update tb_order
+    <set >
+      <if test="lastMoney != null and lastMoney != ''" >
+        last_money = #{lastMoney},
+      </if>
+      <if test="lastTime != null and lastTime != ''" >
+        last_time = #{lastTime},
+      </if>
+        <if test="payMoney != null and payMoney != ''" >
+        pay_money = #{payMoney},
+      </if>
+       <if test="limitMoney != null and limitMoney != ''" >
+        limit_money = #{limitMoney},
+      </if>
+      
+     
+    </set>
+    where id = #{id}
+  </update>
+    <delete id="deleteOrder" parameterType="OrderDO" >
+    delete from tb_order
+    <where>
+      <if test="id != null" >
+        id = #{id}
+      </if>
+    </where>
+  </delete>
+  	
+</mapper>

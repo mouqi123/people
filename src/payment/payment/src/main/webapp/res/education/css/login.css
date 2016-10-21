@@ -1,0 +1,107 @@
+@charset "utf-8";
+/* CSS Document */
+
+body {
+	margin: 0px;
+	padding: 0px;
+	background-color:#ffffff; 
+	font-size:12px;
+	color:#514D46;
+}
+
+img {border:0px;}
+form {font-size: 12px;margin: 0px;padding: 0px;}
+input {font-size: 12px; color:#333333;}
+select {font-size: 12px; color:#333333;}
+ul,li,h1,h2,h3,h4,h5,dl,dt,dd,em,img{margin: 0px;padding: 0px; font-style:normal; list-style:none;}
+
+.loginmain{
+	width:918px;
+	margin:150px auto 0 auto;
+}
+.loginmain2{
+	width:918px;
+	height:669px;
+	background:url(../img/login/llogo.png) no-repeat;
+	margin:0 auto;
+	
+}
+.main{
+	width:410px;
+	height:306px;
+	padding:150px 0 0 0;
+	_padding:250px 0 0 0;
+	*padding:200px 0 0 0;
+	margin:0 auto;
+	
+} 
+.title{
+	display:block;
+	font-size:18px;
+	font-weight:bold;
+	font-family:"微软雅黑";
+	color:#FFF;
+	text-align:center;
+	margin:65px 0 15px 0;
+	letter-spacing:2px;
+	
+}
+.leftlogin{
+	width:230px;
+	float:left;
+	margin:0 0 0 50px;
+	display:inline;
+}
+.lefterror{
+	width:230px;
+	float:left;
+	margin:0 0 0 110px;
+	display:inline;
+	height:20px;
+}
+
+.main label{
+	width:100px;
+	float:left;
+	height:22px;
+	line-height:22px;
+	text-align:right;
+	margin:5px 0 0 22px;
+	color:red;
+}
+.leftlogin input{
+	margin:5px 0 0 0;
+	width:162px;
+	border:1px solid #D4D0C8;
+}
+.leftlogin font{
+	width:50px; 
+	display:block;
+	float:left;
+	margin:10px 0 0 0px;
+	text-align:right;
+}
+.imgcaptcha{
+	float:left;
+	width:90px;
+	height:30px;
+	margin:10px 0 0 50px;
+}
+.main .buttlogin{
+	width:55px;
+	height:56px;
+	float:left;
+	background:url(../img/login/buttlogin.jpg) no-repeat;
+	border:0;
+	margin:5px 0 0 0;
+}
+.remmber input{
+	float:left;
+	margin:10px 0 0 100px;
+	_margin:7px 0 0 100px;
+}
+.remmber em{
+	float:left;
+	margin:10px 0 0 5px;
+	color:#fff;
+}

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script type="text/javascript" src="apiTest/js/apiTest.js"></script>
+<link href="apiTest/css/testStyle.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+	<table>
+		<tr>
+			<th>属性名</th>
+			<th>属性值</th>
+		</tr>
+		<tr>
+			<td><input type="text" id="attr1" /></td>
+			<td><input type="text" id="attr1" /></td>
+		</tr>
+		<tr>
+			<td><input type="text" id="attr2" /></td>
+			<td><input type="text" id="attr2"></td>
+		</tr>
+		<tr>
+			<td><input type="text" id="attr3"></td>
+			<td><input type="text" id="attr3"></td>
+		</tr>
+		<tr>
+			<td><input type="text" id="attr4"></td>
+			<td><input type="text" id="attr4"></td>
+		</tr>
+		<tr>
+			<td><input type="text" id="attr5"></td>
+			<td><input type="text" id="attr5"></td>
+		</tr>
+		<tr>
+			<td><input type="text" id="attr6"></td>
+			<td><textarea cols="22" rows="10" id="attr6"></textarea></td>
+		</tr>
+	</table>
+	<select id="select">
+		<option value="face/controllers.do">用户信息管理模块测试controllers.do</option>
+		<option value="face/userauth.do">登录模块测试userauth.do</option>
+		<option value="face/common.do">common.do</option>
+	</select><br/>
+	<input type="button" id="login" value="登陆" onclick="login()" />
+	<input type="button" id="submit" value="提交数据" onclick="submit()" />
+	<div id="responseArea"></div>
+</body>
+</html>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns="http://www.springframework.org/schema/beans"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd">
+
+    <bean name="genericObjectPoolConfig" class="org.apache.commons.pool2.impl.GenericObjectPoolConfig">
+        <property name="maxTotal" value="${redis.pool.maxTotal}"/>
+        <property name="maxIdle" value="${redis.pool.maxIdle}"/>
+        <property name="maxWaitMillis" value="${redis.pool.maxWaitMillis}"/>
+        <!-- <property name="testOnBorrow" value="${redis.pool.testOnBorrow}" /> -->
+        <property name="minEvictableIdleTimeMillis" value="${redis.pool.minEvictableIdleTimeMillis}"/>
+        <property name="numTestsPerEvictionRun" value="${redis.pool.numTestsPerEvictionRun}"/>
+        <property name="timeBetweenEvictionRunsMillis" value="${redis.pool.timeBetweenEvictionRunsMillis}"/>
+    </bean>
+
+    <bean id="jedisCluster" class="com.peopleNet.sotp.redis.JedisClusterFactory">
+        <property name="addressConfig">
+            <value>classpath:properties/rediscluster.properties</value>
+        </property>
+        <property name="addressKeyPrefix" value="address"/>   <!--  属性文件里  key的前缀 -->
+
+        <property name="timeout" value="300000"/>
+        <property name="maxRedirections" value="6"/>
+        <property name="genericObjectPoolConfig" ref="genericObjectPoolConfig"/>
+    </bean>
+
+
+</beans>

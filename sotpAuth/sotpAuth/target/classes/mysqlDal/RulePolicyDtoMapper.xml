@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.peopleNet.sotp.dal.dao.RulePolicyDtoMapper">
+    <resultMap id="BaseResultMap" type="com.peopleNet.sotp.dal.model.policyDetailDto">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="policy_id" property="policy_id" jdbcType="INTEGER"/>
+        <result column="field_id" property="field_id" jdbcType="INTEGER"/>
+        <result column="field_name" property="field_name" jdbcType="VARCHAR"/>
+        <result column="field_operator" property="field_operator" jdbcType="VARCHAR"/>
+        <result column="field_value" property="field_value" jdbcType="VARCHAR"/>
+        <result column="expression" property="expression" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <resultMap type="java.lang.Integer" id="policy_id">
+        <result property="pId" column="id"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id, policy_id, field_id, field_name, field_operator,
+        field_value, expression
+    </sql>
+    <select id="selectPolicyId" resultMap="policy_id">
+        select id
+        from t_rule_policy
+        where status =1 and
+        policy_code = #{policyCode,jdbcType=VARCHAR} and
+        appCode = #{appId,jdbcType=VARCHAR}
+    </select>
+    <select id="selectByPolicyId" resultMap="BaseResultMap"
+            parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from t_rule_policy_detail
+        where policy_id = #{policyId,jdbcType=INTEGER}
+    </select>
+    <select id="selectAuthPolicyByAppId" resultType="java.lang.Integer">
+        select service.auth_factor_num
+        from t_service_info service left join t_auth_factor_service auth
+        on auth.service_id=service.id
+        where auth.app_code=#{appId,jdbcType=VARCHAR}
+        and service.service_code=#{businessName,jdbcType=VARCHAR}
+    </select>
+
+</mapper>

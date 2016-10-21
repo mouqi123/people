@@ -1,0 +1,29 @@
+{
+  "name": "LogAnalysis",
+  "description": "",
+  "main": "",
+  "authors": [
+    "dongxiaoyong009 <dongxiaoyong009@126.com>"
+  ],
+  "license": "MIT",
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "public/bower_components/",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "requirejs": "^2.2.0",
+    "angular": "^1.5.8",
+    "angular-route": "^1.5.8",
+    "bootstrap": "^3.3.7",
+    "font-awesome": "^4.6.3",
+    "Ionicons": "ionicons#^2.0.1",
+    "jvectormap": "^2.0.4",
+    "sparkline": "^2.1.2",
+    "jquery-slimscroll": "slimscroll#^1.3.8"
+  }
+}

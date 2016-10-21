@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.peopleNet.sotp.dal.dao.authFeatureDtoMapper">
+    <resultMap id="BaseResultMap" type="com.peopleNet.sotp.dal.model.authFeatureDto">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="plugin_id" property="plugin_id" jdbcType="VARCHAR"/>
+        <result column="dev_type" property="dev_type" jdbcType="INTEGER"/>
+        <result column="manufacturer" property="manufacturer" jdbcType="VARCHAR"/>
+        <result column="product_type" property="product_type" jdbcType="VARCHAR"/>
+        <result column="system_version" property="system_version"
+                jdbcType="VARCHAR"/>
+        <result column="sdk_version" property="sdk_version" jdbcType="VARCHAR"/>
+        <result column="uuid" property="uuid" jdbcType="VARCHAR"/>
+        <result column="imei" property="imei" jdbcType="VARCHAR"/>
+        <result column="imsi" property="imsi" jdbcType="VARCHAR"/>
+        <result column="mac" property="mac" jdbcType="VARCHAR"/>
+        <result column="location" property="location" jdbcType="VARCHAR"/>
+        <result column="ip" property="ip" jdbcType="VARCHAR"/>
+        <result column="phone_num" property="phone_num" jdbcType="VARCHAR"/>
+        <result column="pin" property="pin" jdbcType="VARCHAR"/>
+        <result column="touchId" property="touchId" jdbcType="VARCHAR"/>
+        <result column="irides" property="irides" jdbcType="VARCHAR"/>
+        <result column="voice" property="voice" jdbcType="VARCHAR"/>
+        <result column="gesture_code" property="gesture_code" jdbcType="VARCHAR"/>
+        <result column="cpu" property="cpu" jdbcType="VARCHAR"/>
+        <result column="dev_name" property="dev_name" jdbcType="VARCHAR"/>
+        <result column="dev_id" property="devId" jdbcType="VARCHAR"/>
+ 		<result column="dev_info" property="dev_info" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id, plugin_id, dev_type, manufacturer, product_type,
+        system_version, sdk_version,
+        uuid,imei, imsi, mac,location,
+        ip,phone_num,pin, touchId,
+        irides,voice,gesture_code,cpu,dev_name,dev_id,dev_info
+    </sql>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap"
+            parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from t_auth_feature_info
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+    <select id="selectByPluginId" resultMap="BaseResultMap"
+            parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from t_auth_feature_info
+        where plugin_id = #{pluginId,jdbcType=VARCHAR}
+    </select>
+
+    <select id="selectByPluginIdOptimize" resultMap="BaseResultMap">
+        select
+        <if test="random != null">
+            <![CDATA[ /* ${random} */ ]]>
+        </if>
+        <include refid="Base_Column_List"/>
+        from t_auth_feature_info
+        where plugin_id = #{pluginId,jdbcType=VARCHAR}
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete from
+        t_auth_feature_info
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+    <insert id="insert" parameterType="com.peopleNet.sotp.dal.model.authFeatureDto">
+        insert into
+        t_auth_feature_info (id, plugin_id, dev_type,
+        manufacturer,
+        product_type,
+        system_version, sdk_version,
+        uuid,imei, imsi,
+        mac,location,
+        ip,phone_num,pin, touchId,
+        irides,voice,gesture_code,cpu,dev_name,dev_id,dev_info
+        )
+        values
+        (#{id,jdbcType=INTEGER},
+        #{plugin_id,jdbcType=VARCHAR},
+        #{dev_type,jdbcType=INTEGER},
+        #{manufacturer,jdbcType=VARCHAR},
+        #{product_type,jdbcType=VARCHAR},
+        #{system_version,jdbcType=VARCHAR},
+        #{sdk_version,jdbcType=VARCHAR},
+        #{uuid,jdbcType=VARCHAR},
+        #{imei,jdbcType=VARCHAR},
+        #{imsi,jdbcType=VARCHAR},
+        #{mac,jdbcType=VARCHAR},
+        #{location,jdbcType=VARCHAR},
+        #{ip,jdbcType=VARCHAR},
+        #{phone_num,jdbcType=VARCHAR},
+        #{pin,jdbcType=VARCHAR},
+        #{touchId,jdbcType=VARCHAR},
+        #{irides,jdbcType=VARCHAR},
+        #{voice,jdbcType=VARCHAR},
+        #{gesture_code,jdbcType=VARCHAR},
+        #{cpu,jdbcType=VARCHAR},
+        #{dev_name,jdbcType=VARCHAR},
+        #{devId,jdbcType=VARCHAR},
+        #{dev_info,jdbcType=VARCHAR}
+        )
+    </insert>
+    <!-- <select id="selectByPhoneNum" parameterType="java.util.Map" resultType="java.lang.String"><![CDATA[
+        select (select concat_ws('@',tafi.product_type,
+                DATE_FORMAT(tpi.start_time, '%Y/%m/%d %H:%i:%S') ,
+                if(tafi.dev_type = 2, tafi.uuid, tafi.imei))
+                  from t_auth_feature_info tafi
+                   where tafi.plugin_id = tpi.plugin_id) ret
+        from t_plugin_info tpi
+           where tpi.status = #{status, jdbcType = INTEGER}
+             and tpi.bind_userphone = #{phoneNum, jdbcType = VARCHAR}
+    ]]></select> -->
+
+    <select id="selectByPhoneNum" parameterType="java.util.Map" resultType="java.lang.String"><![CDATA[
+		select (select concat_ws('@',if(tafi.dev_name = ''||tafi.dev_name is null, tafi.product_type, tafi.dev_name),
+				tafi.product_type,
+                DATE_FORMAT(tpi.start_time, '%Y/%m/%d %H:%i:%S') ,
+                tafi.plugin_id,
+                tpi.status)
+          		from t_auth_feature_info tafi
+           		where tafi.plugin_id = tpi.plugin_id) ret
+    	from t_plugin_info tpi, t_app_version_info tavi
+   		where tpi.bind_userphone = #{phoneNum, jdbcType = VARCHAR}
+   		and tpi.status != 6 
+   		and tavi.app_info_id = (SELECT app_info_id 
+   								from t_app_version_info  
+   								where app_code = #{appId, jdbcType = VARCHAR}) 
+   		and tpi.app_code = tavi.app_code
+	]]></select>
+
+    <select id="selectByUuidAndAppCode" parameterType="java.util.Map"
+            resultType="java.lang.String">
+        select tafi.plugin_id
+        from t_auth_feature_info tafi,t_plugin_info tpi
+        where
+        <![CDATA[ tpi.status < #{status,jdbcType=INTEGER}]]>
+        and tpi.bind_userphone = #{phoneNum,jdbcType=VARCHAR}
+        and tpi.app_code = #{appCode,jdbcType=VARCHAR}
+        and tafi.dev_type = #{devTpye,jdbcType=VARCHAR}
+        <if test="uuid != null">
+            and tafi.uuid = #{uuid,jdbcType=VARCHAR}
+        </if>
+        <if test="imei != null">
+            and tafi.imei = #{imei,jdbcType=VARCHAR}
+        </if>
+        and tafi.plugin_id = tpi.plugin_id
+    </select>
+
+    <select id="selectByPhoneNumWithDevId" parameterType="java.util.Map" resultType="java.util.Map"><![CDATA[
+		select  if(tafi.dev_name = ''||tafi.dev_name is null, tafi.product_type, tafi.dev_name) devName,
+				tafi.product_type devType,
+                DATE_FORMAT(tpi.start_time, '%Y/%m/%d %H:%i:%S') bindTime,
+                tafi.plugin_id sotpId,
+                tpi.status sotpStatus,
+                tafi.dev_id devId
+          		from t_auth_feature_info tafi,t_plugin_info tpi, t_app_version_info tavi
+   		where tpi.bind_userphone = #{phoneNum, jdbcType = VARCHAR}
+   		and tafi.plugin_id = tpi.plugin_id
+   		and tpi.status != 6 
+   		and tavi.app_info_id = (SELECT app_info_id 
+   								from t_app_version_info  
+   								where app_code = #{appId, jdbcType = VARCHAR}) 
+   		and tpi.app_code = tavi.app_code
+	]]></select>
+
+    <select id="selectByPhoneNumAndStatus" parameterType="java.util.Map" resultType="java.lang.String"><![CDATA[
+		select (select concat_ws('@',if(tafi.dev_name = ''||tafi.dev_name is null, tafi.product_type, tafi.dev_name),
+				tafi.product_type,
+                DATE_FORMAT(tpi.start_time, '%Y/%m/%d %H:%i:%S') ,
+                tafi.plugin_id,
+                tpi.status)
+          		from t_auth_feature_info tafi
+           		where tafi.plugin_id = tpi.plugin_id) ret
+    	from t_plugin_info tpi, t_app_version_info tavi
+   		where tpi.bind_userphone = #{phoneNum, jdbcType = VARCHAR}
+   		and tpi.status = #{status, jdbcType = INTEGER} 
+   		and tavi.app_info_id = (SELECT app_info_id 
+   								from t_app_version_info  
+   								where app_code = #{appId, jdbcType = VARCHAR}) 
+   		and tpi.app_code = tavi.app_code
+	]]></select>
+
+    <select id="selectByPhoneNumAndStatusWithDevId" parameterType="java.util.Map" resultType="java.util.Map"><![CDATA[
+		select  if(tafi.dev_name = ''||tafi.dev_name is null, tafi.product_type, tafi.dev_name) devName,
+				tafi.product_type devType,
+                DATE_FORMAT(tpi.start_time, '%Y/%m/%d %H:%i:%S') bindTime,
+                tafi.plugin_id sotpId,
+                tpi.status sotpStatus,
+                tafi.dev_id devId
+          		from t_auth_feature_info tafi,t_plugin_info tpi, t_app_version_info tavi
+   		where tpi.bind_userphone = #{phoneNum, jdbcType = VARCHAR}
+   		and tafi.plugin_id = tpi.plugin_id
+   		and tpi.status = #{status, jdbcType = INTEGER} 
+   		and tavi.app_info_id = (SELECT app_info_id 
+   								from t_app_version_info  
+   								where app_code = #{appId, jdbcType = VARCHAR}) 
+   		and tpi.app_code = tavi.app_code
+	]]></select>
+
+    <update id="updateDevNameByPluginId">
+        update t_auth_feature_info
+        set dev_name = #{devName, jdbcType = VARCHAR}
+        where plugin_id = #{pluginId, jdbcType = VARCHAR}
+    </update>
+     <update id="updateDevInfoByPluginId">
+        update t_auth_feature_info
+        set dev_info = #{dev_info, jdbcType = VARCHAR}
+        where plugin_id = #{pluginId, jdbcType = VARCHAR}
+    </update>
+    
+
+
+</mapper>

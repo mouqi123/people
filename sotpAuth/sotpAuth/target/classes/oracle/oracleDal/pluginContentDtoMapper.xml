@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.peopleNet.sotp.dal.dao.pluginContentDtoMapper">
+    <resultMap id="BaseResultMap" type="com.peopleNet.sotp.dal.model.pluginContentDto">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="plugin_id" property="pluginId" jdbcType="VARCHAR"/>
+        <result column="status" property="status" jdbcType="INTEGER"/>
+    </resultMap>
+    <resultMap id="ResultMapWithBLOBs" type="com.peopleNet.sotp.dal.model.pluginContentDto" extends="BaseResultMap">
+        <result column="plugin_content" property="pluginContent" jdbcType="LONGVARBINARY"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, plugin_id, status
+    </sql>
+    <sql id="Blob_Column_List">
+        plugin_content
+    </sql>
+    <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        from t_plugin_content
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+    <select id="selectByPluginId" resultMap="ResultMapWithBLOBs" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        from t_plugin_content
+        where plugin_id = #{pluginId,jdbcType=VARCHAR}
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete from t_plugin_content
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+    <insert id="insert" parameterType="com.peopleNet.sotp.dal.model.pluginContentDto">
+        insert into t_plugin_content (plugin_id, status,
+        plugin_content)
+        values ( #{pluginId,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER},
+        #{pluginContent,jdbcType=LONGVARBINARY})
+    </insert>
+    <insert id="insertSelective" parameterType="com.peopleNet.sotp.dal.model.pluginContentDto">
+        insert into t_plugin_content
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="pluginId != null">
+                plugin_id,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+            <if test="pluginContent != null">
+                plugin_content,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="pluginId != null">
+                #{pluginId,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=INTEGER},
+            </if>
+            <if test="pluginContent != null">
+                #{pluginContent,jdbcType=LONGVARBINARY},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.peopleNet.sotp.dal.model.pluginContentDto">
+        update t_plugin_content
+        <set>
+            <if test="pluginId != null">
+                plugin_id = #{pluginId,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=INTEGER},
+            </if>
+            <if test="pluginContent != null">
+                plugin_content = #{pluginContent,jdbcType=LONGVARBINARY},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.peopleNet.sotp.dal.model.pluginContentDto">
+        update t_plugin_content
+        set plugin_id = #{pluginId,jdbcType=VARCHAR},
+        status = #{status,jdbcType=INTEGER},
+        plugin_content = #{pluginContent,jdbcType=LONGVARBINARY}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.peopleNet.sotp.dal.model.pluginContentDto">
+        update t_plugin_content
+        set plugin_id = #{pluginId,jdbcType=VARCHAR},
+        status = #{status,jdbcType=INTEGER}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+</mapper>

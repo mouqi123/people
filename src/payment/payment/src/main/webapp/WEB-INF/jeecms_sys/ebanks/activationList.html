@@ -1,0 +1,102 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+	<title></title>
+	<#include "/jeecms_sys/head.html"/>
+	<script type="text/javascript">
+	function getTableForm() {
+		return document.getElementById('tableForm');
+	}
+	
+	function optDelete() {
+		if(Pn.checkedCount('ids')<=0) {
+			alert("<@s.m 'error.checkRecord'/>");
+			return;
+		}
+		
+		if(!confirm("<@s.m 'global.confirm.delete'/>")) {
+			return;
+		}
+		
+		var f = getTableForm();
+		f.action="o_delete.do";
+		f.submit();
+	}
+	function optAdd() {
+		var f = getTableForm();
+		f.action="v_add.do";
+		f.submit();
+	}
+	function tiao(sotpId){
+		var activation= document.getElementById(sotpId).value;
+		var phone= document.getElementById("phone").value;
+		activation=activation.replace(/\+/g, "%2B");
+		window.location.href="back_activation.do?sotpId="+sotpId+"&activation="+activation+"&phone="+phone
+	}
+	$(document).ready(function() {
+		<#if status??>
+		alert("${status}");
+		</#if>
+	});
+	</script>
+</head>
+<body>
+	<div class="box-positon">
+		<div class="rpos">当前位置：用户管理- 认证管理</div>
+		<div class="clear"></div>
+	</div>
+	<@p.form id="jvForm" action="sotp_activation.do" labelWidth="20">
+<@p.text colspan="3" width="50" label="手机号" id="phone" name="phone" value=phone required="true" class="required mobile" /><@p.tr/>
+<@p.td colspan="2"><input type="submit" value="查询列表"  class="return-button"/></@p.td>
+</@p.form>
+	
+	<#if pagination??>
+	<div class="body-box">
+		<@p.form id="tableForm" action="sotp_activation.do" labelWidth="20">
+			<input type="hidden" name="page" value="${page!}"/>
+			<input type="hidden" id="phone" name="phone" value="${phone!}"/>
+			<@p.table value=pagination;sotpAuth,i,has_next><#rt/>
+				<@p.column title="<input type='checkbox' onclick='Pn.checkbox(\"ids\",this.checked)'/>" width="20">
+					<input type='checkbox' name='ids' value='${sotpAuth.model}'/><#t/>
+				</@p.column><#t/>
+				<@p.column title="手机型号">${sotpAuth.model}</@p.column><#t/>
+				<@p.column title="绑定时间">${sotpAuth.time}</@p.column><#t/>
+				<@p.column title="手机IMEI">${sotpAuth.IMEI}</@p.column><#t/>
+				<#if sotpAuth.status=='1'>
+				<@p.column title="状态">未激活</@p.column><#t/>
+				<#elseif sotpAuth.status=='3'>
+				<@p.column title="状态">就绪</@p.column><#t/>
+				<#elseif sotpAuth.status=='4'>
+				<@p.column title="状态">锁定</@p.column><#t/>
+				<#elseif sotpAuth.status=='5'>
+				<@p.column title="状态">挂起</@p.column><#t/>
+				<#elseif sotpAuth.status=='6'>	
+				<@p.column title="状态">作废</@p.column><#t/>		
+				</#if>
+				<@p.column style="width:300px"  code="global.operate" align="center">
+				<#assign params>&page=${page!}</#assign>
+				<#if sotpAuth.status=='1'>
+				激活码：<input type="text" name="${sotpAuth.sotpId}" id="${sotpAuth.sotpId}" style="width:200px" />
+					<a onclick="tiao('${sotpAuth.sotpId}')" class="pn-opt">激活</a>  <#rt/>
+				</#if>
+				</@p.column><#t/>
+			</@p.table>
+			<script type="text/javascript">
+function _gotoPage(pageNo) {
+	try{
+		var tableForm = getTableForm();
+		$("input[name=page]").val(pageNo);
+		tableForm.action="sotp_activation.do";
+		tableForm.onsubmit=null;
+		tableForm.submit();
+	} catch(e) {
+		alert('_gotoPage(pageNo)方法出错');
+	}
+}
+</script>
+		</@p.form>
+	</div>
+			</#if>
+</body>
+</html>

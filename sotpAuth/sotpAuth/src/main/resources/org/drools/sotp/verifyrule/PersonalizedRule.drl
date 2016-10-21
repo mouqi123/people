@@ -1,0 +1,179 @@
+package org.drools.sotp.verifyrule
+
+import com.peopleNet.sotp.vo.UserAuthMsg;
+import com.peopleNet.sotp.vo.RiskControlResult;
+import com.peopleNet.sotp.vo.UserRuleInfo;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map
+import com.peopleNet.sotp.util.StringUtils;
+import com.peopleNet.sotp.constant.Constant;
+import com.peopleNet.sotp.util.CommonConfig
+import java.util.List;
+
+//---- 个性化规则 start ----//
+//  说明:此部分规则是个性化规则,具有次高优先级,验证完所有全局规则且不匹配任意一条后才会验证此部分规则
+
+/*
+ * 判断当前请求是否需要继续匹配规则
+ * 当匹配白名单时,verifyRuleResult成员变量会置为-1000;
+ * 当匹配黑名单及其他不允许认证通过的规则时,verifyRuleResult会被置为 1000;
+ * 以上两种情况,不需要继续匹配,因为已经得到了确定结果
+ */
+
+function Boolean needMatchPersonalizedRule( RiskControlResult riskResult) {
+    int verifyRuleResult = riskResult.getRiskScore();
+    if (verifyRuleResult > -1000 && verifyRuleResult < 1000) {
+        return true;
+    }
+    return false;
+}
+
+
+/*
+    匹配策略:
+        匹配每个验证项中得分最高的三个选项。
+           若匹配得分最高的，则score 不变
+           若匹配得分次高的，则score + 10；
+           若匹配得分第三高的，则score + 20；
+           若前三高都不匹配，则score + 50；
+           若选项不足三个,则score + 50.
+*/
+function int verifyRuleMap(UserAuthMsg userRequest, UserRuleInfo ruleInfo) {
+    int initialVal = 0;
+    int i = 0;
+    boolean hasMatch = false;
+    //比较常驻点
+    String addr = "beijing";
+    if (!StringUtils.isEmpty(addr)) {
+        if (null != ruleInfo.getBizMap()) {
+            Iterator iter = ruleInfo.getBizMap().keySet().iterator();
+            while (iter.hasNext()) {
+                i++;
+                if (i > 3) {
+                    break;
+                }
+                String addrKey = String.valueOf(iter.next());
+                if(addr.equals(addrKey)) {
+                    hasMatch = true;
+                    initialVal += (i-1)*10;
+                    break;
+                }
+            }
+            if (!hasMatch) {
+                initialVal += 50;
+            }
+        } else {
+            initialVal += 50;
+        }
+    }
+
+    //比较常用手机号
+    i = 0;
+    hasMatch = false;
+    String phone = userRequest.getPhoneNum();
+    if (!StringUtils.isEmpty(phone)) {
+        if (null != ruleInfo.getPhoneMap()) {
+            Iterator iter = ruleInfo.getPhoneMap().keySet().iterator();
+            while (iter.hasNext()) {
+                i++;
+                if (i > 3) {
+                    break;
+                }
+                String phoneKey = String.valueOf(iter.next());
+                if(phone.equals(phoneKey)) {
+                    hasMatch = true;
+                    initialVal += (i-1)*10;
+                    break;
+                }
+            }
+            if (!hasMatch) {
+                initialVal += 50;
+            }
+        } else {
+            initialVal += 50;
+        }
+    }
+
+    //比较价格
+    i = 0;
+    hasMatch = false;
+    String price = "p1";
+    if (!StringUtils.isEmpty(price)) {
+        if (null != ruleInfo.getPriceMap()) {
+            Iterator iter = ruleInfo.getPriceMap().keySet().iterator();
+            while (iter.hasNext()) {
+                i++;
+                if (i > 3) {
+                    break;
+                }
+                String priceKey = String.valueOf(iter.next());
+                if(price.equals(priceKey)) {
+                    hasMatch = true;
+                    initialVal += (i-1)*10;
+                    break;
+                }
+            }
+            if (!hasMatch) {
+                initialVal += 50;
+            }
+        } else {
+            initialVal += 50;
+        }
+    }
+
+    //比较常用时间段
+    i = 0;
+    hasMatch = false;
+    String timeSeg = "t2";
+    if (!StringUtils.isEmpty(timeSeg)) {
+        if (null != ruleInfo.getTimeSegMap()) {
+            Iterator iter = ruleInfo.getTimeSegMap().keySet().iterator();
+            while (iter.hasNext()) {
+                i++;
+                if (i > 3) {
+                    break;
+                }
+                String timeSegKey = String.valueOf(iter.next());
+                if(timeSeg.equals(timeSegKey)) {
+                    hasMatch = true;
+                    initialVal += (i-1)*10;
+                    break;
+                }
+            }
+            if (!hasMatch) {
+                initialVal += 50;
+            }
+        } else {
+            initialVal += 50;
+        }
+    }
+
+    //System.out.println("verify ruleMap score:" + initialVal);
+    return initialVal;
+}
+
+//测试规则3: 比较用户个性化规则,当前包括(常驻地\价格区间\常用手机号\常用时间段)
+// 属于大类 PERSONALINZED0001
+// 本规则编号  personalized0001
+rule verifyRuleMap
+    // 此处设置优先级
+    salience 90
+    lock-on-active true
+    enabled false
+    when
+        // 若verifyRuleResult >= 1000 或者 verifyRuleResult <= -1000,表明已匹配全局规则,不再继续走个性化规则
+        $userRequest : UserAuthMsg()
+        $userRule : UserRuleInfo(userId.equals($userRequest.phoneNum))
+        $riskResult : RiskControlResult()
+        eval(needMatchPersonalizedRule($riskResult))
+    then
+        int score = verifyRuleMap($userRequest, $userRule);
+        int orgScore = $riskResult.getRiskScore();
+        modify($riskResult){
+            setRiskScore(orgScore + score),
+            addMatchedRule("PERSONALINZED0001", "personalized0001")
+        }
+end
+
+//---- 个性化规则 end ----//

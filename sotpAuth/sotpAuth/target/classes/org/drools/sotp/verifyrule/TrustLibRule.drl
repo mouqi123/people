@@ -1,0 +1,150 @@
+package org.drools.sotp.verifyrule
+
+import com.peopleNet.sotp.vo.UserAuthMsg;
+import com.peopleNet.sotp.vo.RiskControlResult;
+import com.peopleNet.sotp.vo.UserRuleInfo;
+import com.peopleNet.sotp.vo.UserTrustLibInfo;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map
+import com.peopleNet.sotp.util.StringUtils;
+import com.peopleNet.sotp.constant.Constant;
+import com.peopleNet.sotp.util.CommonConfig
+import java.util.List;
+
+//---- 可信库规则 start ----//
+
+/*
+ * 判断当前请求是否需要继续匹配规则
+ * 当匹配白名单时,verifyRuleResult成员变量会置为-1000;
+ * 当匹配黑名单及其他不允许认证通过的规则时,verifyRuleResult会被置为 1000;
+ * 以上两种情况,不需要继续匹配,因为已经得到了确定结果
+ */
+function Boolean needMatchTrustLibRule( RiskControlResult riskResult) {
+    int verifyRuleResult = riskResult.getRiskScore();
+    if (verifyRuleResult > -1000 && verifyRuleResult < 1000) {
+        return true;
+    }
+    return false;
+}
+
+// 可信库规则一:判断是否是可信设备
+// 属于大类 BFG0001
+// 本规则编号  TST0001
+rule trustLib_deviceIdList_rule
+    salience 500
+    lock-on-active true
+    enabled false
+    when
+        $userRequest : UserAuthMsg( null != devInfo)
+        $userTrustLibInfo : UserTrustLibInfo(null != deviceIdList
+                                    && deviceIdList contains $userRequest.devInfo)
+        $riskResult : RiskControlResult()
+        eval(needMatchTrustLibRule($riskResult))
+    then
+        System.out.println("trustlib rule effects. matched deviceId");
+        // 使用modify修改成员变量,可以自动更新到当前的working memory当中
+        modify($riskResult){
+            setRiskScore(100),
+            addMatchedRule("BFG0001", "TST0001")
+        }
+        //$userRequest.setVerifyRuleResult(-1000);
+end
+
+// 可信库规则二:判断是否是可信插件
+// 属于大类 BFG0001
+// 本规则编号  TST0002
+rule trustLib_pluginIdList_rule
+    salience 500
+    lock-on-active true
+    enabled false
+    when
+        $userRequest : UserAuthMsg( null != pluginId)
+        $userTrustLibInfo : UserTrustLibInfo(null != pluginIdList
+                                    && pluginIdList contains $userRequest.pluginId)
+        $riskResult : RiskControlResult()
+        eval(needMatchTrustLibRule($riskResult))
+    then
+        System.out.println("trustlib rule effects. matched pluginId");
+        // 使用modify修改成员变量,可以自动更新到当前的working memory当中
+        modify($riskResult){
+            setRiskScore(100),
+            addMatchedRule("BFG0001", "TST0002")
+        }
+        //$userRequest.setVerifyRuleResult(-1000);
+end
+
+// 可信库规则三:判断是否是可信手机号
+// 属于大类 BFG0001
+// 本规则编号  TST0003
+rule trustLib_phoneList_rule
+    salience 500
+    lock-on-active true
+    enabled true
+    when
+        $userRequest : UserAuthMsg( null != phoneNum)
+        $userTrustLibInfo : UserTrustLibInfo(null != userPhoneList
+                                    && userPhoneList contains $userRequest.phoneNum)
+        $riskResult : RiskControlResult()
+        eval(needMatchTrustLibRule($riskResult))
+    then
+        System.out.println("trustlib rule effects. matched phoneNumber");
+        // 使用modify修改成员变量,可以自动更新到当前的working memory当中
+        modify($riskResult){
+            setRiskScore(100),
+            addMatchedRule("BFG0001", "TST0003")
+        }
+        //$userRequest.setVerifyRuleResult(-1000);
+end
+
+// 可信库规则四:判断是否是可信转账账户
+// 属于大类 BFG0001
+// 本规则编号  TST0004
+rule trustLib_recAccountList_rule
+    salience 500
+    lock-on-active true
+    enabled true
+    when
+        $userRequest : UserAuthMsg( null != payAction
+                                        && payAction.equals(Constant.PAY_ACTION.TRANSFER)
+                                        && null != payee)
+        $userTrustLibInfo : UserTrustLibInfo(null != recAccList
+                                    && recAccList contains $userRequest.payee)
+        $riskResult : RiskControlResult()
+        eval(needMatchTrustLibRule($riskResult))
+    then
+        System.out.println("trustlib rule effects. matched recAccount");
+        // 使用modify修改成员变量,可以自动更新到当前的working memory当中
+        modify($riskResult){
+            setRiskScore(100),
+            addMatchedRule("BFG0001", "TST0004")
+        }
+        //$userRequest.setVerifyRuleResult(-1000);
+end
+
+// 可信库规则五:判断是否是可信转账卡号
+// 属于大类 BFG0001
+// 本规则编号  TST0005
+rule trustLib_recCardList_rule
+    salience 500
+    lock-on-active true
+    enabled true
+    when
+        $userRequest : UserAuthMsg( null != payAction
+                                        && payAction.equals(Constant.PAY_ACTION.TRANSFER)
+                                        && null != recCard)
+        $userTrustLibInfo : UserTrustLibInfo(null != recCardList
+                                    && recCardList contains $userRequest.recCard)
+        $riskResult : RiskControlResult()
+        eval(needMatchTrustLibRule($riskResult))
+    then
+        System.out.println("trustlib rule effects. matched recCard");
+        // 使用modify修改成员变量,可以自动更新到当前的working memory当中
+        modify($riskResult){
+            setRiskScore(100),
+            addMatchedRule("BFG0001", "TST0005")
+        }
+        //$userRequest.setVerifyRuleResult(-1000);
+end
+
+//---- 可信库规则 end ----//

@@ -1,0 +1,116 @@
+package org.drools.sotp.verifyrule
+
+import com.peopleNet.sotp.vo.UserAuthMsg;
+import com.peopleNet.sotp.vo.RiskControlResult;
+import com.peopleNet.sotp.vo.UserRuleInfo;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map
+import com.peopleNet.sotp.util.StringUtils;
+import com.peopleNet.sotp.constant.Constant;
+import com.peopleNet.sotp.util.CommonConfig
+import java.util.List;
+//---- 全局规则 start ----//
+/*  说明:此部分规则是全局规则,具有最高优先级,
+        若满足此部分中的任意一条规则,则返回"验证不通过".
+*/
+
+/*
+ * 判断当前请求是否需要继续匹配规则
+ * 当匹配白名单时,verifyRuleResult成员变量会置为-1000;
+ * 当匹配黑名单及其他不允许认证通过的规则时,verifyRuleResult会被置为 1000;
+ * 以上两种情况,不需要继续匹配,因为已经得到了确定结果
+ */
+function Boolean needMatchGlobalRule( RiskControlResult riskResult) {
+    int verifyRuleResult = riskResult.getRiskScore();
+    if (verifyRuleResult > -1000 && verifyRuleResult < 1000) {
+        return true;
+    }
+    return false;
+}
+
+//规则: 若同一用户每天验证次数超过20次,则验证不通过.
+// 属于大类 GLOBAL0001
+// 本规则编号  global0001
+rule verifyNumToday
+    salience 100
+    lock-on-active true
+    enabled false
+    when
+        $userRequest : UserAuthMsg(verifyNumToday >= 20)
+        $riskResult : RiskControlResult()
+        eval(needMatchGlobalRule($riskResult))
+    then
+        modify($riskResult){
+            setRiskScore(1000),
+            addMatchedRule("GLOBAL0001", "global0001")
+        }
+        System.out.println("verify number everyday <20 rule effects.");
+end
+
+// 规则:频率相关规则,目前包括过去15分钟\过去30分钟\过去60分钟\过去120分钟的频率控制
+// 属于大类 GLOBAL0001
+// 本规则编号  global0002
+rule frequencyControl
+    salience 100
+    lock-on-active true
+    enabled false
+    when
+        $userRequest : UserAuthMsg((visitNumLast3mins>=2 || visitNumLast15mins >= 4 || visitNumLast60mins >= 6 || visitNumLast120mins >= 8))
+        $riskResult : RiskControlResult()
+        eval(needMatchGlobalRule($riskResult))
+    then
+        modify($riskResult){
+            setRiskScore(1000),
+            addMatchedRule("GLOBAL0001", "global0002")
+        }
+        System.out.println("frequency rule effects.");
+end
+
+// 规则:大额规则
+// 若金额大于等于100000,则认证不通过
+// 属于大类 GLOBAL0001
+// 本规则编号  global0003
+rule wholesaleControl
+    salience 100
+    lock-on-active true
+    enabled false
+    when
+        $userRequest : UserAuthMsg(price >= 100000)
+        $riskResult : RiskControlResult()
+        eval(needMatchGlobalRule($riskResult))
+    then
+        System.out.println("wholesale rule effects.");
+        modify($riskResult){
+            setRiskScore(1000),
+            addMatchedRule("GLOBAL0001", "global0003")
+        }
+end
+
+// 规则:如果满足以下行为,则添加支付密码策略
+// 支付且金额大于等于3000
+// 转账且金额大于等于2000
+// 理财且金额大于等于5000
+
+// 属于大类 GLOBAL0001
+// 本规则编号  global0004
+rule businessControl
+    salience 100
+    lock-on-active true
+    enabled false
+    when
+        $userRequest : UserAuthMsg( null != payAction
+                                  && ((payAction.equals(Constant.PAY_ACTION.PAY)&& price >= 3000)
+                                  || (payAction.equals(Constant.PAY_ACTION.TRANSFER)&& price >= 2000)
+                                  || (payAction.equals(Constant.PAY_ACTION.FINANCE)&& price >= 5000)) )
+        $riskResult : RiskControlResult()
+        eval(needMatchGlobalRule($riskResult))
+    then
+        System.out.println("business limit rule effects.");
+        int orgScore = $riskResult.getRiskScore();
+        modify($riskResult){
+            setRiskScore(orgScore + 500),
+            addMatchedRule("GLOBAL0001", "global0004")
+        }
+end
+//---- 全局规则 end ----//

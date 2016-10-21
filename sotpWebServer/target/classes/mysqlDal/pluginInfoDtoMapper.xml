@@ -1,0 +1,418 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.peopleNet.sotp.dal.dao.pluginInfoDtoMapper">
+    <resultMap id="BaseResultMap" type="com.peopleNet.sotp.dal.model.pluginInfoDto">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="plugin_id" property="pluginId" jdbcType="VARCHAR"/>
+        <result column="plugin_key" property="pluginKey" jdbcType="VARCHAR"/>
+        <result column="plugin_type" property="pluginType" jdbcType="INTEGER"/>
+        <result column="status" property="status" jdbcType="INTEGER"/>
+        <result column="device_info" property="deviceInfo" jdbcType="VARCHAR"/>
+        <result column="start_time" property="startTime" jdbcType="TIMESTAMP"/>
+        <result column="gen_time" property="genTime" jdbcType="TIMESTAMP"/>
+        <result column="hold_info" property="holdInfo" jdbcType="VARCHAR"/>
+        <result column="protect_code" property="protectCode" jdbcType="VARCHAR"/>
+        <result column="bind_userid" property="bindUserid" jdbcType="VARCHAR"/>
+        <result column="bind_userphone" property="bindUserphone"
+                jdbcType="VARCHAR"/>
+        <result column="verify_errcnt" property="verifyErrcnt"
+                jdbcType="INTEGER"/>
+        <result column="total_usecnt" property="totalUsecnt" jdbcType="INTEGER"/>
+        <result column="total_errcnt" property="totalErrcnt" jdbcType="INTEGER"/>
+        <result column="err_day" property="errDay" jdbcType="TIMESTAMP"/>
+        <result column="challenge_code" property="challengeCode"
+                jdbcType="VARCHAR"/>
+        <result column="hash_value" property="hashValue" jdbcType="VARCHAR"/>
+        <result column="app_code" property="appCode" jdbcType="VARCHAR"/>
+        <result column="active_usecnt" property="activeUseCnt" jdbcType="INTEGER"/>
+        <result column="use_count" property="useCount" jdbcType="INTEGER"/>
+        <result column="need_update" property="needUpdate" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <resultMap type="java.lang.String" id="pluginId">
+        <result property="pId" column="plugin_Id"/>
+    </resultMap>
+
+    <resultMap type="java.lang.String" id="pluginKey">
+        <result property="pluginKey" column="plugin_key"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id, plugin_id, plugin_key, plugin_type, status,
+        device_info, start_time,
+        gen_time,
+        hold_info, protect_code, bind_userid,
+        bind_userphone, verify_errcnt,
+        total_usecnt,
+        total_errcnt, err_day,
+        challenge_code, hash_value, app_code, active_usecnt, use_count, need_update
+    </sql>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap"
+            parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from t_plugin_info
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+    <select id="selectByUid" resultMap="BaseResultMap"
+            parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from t_plugin_info
+        where bind_userid = #{bindUserid,jdbcType=VARCHAR}
+    </select>
+
+    <select id="selectByphoneNum" resultMap="BaseResultMap"
+            parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from t_plugin_info
+        where bind_userphone =
+        #{bindUserphone,jdbcType=VARCHAR}
+        and status != 6
+    </select>
+
+    <select id="selectByPluginId" resultMap="BaseResultMap"
+            parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from t_plugin_info
+        where plugin_id = #{pluginId,jdbcType=VARCHAR}
+    </select>
+
+    <select id="selectByPluginIdOptimize" resultMap="BaseResultMap">
+        select
+        <if test="random != null">
+            <![CDATA[ /* ${random} */ ]]>
+        </if>
+        <include refid="Base_Column_List"/>
+        from t_plugin_info
+        where plugin_id = #{pluginId,jdbcType=VARCHAR}
+    </select>
+
+    <select id="selectByDevIdAndPhoneNum" resultMap="BaseResultMap">
+        select
+        <if test="random != null">
+            <![CDATA[ /* ${random} */ ]]>
+        </if>
+        <include refid="Base_Column_List"/>
+        from t_plugin_info tpi
+        where tpi.plugin_id in (select plugin_id from t_auth_feature_info tafi
+        where tafi.dev_id = #{devId,jdbcType=VARCHAR})
+        and tpi.bind_userphone = #{phoneNum,jdbcType=VARCHAR}
+        order by tpi.start_time desc limit 1
+    </select>
+
+    <select id="selectByPluginTypeAndStatus" resultMap="pluginId">
+        select
+        plugin_id
+        from t_plugin_info
+        where id = (select min(id) from
+        t_plugin_info where
+        plugin_type = #{ptype,jdbcType=INTEGER} and status
+        = #{state,jdbcType=INTEGER}
+        )
+    </select>
+
+    <select id="selectPluginKeyByPluginIdAndStatus" resultMap="pluginKey">
+        select
+        <if test="random != null">
+            <![CDATA[ /* ${random} */ ]]>
+        </if>
+        plugin_key
+        from t_plugin_info
+        where plugin_id =
+        #{pluginId,jdbcType=VARCHAR} and status
+        = #{status,jdbcType=INTEGER}
+    </select>
+
+    <select id="selectByPluginTypeLimit1" resultMap="pluginId"
+            parameterType="java.lang.Integer">
+        select plugin_id
+        from t_plugin_info
+        where plugin_type =
+        #{ptype,jdbcType=INTEGER} limit 1
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete from t_plugin_info where id = #{id,jdbcType=INTEGER}
+    </delete>
+    <insert id="insert" parameterType="com.peopleNet.sotp.dal.model.pluginInfoDto">
+        insert into t_plugin_info (
+        id, plugin_id, plugin_key,
+        plugin_type, status, device_info,
+        start_time, gen_time, hold_info,
+        protect_code, bind_userid, bind_userphone,
+        verify_errcnt, total_usecnt, total_errcnt,
+        err_day, challenge_code, hash_value, app_code
+        ) values (
+        #{id,jdbcType=INTEGER},
+        #{pluginId,jdbcType=VARCHAR},
+        #{pluginKey,jdbcType=VARCHAR},
+        #{pluginType,jdbcType=INTEGER},
+        #{status,jdbcType=INTEGER},
+        #{deviceInfo,jdbcType=VARCHAR},
+        #{startTime,jdbcType=TIMESTAMP},
+        #{genTime,jdbcType=TIMESTAMP},
+        #{holdInfo,jdbcType=VARCHAR},
+        #{protectCode,jdbcType=VARCHAR},
+        #{bindUserid,jdbcType=VARCHAR},
+        #{bindUserphone,jdbcType=VARCHAR},
+        #{verifyErrcnt,jdbcType=INTEGER},
+        #{totalUsecnt,jdbcType=INTEGER},
+        #{totalErrcnt,jdbcType=INTEGER},
+        #{errDay,jdbcType=TIMESTAMP},
+        #{challengeCode,jdbcType=VARCHAR},
+        #{hashValue,jdbcType=VARCHAR},
+        #{appCode,jdbcType=VARCHAR}
+        )
+    </insert>
+    <insert id="insertSelective" parameterType="com.peopleNet.sotp.dal.model.pluginInfoDto">
+        insert into t_plugin_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="pluginId != null">
+                plugin_id,
+            </if>
+            <if test="pluginKey != null">
+                plugin_key,
+            </if>
+            <if test="pluginType != null">
+                plugin_type,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+            <if test="deviceInfo != null">
+                device_info,
+            </if>
+            <if test="startTime != null">
+                start_time,
+            </if>
+            <if test="genTime != null">
+                gen_time,
+            </if>
+            <if test="holdInfo != null">
+                hold_info,
+            </if>
+            <if test="protectCode != null">
+                protect_code,
+            </if>
+            <if test="bindUserid != null">
+                bind_userid,
+            </if>
+            <if test="bindUserphone != null">
+                bind_userphone,
+            </if>
+            <if test="verifyErrcnt != null">
+                verify_errcnt,
+            </if>
+            <if test="totalUsecnt != null">
+                total_usecnt,
+            </if>
+            <if test="totalErrcnt != null">
+                total_errcnt,
+            </if>
+            <if test="errDay != null">
+                err_day,
+            </if>
+            <if test="challengeCode != null">
+                challenge_code,
+            </if>
+            <if test="hashValue != null">
+                hash_value
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="pluginId != null">
+                #{pluginId,jdbcType=VARCHAR},
+            </if>
+            <if test="pluginKey != null">
+                #{pluginKey,jdbcType=VARCHAR},
+            </if>
+            <if test="pluginType != null">
+                #{pluginType,jdbcType=INTEGER},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=INTEGER},
+            </if>
+            <if test="deviceInfo != null">
+                #{deviceInfo,jdbcType=VARCHAR},
+            </if>
+            <if test="startTime != null">
+                #{startTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="genTime != null">
+                #{genTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="holdInfo != null">
+                #{holdInfo,jdbcType=VARCHAR},
+            </if>
+            <if test="protectCode != null">
+                #{protectCode,jdbcType=VARCHAR},
+            </if>
+            <if test="bindUserid != null">
+                #{bindUserid,jdbcType=VARCHAR},
+            </if>
+            <if test="bindUserphone != null">
+                #{bindUserphone,jdbcType=VARCHAR},
+            </if>
+            <if test="verifyErrcnt != null">
+                #{verifyErrcnt,jdbcType=INTEGER},
+            </if>
+            <if test="totalUsecnt != null">
+                #{totalUsecnt,jdbcType=INTEGER},
+            </if>
+            <if test="totalErrcnt != null">
+                #{totalErrcnt,jdbcType=INTEGER},
+            </if>
+            <if test="errDay != null">
+                #{errDay,jdbcType=TIMESTAMP},
+            </if>
+            <if test="challengeCode != null">
+                #{challengeCode,jdbcType=VARCHAR},
+            </if>
+            <if test="hashValue != null">
+                #{hashValue,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.peopleNet.sotp.dal.model.pluginInfoDto">
+        update t_plugin_info
+        <set>
+            <if test="pluginId != null">
+                plugin_id = #{pluginId,jdbcType=VARCHAR},
+            </if>
+            <if test="pluginKey != null">
+                plugin_key = #{pluginKey,jdbcType=VARCHAR},
+            </if>
+            <if test="pluginType != null">
+                plugin_type = #{pluginType,jdbcType=INTEGER},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=INTEGER},
+            </if>
+            <if test="deviceInfo != null">
+                device_info = #{deviceInfo,jdbcType=VARCHAR},
+            </if>
+            <if test="startTime != null">
+                start_time = #{startTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="genTime != null">
+                gen_time = #{genTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="holdInfo != null">
+                hold_info = #{holdInfo,jdbcType=VARCHAR},
+            </if>
+            <if test="protectCode != null">
+                protect_code = #{protectCode,jdbcType=VARCHAR},
+            </if>
+            <if test="bindUserid != null">
+                bind_userid = #{bindUserid,jdbcType=VARCHAR},
+            </if>
+            <if test="bindUserphone != null">
+                bind_userphone = #{bindUserphone,jdbcType=VARCHAR},
+            </if>
+            <if test="verifyErrcnt != null">
+                verify_errcnt = #{verifyErrcnt,jdbcType=INTEGER},
+            </if>
+            <if test="totalUsecnt != null">
+                total_usecnt = #{totalUsecnt,jdbcType=INTEGER},
+            </if>
+            <if test="totalErrcnt != null">
+                total_errcnt = #{totalErrcnt,jdbcType=INTEGER},
+            </if>
+            <if test="errDay != null">
+                err_day = #{errDay,jdbcType=TIMESTAMP},
+            </if>
+            <if test="challengeCode != null">
+                challenge_code = #{challengeCode,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.peopleNet.sotp.dal.model.pluginInfoDto">
+        update
+        t_plugin_info
+        set plugin_id = #{pluginId,jdbcType=VARCHAR},
+        plugin_key =
+        #{pluginKey,jdbcType=VARCHAR},
+        plugin_type =
+        #{pluginType,jdbcType=INTEGER},
+        status = #{status,jdbcType=INTEGER},
+        device_info = #{deviceInfo,jdbcType=VARCHAR},
+        start_time =
+        #{startTime,jdbcType=TIMESTAMP},
+        gen_time =
+        #{genTime,jdbcType=TIMESTAMP},
+        hold_info =
+        #{holdInfo,jdbcType=VARCHAR},
+        protect_code =
+        #{protectCode,jdbcType=VARCHAR},
+        bind_userid =
+        #{bindUserid,jdbcType=VARCHAR},
+        bind_userphone =
+        #{bindUserphone,jdbcType=VARCHAR},
+        verify_errcnt =
+        #{verifyErrcnt,jdbcType=INTEGER},
+        total_usecnt =
+        #{totalUsecnt,jdbcType=INTEGER},
+        total_errcnt =
+        #{totalErrcnt,jdbcType=INTEGER},
+        err_day =
+        #{errDay,jdbcType=TIMESTAMP},
+        challenge_code =
+        #{challengeCode,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <update id="update_IncTotalUsecnt">
+        update t_plugin_info
+        set total_usecnt = total_usecnt + 1 where id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <update id="updateHashMapByPluginId" parameterType="java.util.HashMap">
+        update t_plugin_info set
+        <foreach collection="fields" index="index" item="item" open=""
+                 separator=" , " close="">
+            ${item.key} = #{item.value}
+        </foreach>
+        where
+        plugin_id = #{plugin_id}
+    </update>
+
+    <update id="updatePluginInfoByHashMap" parameterType="java.util.Map">
+        update t_plugin_info tpi
+        set tpi.status = #{status,jdbcType=INTEGER}
+        where tpi.plugin_id in (
+        select tafi.plugin_id
+        from t_auth_feature_info tafi
+        where tafi.dev_type = #{devTpye,jdbcType=VARCHAR}
+        <if test="uuid != null">
+            and tafi.uuid = #{uuid,jdbcType=VARCHAR}
+        </if>
+        <if test="imei != null">
+            and tafi.imei = #{imei,jdbcType=VARCHAR}
+        </if>
+        <![CDATA[) and tpi.status < #{status,jdbcType=INTEGER}]]>
+        and tpi.bind_userphone = #{bindUserphone,jdbcType=VARCHAR}
+        and tpi.app_code = #{appCode,jdbcType=VARCHAR}
+    </update>
+    
+    <update id="batchUpdatePluginInfo" parameterType="java.util.List">
+        <foreach collection="list" item="item" index="index" open="" close="" separator=";" > 
+            update t_plugin_info 
+            <set>       
+                status = '6'
+            </set>
+            where plugin_id = #{item.plugin_id}
+        </foreach>
+    </update>
+
+</mapper>

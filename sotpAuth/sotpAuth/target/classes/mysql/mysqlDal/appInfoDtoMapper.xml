@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.peopleNet.sotp.dal.dao.appInfoDtoMapper">
+    <resultMap id="BaseResultMap" type="com.peopleNet.sotp.dal.model.appInfoDto">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="app_name" property="appName" jdbcType="VARCHAR"/>
+        <result column="busi_id" property="businessCode" jdbcType="VARCHAR"/>
+        <result column="app_desc" property="appDesc" jdbcType="VARCHAR"/>
+        <result column="status" property="status" jdbcType="INTEGER"/>
+        <result column="expire_time" property="expireTime" jdbcType="TIMESTAMP"/>
+        <result column="regist_time" property="registTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <select id="selectAppInfoByAppId" resultMap="BaseResultMap"
+            parameterType="java.lang.String">
+        select * from t_app_info,t_app_version_info
+        <where>
+            t_app_version_info.app_code = #{appId,jdbcType=VARCHAR}
+            and t_app_info.id = t_app_version_info.app_info_id
+        </where>
+    </select>
+
+    <select id="selectAppInfoCodeByAppInfoId" resultType="java.lang.String"
+            parameterType="java.lang.Integer">
+        select app_code
+        from t_app_info
+        <where>
+            t_app_info.id = #{appInfoId,jdbcType=VARCHAR}
+        </where>
+    </select>
+
+    <select id="selectBusinessCodeByAppInfoId" resultType="java.lang.String"
+            parameterType="java.lang.Integer">
+        select tbi.busi_code
+        from t_app_info tai, t_business_info tbi
+        <where>
+            tai.id = #{appInfoId,jdbcType=VARCHAR}
+            and tai.busi_id = tbi.id
+        </where>
+    </select>
+
+</mapper>

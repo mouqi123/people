@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <!-- <typeAliases> <typeAlias alias="StudentEntity" type="com.manager.data.model.StudentEntity"/>
+        </typeAliases> -->
+    <settings>
+        <setting name="logImpl" value="LOG4J2"/>
+    </settings>
+    <mappers>
+        <mapper resource="mysqlDal/androidStatisticDtoMapper.xml"/>
+        <mapper resource="mysqlDal/invokeInfoDtoMapper.xml"/>
+        <mapper resource="mysqlDal/iosStatisticDtoMapper.xml"/>
+        <mapper resource="mysqlDal/pluginInfoDtoMapper.xml"/>
+        <mapper resource="mysqlDal/pluginUpdatePolicyDtoMapper.xml"/>
+        <mapper resource="mysqlDal/sotpVerifyPolicyDtoMapper.xml"/>
+        <mapper resource="mysqlDal/userInfoDtoMapper.xml"/>
+        <mapper resource="mysqlDal/winphoneStatisticDtoMapper.xml"/>
+        <mapper resource="mysqlDal/pluginContentDtoMapper.xml"/>
+        <mapper resource="mysqlDal/authFeatureDtoMapper.xml"/>
+        <mapper resource="mysqlDal/pluginStatisticDtoMapper.xml"/>
+        <mapper resource="mysqlDal/RulePolicyDtoMapper.xml"/>
+        <mapper resource="mysqlDal/appInfoDtoMapper.xml"/>
+        <mapper resource="mysqlDal/appVersionInfoDtoMapper.xml"/>
+        <mapper resource="mysqlDal/userVerifyInfoDtoMapper.xml"/>
+        <mapper resource="mysqlDal/authPolicyDtoMapper.xml"/>
+  		<mapper resource="mysqlDal/verifyDataDtoMapper.xml"/>
+    </mappers>
+</configuration> 

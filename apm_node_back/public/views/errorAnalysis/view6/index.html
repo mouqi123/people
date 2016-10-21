@@ -1,0 +1,30 @@
+<div class="panel panel-body">
+    <div style="width: 100%;height: 90px;padding-top:10px">
+        <div class="btn-group" style="margin: 20px;float: left">
+            <button class="btn btn-default" ng-click="errorInfo('all')">总错误数</button>
+            <button class="btn btn-default" ng-click="errorInfo('errorStart')">错误数/启动次数</button>
+            <button class="btn btn-default" ng-click="errorInfo('effect')">影响用户数</button>
+            <button class="btn btn-default" ng-click="errorInfo('effectActive')">影响用户/活跃用户</button>
+        </div>
+        <div style="float: right">
+            <label>日期：</label>
+            <select ng-model="queryFilter.timeSpan" ng-change="query()">
+                <option>过去60天</option>
+                <option>过去30天</option>
+                <option>过去7天</option>
+                <option>今日</option>
+            </select></br></br>
+
+        </div>
+    </div>
+    <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+    <div id="main" style="width: 100%;height:500px;margin-bottom: 20px">
+    </div>
+    <div style="text-align: right;margin: 10px">
+        <label>对比版本：</label>
+        <select ng-model="queryFilter.version" ng-change="addCompare()">
+            <option></option>
+            <option ng-repeat="item in postData">{{item.version}}</option>
+        </select>
+    </div>
+</div>

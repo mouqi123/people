@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+	<settings>
+		<!-- <setting name="logImpl" value="LOG4J2" /> -->
+		<setting name="logImpl" value="STDOUT_LOGGING" />
+	</settings>
+	<typeAliases>
+
+		<typeAlias alias="UserDO" type="com.people.sotp.dataobject.UserDO" />
+		<typeAlias alias="LoginLogDO" type="com.people.sotp.dataobject.LoginLogDO" />
+		<typeAlias alias="TransferLogDO" type="com.people.sotp.dataobject.TransferLogDO" />
+
+		<typeAlias alias="MasterDO" type="com.people.sotp.dataobject.MasterDO" />
+		<typeAlias alias="AuditLogDO" type="com.people.sotp.dataobject.AuditLogDO" />
+		<typeAlias alias="SotpAuthDO" type="com.people.sotp.dataobject.SotpAuthDO" />
+		<typeAlias alias="ApplyDO" type="com.people.sotp.dataobject.ApplyDO" />
+		<typeAlias alias="LoginLogDO" type="com.people.sotp.dataobject.LoginLogDO" />
+		<typeAlias alias="Card" type="com.people.sotp.dataobject.Card" />
+		<typeAlias alias="SessionKeyDO" type="com.people.sotp.dataobject.SessionKeyDO" />
+
+
+	</typeAliases>
+	<mappers>
+		<mapper resource="mapper/commonMapper.xml" />
+		<mapper resource="mapper/masterMapper.xml" />
+		<mapper resource="mapper/auditlogMapper.xml" />
+		<!-- 服务器是设置 -->
+		<mapper resource="mapper/sotpAuthMapper.xml" />
+		<!-- 应用管理 -->
+		<mapper resource="mapper/applyMapper.xml" />
+		<mapper resource="mapper/logMapper.xml" />
+		<!-- 登录日志 -->
+		<mapper resource="mapper/userMapper.xml" />
+		<mapper resource="mapper/loginlogMapper.xml" />
+		<mapper resource="mapper/cardMapper.xml" />
+				<mapper resource="mapper/sessionMapper.xml"/>
+
+
+	</mappers>
+</configuration>

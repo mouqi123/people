@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="Member" >
+  <resultMap id="BaseResultMap" type="MemberDO" >
+    <id column="id" property="id" />
+    <result column="user_name" property="userName" />
+    <result column="password" property="password" />
+    <result column="identity_type" property="identityType" />
+    <result column="identity_number" property="identityNumber" />
+    <result column="status" property="status" />
+    <result column="phoneNum" property="phoneNum" />
+    <result column="email" property="email" />
+    <result column="pic_path" property="picPath" />
+    <result column="create_time" property="createTime" />
+    <result column="gesture_code" property="gestureCode"/>
+    <result column="gesture_status" property="gestureStatus"/>
+    
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id,user_name,password,phoneNum,email,pic_path,create_time,gesture_code,gesture_status
+  </sql>
+   <sql id="Base_identity_List" >
+    identity_type,identity_number
+  </sql>
+  
+   <sql id="where">
+  	<where>
+  	  <if test="id!=null  and id!=0" >
+        AND id = #{id}
+      </if>
+      	<if test="phoneNum!=null  and phoneNum!=''" >
+        AND phoneNum = #{phoneNum}
+      </if>
+      <if test="password!=null  and password!=''" >
+        AND password = #{password}
+      </if>
+  	</where>
+  </sql>
+  
+  
+     
+  
+  
+  
+  <select id="selectMemberCount" resultType="Integer" parameterType="map" >
+  	select count(*)
+  	from tb_member
+  	 <include refid="where"/>
+  </select>
+   <select id="selectMemberList" resultMap="BaseResultMap" parameterType="map" >
+    select 
+   id,user_name,identity_type,identity_number,phoneNum,create_time
+    from tb_member
+    <include refid="where"/>
+     <include refid="common.pageUtil"/>
+  </select>
+  
+  
+   <select id="selectMemberOne" resultMap="BaseResultMap" parameterType="map" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_member
+    <include refid="where"/>
+  </select>
+  <select id="selectIdentityOne" resultMap="BaseResultMap" parameterType="map" >
+    select 
+    <include refid="Base_identity_List" />
+    from tb_member
+    <include refid="where"/>
+  </select>
+  	
+  	 <insert id="addMember" useGeneratedKeys="true" keyProperty="id" parameterType="MemberDO" >
+    	insert into tb_member
+      <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="userName != null" >
+        user_name,
+      </if>
+      <if test="password != null" >
+        password,
+      </if>
+      <if test="identityType != null" >
+        identity_type,
+      </if>
+      <if test="identityNumber != null" >
+        identity_number,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="phoneNum != null" >
+        phoneNum,
+      </if>
+        <if test="picPath != null" >
+        pic_path,
+      </if>
+         create_time,
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id},
+      </if>
+      <if test="userName != null" >
+        #{userName},
+      </if>
+      <if test="password != null" >
+        #{password},
+      </if>
+      <if test="identityType != null" >
+        #{identityType},
+      </if>
+      <if test="identityNumber != null" >
+        #{identityNumber},
+      </if>
+      <if test="status != null" >
+        #{status},
+      </if>
+      <if test="phoneNum != null" >
+        #{phoneNum},
+      </if>
+         <if test="picPath != null" >
+        #{pic_path},
+      </if>
+     
+      now()
+    </trim>
+  </insert>
+  	 <update id="updateMember" parameterType="MemberDO" >
+    update tb_member
+    <set >
+      <if test="userName != null and userName != ''" >
+        user_name = #{userName},
+      </if>
+      <if test="phoneNum != null and phoneNum != ''" >
+        phoneNum = #{phoneNum},
+      </if>
+        <if test="password != null and password != ''" >
+        password = #{password},
+      </if>
+        <if test="identityType != null" >
+        identity_type = #{identityType},
+      </if>
+       <if test="identityNumber != null and identityNumber != ''" >
+        identity_number = #{identityNumber},
+      </if>
+      <if test="email != null and email != ''" >
+        email = #{email},
+      </if>
+       <if test="picPath != null and picPath != ''" >
+        pic_path = #{picPath},
+      </if>
+      <if test="gestureCode !=null and gestureCode !=''">
+      	gesture_code = #{gestureCode},
+      </if>
+      <if test="gestureStatus != null">
+      	gesture_status = #{gestureStatus}
+      </if>
+    </set>
+     where phoneNum = #{phoneNum}
+  </update>
+    <delete id="deleteMember" parameterType="MemberDO" >
+    delete from tb_member
+    <where>
+      <if test="id != null" >
+        id = #{id}
+      </if>
+    </where>
+  </delete>
+  
+  <update id="updatePhoneNum" parameterType="MemberDO">
+  	 update tb_member
+  	 <set >
+      <if test="phoneNum != null and phoneNum != ''" >
+        phoneNum = #{phoneNum},
+      </if>
+      </set>
+      where id = #{id}
+  </update>
+  	
+</mapper>

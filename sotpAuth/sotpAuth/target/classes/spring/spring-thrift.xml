@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns="http://www.springframework.org/schema/beans"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd"
+       default-lazy-init="true">
+
+    <!-- client 连接池配置 -->
+    <!-- 连接池，管理器，客户端代理，3个一组 -->
+    <!-- thrift连接池配置download301 -->
+    <bean id="connectionProvider301" class="com.peopleNet.sotp.thrift.pool.ConnectionProviderImpl">
+        <property name="serviceIP" value="${thrift.ens.ip01}"/>
+        <property name="servicePort" value="${thrift.ens.port01}"/>
+        <property name="maxActive" value="${thrift.ens.maxActive}"/>
+        <property name="maxIdle" value="${thrift.ens.maxIdle}"/>
+        <property name="maxWait" value="${thrift.ens.maxWait}"/>
+        <property name="minIdle" value="${thrift.ens.minIdle}"/>
+        <property name="testOnBorrow" value="${thrift.ens.testOnBorrow}"/>
+        <property name="testOnReturn" value="${thrift.ens.testOnReturn}"/>
+        <property name="testWhileIdle" value="${thrift.ens.testWhileIdle}"/>
+        <property name="conTimeOut" value="${thrift.ens.conTimeOut}"/>
+        <property name="serviceInterface"
+                  value="com.peopleNet.sotp.thrift.service.SotpService"/>
+    </bean>
+    <!-- thrift连接管理配置download301 -->
+    <bean id="connectionManager301" class="com.peopleNet.sotp.thrift.pool.ConnectionManager">
+        <property name="connectionProvider" ref="connectionProvider301"/>
+    </bean>
+
+
+    <bean id="connectionProvider302" class="com.peopleNet.sotp.thrift.pool.ConnectionProviderImpl">
+        <property name="serviceIP" value="${thrift.ens.ip02}"/>
+        <property name="servicePort" value="${thrift.ens.port02}"/>
+        <property name="maxActive" value="${thrift.ens.maxActive}"/>
+        <property name="maxIdle" value="${thrift.ens.maxIdle}"/>
+        <property name="minIdle" value="${thrift.ens.minIdle}"/>
+        <property name="maxWait" value="${thrift.ens.maxWait}"/>
+        <property name="testOnBorrow" value="${thrift.ens.testOnBorrow}"/>
+        <property name="testOnReturn" value="${thrift.ens.testOnReturn}"/>
+        <property name="testWhileIdle" value="${thrift.ens.testWhileIdle}"/>
+        <property name="conTimeOut" value="${thrift.ens.conTimeOut}"/>
+        <property name="serviceInterface"
+                  value="com.peopleNet.sotp.thrift.service.SotpService"/>
+    </bean>
+    <!-- thrift连接管理配置download302 -->
+    <bean id="connectionManager302" class="com.peopleNet.sotp.thrift.pool.ConnectionManager">
+        <property name="connectionProvider" ref="connectionProvider302"/>
+    </bean>
+
+    <bean id="connectionProvider303" class="com.peopleNet.sotp.thrift.pool.ConnectionProviderImpl">
+        <property name="serviceIP" value="${thrift.ens.ip03}"/>
+        <property name="servicePort" value="${thrift.ens.port03}"/>
+        <property name="maxActive" value="${thrift.ens.maxActive}"/>
+        <property name="maxIdle" value="${thrift.ens.maxIdle}"/>
+        <property name="minIdle" value="${thrift.ens.minIdle}"/>
+        <property name="maxWait" value="${thrift.ens.maxWait}"/>
+        <property name="testOnBorrow" value="${thrift.ens.testOnBorrow}"/>
+        <property name="testOnReturn" value="${thrift.ens.testOnReturn}"/>
+        <property name="testWhileIdle" value="${thrift.ens.testWhileIdle}"/>
+        <property name="conTimeOut" value="${thrift.ens.conTimeOut}"/>
+        <property name="serviceInterface"
+                  value="com.peopleNet.sotp.thrift.service.SotpService"/>
+    </bean>
+    <!-- thrift连接管理配置download303 -->
+    <bean id="connectionManager303" class="com.peopleNet.sotp.thrift.pool.ConnectionManager">
+        <property name="connectionProvider" ref="connectionProvider303"/>
+    </bean>
+
+    <bean id="connectionProvider304" class="com.peopleNet.sotp.thrift.pool.ConnectionProviderImpl">
+        <property name="serviceIP" value="${thrift.ens.ip04}"/>
+        <property name="servicePort" value="${thrift.ens.port04}"/>
+        <property name="maxActive" value="${thrift.ens.maxActive}"/>
+        <property name="maxIdle" value="${thrift.ens.maxIdle}"/>
+        <property name="minIdle" value="${thrift.ens.minIdle}"/>
+        <property name="maxWait" value="${thrift.ens.maxWait}"/>
+        <property name="testOnBorrow" value="${thrift.ens.testOnBorrow}"/>
+        <property name="testOnReturn" value="${thrift.ens.testOnReturn}"/>
+        <property name="testWhileIdle" value="${thrift.ens.testWhileIdle}"/>
+        <property name="conTimeOut" value="${thrift.ens.conTimeOut}"/>
+        <property name="serviceInterface"
+                  value="com.peopleNet.sotp.thrift.service.SotpService"/>
+    </bean>
+    <!-- thrift连接管理配置download01 -->
+    <bean id="connectionManager304" class="com.peopleNet.sotp.thrift.pool.ConnectionManager">
+        <property name="connectionProvider" ref="connectionProvider304"/>
+    </bean>
+
+    <bean id="serverNode01" class="com.peopleNet.sotp.thrift.heartbeat.ServerNode">
+        <property name="ip" value="${thrift.ens.ip01}"/>
+        <property name="port" value="${thrift.ens.port01}"/>
+    </bean>
+
+    <bean id="serverNode02" class="com.peopleNet.sotp.thrift.heartbeat.ServerNode">
+        <property name="ip" value="${thrift.ens.ip02}"/>
+        <property name="port" value="${thrift.ens.port02}"/>
+    </bean>
+
+    <bean id="serverNode03" class="com.peopleNet.sotp.thrift.heartbeat.ServerNode">
+        <property name="ip" value="${thrift.ens.ip03}"/>
+        <property name="port" value="${thrift.ens.port03}"/>
+    </bean>
+
+    <bean id="serverNode04" class="com.peopleNet.sotp.thrift.heartbeat.ServerNode">
+        <property name="ip" value="${thrift.ens.ip04}"/>
+        <property name="port" value="${thrift.ens.port04}"/>
+    </bean>
+
+    <bean id="thriftInvokeService" class="com.peopleNet.sotp.service.impl.ThriftInvokeServiceImpl">
+        <property name="downloadClientConnList">
+            <list>
+                <ref bean="connectionManager301"/>
+                <ref bean="connectionManager302"/>
+            </list>
+        </property>
+        <property name="businessClientConnList">
+            <list>
+                <ref bean="connectionManager303"/>
+                <ref bean="connectionManager304"/>
+            </list>
+        </property>
+        <property name="nodeList">
+            <list>
+                <ref bean="serverNode01"/>
+                <ref bean="serverNode02"/>
+                <ref bean="serverNode03"/>
+                <ref bean="serverNode04"/>
+            </list>
+        </property>
+
+        <property name="heartbeatFrequency" value="${heartbeat.heartbeatFrequency}"/>
+        <property name="heartbeatTimeout" value="${heartbeat.heartbeatTimeout}"/>
+        <property name="heartbeatTimes" value="${heartbeat.heartbeatTimes}"/>
+        <property name="heartbeatInterval" value="${heartbeat.heartbeatInterval}"/>
+    </bean>
+</beans>

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="LoginLog" >
+  <resultMap id="BaseResultMap" type="LoginLogDO" >
+    <result column="phone_num" property="phoneNum" />
+    <result column="address" property="address" />
+      <result column="phone_type" property="phoneType" />
+    <result column="login_time" property="loginTime" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+   phone_num,address,phone_type,login_time
+  </sql>
+  
+   <sql id="where">
+  	<where>
+      	<if test="phoneNum!=null  and phoneNum!=''" >
+        AND phone_num = #{phoneNum}
+      </if>
+  	</where>
+  </sql>
+  
+  
+     
+  
+  
+  
+  <select id="selectLoginLogCount" resultType="Integer" parameterType="map" >
+  	select count(*)
+  	from t_app_loginlog
+  	 <include refid="where"/>
+  </select>
+   <select id="selectLoginLogList" resultMap="BaseResultMap" parameterType="map" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_app_loginlog
+    <include refid="where"/>
+  </select>
+  
+  
+  
+  	
+  	 <insert id="addLoginLog" useGeneratedKeys="true" keyProperty="id" parameterType="UserDO" >
+    	insert into t_app_loginlog
+      <trim prefix="(" suffix=")" suffixOverrides="," >
+     
+      <if test="phoneNum != null and phoneNum!=''" >
+        phone_num,
+      </if>
+        <if test="phoneType!= null and phoneType!='' " >
+        phone_type,
+      </if>
+       <if test="loginTime != null and loginTime!='' " >
+        login_time,
+      </if>
+       <if test="address != null and address!='' " >
+        address,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="phoneNum != null and phoneNum!=''" >
+        #{phoneNum},
+      </if>
+       <if test="phoneType != null and phoneType!=''" >
+        #{phoneType},
+      </if>
+       <if test="loginTime != null and loginTime!=''" >
+       #{loginTime},
+      </if>
+       <if test="address != null and address!=''" >
+       #{address},
+      </if>
+    </trim>
+  </insert>
+  	
+  
+  	
+</mapper>

@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="Card">
+	<resultMap id="BaseResultMap" type="Card">
+		<id column="user_id" property="userId" />
+		<result column="card_type" property="cardType" />
+		<result column="card_number" property="cardNumber" />
+		<result column="balance" property="balance" />
+		<result column="bank" property="bank" />
+		<result column="phone_number" property="phoneNumber" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		user_id, card_type, card_number, balance, bank,
+		phone_number
+	</sql>
+
+	<sql id="where">
+		<where>
+			<if test="userId != null and userId != 0">
+				AND user_id = #{userId}
+			</if>
+			<if test="cardType != null and cardType != ''">
+				AND card_type = #{cardType}
+			</if>
+			<if test="cardNumber != null and cardNumber != ''">
+				AND card_number = #{cardNumber}
+			</if>
+		</where>
+	</sql>
+
+	<select id="selectOneCard" resultMap="BaseResultMap"
+		parameterType="Card">
+		select
+		<include refid="Base_Column_List" />
+		from t_card
+		<include refid="where" />
+	</select>
+
+	<select id="selectCardList" resultMap="BaseResultMap"
+		parameterType="long">
+		select * from t_card where user_id = #{id}
+	</select>
+
+	<insert id="addCard" parameterType="Card">
+		insert into t_card
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="userId != null and userId != 0">
+				user_id,
+			</if>
+			<if test="cardType != null and cardType != ''">
+				card_type,
+			</if>
+			<if test="cardNumber != null and cardNumber != ''">
+				card_number,
+			</if>
+			<if test="balance != null and balance != ''">
+				balance,
+			</if>
+			<if test="bank !=null and bank != ''">
+				bank,
+			</if>
+			<if test="phoneNumber !=null and phoneNumber != ''">
+				phone_number,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="userId != null and userId != 0">
+				#{userId},
+			</if>
+			<if test="cardType != null and cardType != ''">
+				#{cardType},
+			</if>
+			<if test="cardNumber != null and cardNumber != ''">
+				#{cardNumber},
+			</if>
+			<if test="balance != null and balance != ''">
+				#{balance},
+			</if>
+			<if test="bank !=null and bank != ''">
+				#{bank},
+			</if>
+			<if test="phoneNumber !=null and phoneNumber != ''">
+				#{phoneNumber},
+			</if>
+		</trim>
+	</insert>
+
+	<update id="updateCard" parameterType="Card">
+		update t_card
+		<set>
+			<if test="balance != null and balance != ''">
+				balance= #{balance},
+			</if>
+		</set>
+		<include refid="where" />
+	</update>
+	<delete id="deleteCard" parameterType="Card">
+		delete from t_card
+		<include refid="where" />
+	</delete>
+</mapper>

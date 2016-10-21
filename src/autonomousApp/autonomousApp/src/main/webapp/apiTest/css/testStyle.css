@@ -1,0 +1,32 @@
+@CHARSET "UTF-8";
+
+body {
+	/*background-image: url("../picture/background1.jpg");
+	background-size: 100% 100%;*/
+	background-color: grey;
+
+}
+
+div {
+	position: absolute;
+	left: 40%;
+	top:100px;
+	border: blue solid 5px;
+	height: 300px;
+	width: 800px;
+	padding: 20px 20px 20px 20px;
+	background-color: green;
+	opacity: 0.4;
+	color: navy;
+	font-size: xx-large;
+	overflow: auto;
+}
+#inputArea {
+	position: absolute;
+	top:100px;
+	left:50px;
+	height:300px;
+	width: 400px;
+	border: blue solid 5px;
+	overflow: auto;
+}

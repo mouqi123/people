@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.peopleNet.sotp.dal.dao.appVersionInfoDtoMapper">
+    <resultMap id="BaseResultMap" type="com.peopleNet.sotp.dal.model.appVersionInfoDto">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="version" property="version" jdbcType="VARCHAR"/>
+        <result column="app_type" property="app_type" jdbcType="INTEGER"/>
+        <result column="hash_value" property="hash_value" jdbcType="VARCHAR"/>
+        <result column="signature" property="signature" jdbcType="VARCHAR"/>
+        <result column="version_desc" property="version_desc" jdbcType="VARCHAR"/>
+        <result column="status" property="status" jdbcType="INTEGER"/>
+        <result column="app_code" property="app_code" jdbcType="VARCHAR"/>
+        <result column="app_key" property="app_key" jdbcType="VARCHAR"/>
+        <result column="app_info_id" property="app_info_id" jdbcType="INTEGER"/>
+        <result column="sdk_secret" property="sdk_secret" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id, version, app_type, hash_value, signature,
+        version_desc, status,
+        app_code,
+        app_key, app_info_id, sdk_secret
+    </sql>
+
+    <select id="selectAppVersionInfoByAppId" resultMap="BaseResultMap"
+            parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from t_app_version_info
+        <where>
+            t_app_version_info.app_code = #{appId,jdbcType=VARCHAR}
+            and t_app_version_info.status = 1
+        </where>
+    </select>
+
+</mapper>

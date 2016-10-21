@@ -1,0 +1,8 @@
+com/sotp/SotpMapperTest.class
+com/sotp/service/impl/ParamProduceService.class
+com/sotp/service/IParamProduceService.class
+com/sotp/JedisUtilTest.class
+com/sotp/PluginMagServiceTest.class
+com/peopleNet/sotp/util/ParamHander.class
+com/peopleNet/sotp/controller/UnitTestControllerV2.class
+com/peopleNet/sotp/controller/UnitTestController.class

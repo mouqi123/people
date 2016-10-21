@@ -1,0 +1,54 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+	<title></title>
+	<#include "/jeecms_sys/head.html"/>
+	<script type="text/javascript">
+		  	var n=0*1;
+		    var m=1*1;
+		    var timeoutProcess=setInterval("ajax()",1000);
+		    var ajax=function(){
+		        $.ajax({
+		            url:"${base}/eBanks/ajaxPolling.do?phoneNum=13051126671",
+		            type:"post",
+		            dataType:'json',
+		            success: function (data) {
+		            	 var obj = eval(data);
+		                if(n>=m*60){
+		                    clearTimeout(timeoutProcess);
+		                }else{
+		                	switch(obj.status){
+		                	case 1:
+		                		 $("body").html("已扫描");
+		                		 break;
+		                	case 0:
+		                		$("body").html("已支付");
+		                		break;
+		                	}
+		                    n++;
+		                }
+		            },
+		            error: function (data) {
+		                console.log(data.responseText);
+		            }
+		        });
+		    };
+	</script>
+</head>
+<body>
+	<div class="box-positon">
+		<div class="rpos">当前位置：交易管理 - 扫描二维码</div>
+		<div class="clear"></div>
+	</div>
+	<!-- 
+	<div class="body-box">
+		<form id="tableForm" method="post">
+		<img src="${base}/EBanks.jpg" alt="网银" onclick="eBanks()" />
+		</form>
+	</div>
+	 -->
+	<img class="imgcaptcha" id="picCheck" style="cursor: pointer;width: 100px;height: 100px" src="${base}/ebanks/getQRCode.do"/>
+	<#include "/common/alert_message.html"/>
+</body>
+</html>

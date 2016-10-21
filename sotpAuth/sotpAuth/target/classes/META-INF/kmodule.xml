@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kmodule
+        xmlns="http://www.drools.org/xsd/kmodule">
+    <kbase name="PointRuleKB" packages="org.drools.sotp.example.pointrule">
+        <ksession name="PointRuleKS"/>
+    </kbase>
+
+    <kbase name="HelloWorldKB" packages="org.drools.sotp.example.helloworld">
+        <ksession name="HelloWorldKS"/>
+    </kbase>
+
+    <kbase name="SOTPKB" packages="org.drools.sotp.verifyrule">
+        <ksession name="SOTPKS"/>
+    </kbase>
+
+    <kbase name="SOTPV2_KB" packages="org.drools.sotp.v2rule">
+        <ksession name="SOTPV2_KS"/>
+    </kbase>
+
+</kmodule>

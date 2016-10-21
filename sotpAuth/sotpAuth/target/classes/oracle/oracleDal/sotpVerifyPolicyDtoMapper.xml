@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.peopleNet.sotp.dal.dao.sotpVerifyPolicyDtoMapper">
+    <resultMap id="BaseResultMap"
+               type="com.peopleNet.sotp.dal.model.sotpVerifyPolicyDto">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="policy_name" property="policyName" jdbcType="VARCHAR"/>
+        <result column="motp_type_id" property="motpTypeId" jdbcType="TINYINT"/>
+        <result column="password_type" property="passwordType"
+                jdbcType="TINYINT"/>
+        <result column="auth_window_size" property="authWindowSize"
+                jdbcType="INTEGER"/>
+        <result column="password_length" property="passwordLength"
+                jdbcType="INTEGER"/>
+        <result column="error_times" property="errorTimes" jdbcType="INTEGER"/>
+        <result column="is_unlock" property="isUnlock" jdbcType="TINYINT"/>
+        <result column="auto_unlock_time" property="autoUnlockTime"
+                jdbcType="INTEGER"/>
+        <result column="policy_status" property="policyStatus"
+                jdbcType="TINYINT"/>
+        <result column="sms_timeout" property="smsTimeout" jdbcType="INTEGER"/>
+        <result column="device_cnt" property="deviceCnt" jdbcType="TINYINT"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="create_user" property="createUser" jdbcType="VARCHAR"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, policy_name, motp_type_id, password_type, auth_window_size,
+        password_length,
+        error_times, is_unlock, auto_unlock_time, policy_status, sms_timeout, device_cnt,
+        create_time, create_user
+    </sql>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap"
+            parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from t_sotp_verify_policy
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+    <select id="selectByStatus" resultMap="BaseResultMap"
+            parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from t_sotp_verify_policy
+        where policy_status = #{policyStatus,jdbcType=INTEGER}
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete from t_sotp_verify_policy
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+    <insert id="insert" parameterType="com.peopleNet.sotp.dal.model.sotpVerifyPolicyDto">
+        insert into t_sotp_verify_policy (policy_name, motp_type_id,
+        password_type, auth_window_size, password_length,
+        error_times, is_unlock, auto_unlock_time,
+        policy_status, sms_timeout, device_cnt,
+        create_time, create_user)
+        values (#{policyName,jdbcType=VARCHAR},
+        #{motpTypeId,jdbcType=TINYINT},
+        #{passwordType,jdbcType=TINYINT}, #{authWindowSize,jdbcType=INTEGER},
+        #{passwordLength,jdbcType=INTEGER},
+        #{errorTimes,jdbcType=INTEGER}, #{isUnlock,jdbcType=TINYINT}, #{autoUnlockTime,jdbcType=INTEGER},
+        #{policyStatus,jdbcType=TINYINT}, #{smsTimeout,jdbcType=INTEGER},
+        #{deviceCnt,jdbcType=TINYINT},
+        #{createTime,jdbcType=TIMESTAMP}, #{createUser,jdbcType=VARCHAR})
+    </insert>
+    <insert id="insertSelective" parameterType="com.peopleNet.sotp.dal.model.sotpVerifyPolicyDto">
+        insert into t_sotp_verify_policy
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="policyName != null">
+                policy_name,
+            </if>
+            <if test="motpTypeId != null">
+                motp_type_id,
+            </if>
+            <if test="passwordType != null">
+                password_type,
+            </if>
+            <if test="authWindowSize != null">
+                auth_window_size,
+            </if>
+            <if test="passwordLength != null">
+                password_length,
+            </if>
+            <if test="errorTimes != null">
+                error_times,
+            </if>
+            <if test="isUnlock != null">
+                is_unlock,
+            </if>
+            <if test="autoUnlockTime != null">
+                auto_unlock_time,
+            </if>
+            <if test="policyStatus != null">
+                policy_status,
+            </if>
+            <if test="smsTimeout != null">
+                sms_timeout,
+            </if>
+            <if test="deviceCnt != null">
+                device_cnt,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="createUser != null">
+                create_user,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="policyName != null">
+                #{policyName,jdbcType=VARCHAR},
+            </if>
+            <if test="motpTypeId != null">
+                #{motpTypeId,jdbcType=TINYINT},
+            </if>
+            <if test="passwordType != null">
+                #{passwordType,jdbcType=TINYINT},
+            </if>
+            <if test="authWindowSize != null">
+                #{authWindowSize,jdbcType=INTEGER},
+            </if>
+            <if test="passwordLength != null">
+                #{passwordLength,jdbcType=INTEGER},
+            </if>
+            <if test="errorTimes != null">
+                #{errorTimes,jdbcType=INTEGER},
+            </if>
+            <if test="isUnlock != null">
+                #{isUnlock,jdbcType=TINYINT},
+            </if>
+            <if test="autoUnlockTime != null">
+                #{autoUnlockTime,jdbcType=INTEGER},
+            </if>
+            <if test="policyStatus != null">
+                #{policyStatus,jdbcType=TINYINT},
+            </if>
+            <if test="smsTimeout != null">
+                #{smsTimeout,jdbcType=INTEGER},
+            </if>
+            <if test="deviceCnt != null">
+                #{deviceCnt,jdbcType=TINYINT},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createUser != null">
+                #{createUser,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.peopleNet.sotp.dal.model.sotpVerifyPolicyDto">
+        update t_sotp_verify_policy
+        <set>
+            <if test="policyName != null">
+                policy_name = #{policyName,jdbcType=VARCHAR},
+            </if>
+            <if test="motpTypeId != null">
+                motp_type_id = #{motpTypeId,jdbcType=TINYINT},
+            </if>
+            <if test="passwordType != null">
+                password_type = #{passwordType,jdbcType=TINYINT},
+            </if>
+            <if test="authWindowSize != null">
+                auth_window_size = #{authWindowSize,jdbcType=INTEGER},
+            </if>
+            <if test="passwordLength != null">
+                password_length = #{passwordLength,jdbcType=INTEGER},
+            </if>
+            <if test="errorTimes != null">
+                error_times = #{errorTimes,jdbcType=INTEGER},
+            </if>
+            <if test="isUnlock != null">
+                is_unlock = #{isUnlock,jdbcType=TINYINT},
+            </if>
+            <if test="autoUnlockTime != null">
+                auto_unlock_time = #{autoUnlockTime,jdbcType=INTEGER},
+            </if>
+            <if test="policyStatus != null">
+                policy_status = #{policyStatus,jdbcType=TINYINT},
+            </if>
+            <if test="smsTimeout != null">
+                sms_timeout = #{smsTimeout,jdbcType=INTEGER},
+            </if>
+            <if test="deviceCnt != null">
+                device_cnt = #{deviceCnt,jdbcType=TINYINT},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createUser != null">
+                create_user = #{createUser,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.peopleNet.sotp.dal.model.sotpVerifyPolicyDto">
+        update t_sotp_verify_policy
+        set policy_name = #{policyName,jdbcType=VARCHAR},
+        motp_type_id = #{motpTypeId,jdbcType=TINYINT},
+        password_type = #{passwordType,jdbcType=TINYINT},
+        auth_window_size = #{authWindowSize,jdbcType=INTEGER},
+        password_length = #{passwordLength,jdbcType=INTEGER},
+        error_times = #{errorTimes,jdbcType=INTEGER},
+        is_unlock = #{isUnlock,jdbcType=TINYINT},
+        auto_unlock_time = #{autoUnlockTime,jdbcType=INTEGER},
+        policy_status = #{policyStatus,jdbcType=TINYINT},
+        sms_timeout = #{smsTimeout,jdbcType=INTEGER},
+        device_cnt = #{deviceCnt,jdbcType=TINYINT},
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+        create_user = #{createUser,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+</mapper>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns="http://www.springframework.org/schema/beans"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd"
+       default-autowire="byType" default-lazy-init="false">
+
+    <!-- 部署文件定义 -->
+    <bean id="propertyConfigurer"
+          class="org.springframework.beans.factory.config.PreferencesPlaceholderConfigurer">
+        <property name="ignoreResourceNotFound" value="true"/>
+        <!-- <property name="ignoreUnresolvablePlaceholders" value="true" /> -->
+        <property name="locations">
+            <list>
+                <value>classpath:properties/config.properties</value>
+                <value>classpath:properties/mysql.properties</value>
+                <value>classpath:properties/rediscluster.properties</value>
+            </list>
+        </property>
+    </bean>
+    <!-- 导入其他配置文件 -->
+    <import resource="spring-redis.xml"/>
+    <import resource="spring-dao.xml"/>
+    <import resource="spring-crontab.xml"/>
+    <import resource="spring-thrift.xml"/>
+    <import resource="spring-rediscluster.xml"/>
+
+
+</beans>

@@ -1,0 +1,117 @@
+body {
+    font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+    margin: 0;
+}
+
+a {
+    color: #00B7FF;
+}
+
+@font-face {
+    font-family: iconfont;
+    src: url(//at.alicdn.com/t/font_1451959379_8626566.eot);
+    src: url(//at.alicdn.com/t/font_1451959379_8626566.eot?#iefix) format('embedded-opentype'), url(//at.alicdn.com/t/font_1451959379_8626566.woff) format('woff'), url(//at.alicdn.com/t/font_1451959379_8626566.ttf) format('truetype'), url(//at.alicdn.com/t/font_1451959379_8626566.svg#iconfont) format('svg')
+}
+
+.iconfont {
+    font-family: iconfont !important;
+    font-size: 16px;
+    font-style: normal;
+    -webkit-font-smoothing: antialiased;
+    -webkit-text-stroke-width: .2px;
+    -moz-osx-font-smoothing: grayscale
+}
+
+.login-switch .iconfont {
+    font-size: 52px;
+    cursor: pointer;
+    /* display: none; */
+    color: #f40;
+}
+
+.poptip {
+    border: 1px solid #f3d995;
+    height: 26px;
+    line-height: 16px;
+    padding: 5px 20px 5px 15px;
+    background: #fefcee;
+
+    position: relative;
+}
+
+.poptip-arrow {
+    top: 8px;
+    right: 0;
+    position: absolute;
+    z-index: 10;
+}
+
+.poptip-arrow em, .poptip-arrow span {
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-color: transparent;
+    border-color: transparent \0;
+    _border-color: tomato;
+    _filter: chroma(color=tomato);
+    border-style: solid;
+    overflow: hidden;
+    top: 0;
+    left: 0;
+}
+
+.poptip-arrow em {
+    top: 0;
+    left: 1px;
+    border-left-color: #f3d995;
+    border-width: 6px 0 6px 6px;
+}
+
+.poptip-arrow span {
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-color: rgba(255, 255, 255, 0);
+    border-color: transparent \0;
+    _border-color: tomato;
+    _filter: chroma(color=tomato);
+    border-style: solid;
+    overflow: hidden;
+    top: 0;
+    left: 0;
+}
+
+.poptip-arrow span {
+    border-left-color: #fefcee;
+    border-width: 6px 0 6px 6px;
+}
+
+.qrcode-desc .iconfont {
+    float: left;
+    color: #f40;
+    font-size: 34px;
+    line-height: 36px;
+    margin-right: 10px;
+}
+
+a {
+    color: #f40;
+    text-decoration: none;
+}
+
+.login-title {
+    height: 18px;
+    line-height: 18px;
+    font-size: 16px;
+    color: #3c3c3c;
+    font-weight: 700;
+    padding-top: 10px;
+}
+
+#qr-login-box, #pwd-login-box {
+
+    display: none;
+}
+#qr-login-box.active, #pwd-login-box.active {
+    display: block;
+}

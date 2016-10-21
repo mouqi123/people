@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="AccountManage" >
+  <resultMap id="BaseResultMap" type="AccountManageDO" >
+    <id column="id" property="id" />
+    <result column="member_id" property="memberId" />
+    <result column="account_name" property="accountName" />
+    <result column="account_type" property="accountType" />
+    <result column="create_time" property="createTime" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id,member_id,account_name,account_type,create_time
+  </sql>
+  
+   <sql id="where">
+  	<where>
+  	  <if test="id!=null and id!='' and id!=0" >
+        AND id = #{id}
+      </if>
+       <if test="memberId!=null and memberId!=''">
+        AND memberId = #{memberId}
+      </if>
+  	</where>
+  </sql>
+  
+  
+  <select id="selectAccountManageCount" resultType="Integer" parameterType="map" >
+  	select count(*)
+  	from tb_account
+  </select>
+  <select id="selectAccountManageList" resultMap="BaseResultMap" parameterType="map" >
+  SELECT 
+  tb_account.id,tb_member.user_name as member_id,tb_account.account_name,tb_account.account_type,tb_account.create_time from tb_account ,tb_member  
+  where tb_member.id=tb_account.member_id
+    <include refid="common.pageUtil"/>
+  </select>
+  
+   <select id="selectAccountManageOne" resultMap="BaseResultMap" parameterType="map" >
+   SELECT 
+   <include refid="Base_Column_List" />
+   from tb_account
+    <include refid="where"/>
+  </select>
+  
+  	
+  	 <insert id="addAccountManage" parameterType="AccountManageDO" >
+    	insert into tb_account
+      <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="memberId != null" >
+        member_id,
+      </if>
+      <if test="accountName != null" >
+        account_name,
+      </if>
+      <if test="accountType != null" >
+        account_type,
+      </if>
+         create_time,
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id},
+      </if>
+      <if test="memberId != null" >
+        #{memberId},
+      </if>
+      <if test="accountName != null" >
+        #{accountName},
+      </if>
+      <if test="accountType != null" >
+        #{accountType},
+      </if>
+      now()
+    </trim>
+  </insert>
+  	  <update id="updateAccountManage" parameterType="AccountManageDO" >
+    update tb_account
+    <set >
+      <if test="accountName != null and accountName != ''" >
+        account_name = #{accountName},
+      </if>
+      <if test="accountType != null and accountType != ''" >
+        account_type = #{accountType},
+      </if>
+        <if test="memberId != null and memberId != ''" >
+        member_id = #{memberId},
+      </if>
+     
+    </set>
+    where id = #{id}
+  </update>
+    <delete id="deleteAccountManage" parameterType="AccountManageDO" >
+    delete from tb_account
+    <where>
+      <if test="id != null" >
+        id = #{id}
+      </if>
+    </where>
+  </delete>
+  	
+</mapper>

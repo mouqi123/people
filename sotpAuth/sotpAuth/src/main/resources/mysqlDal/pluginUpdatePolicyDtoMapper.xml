@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.peopleNet.sotp.dal.dao.pluginUpdatePolicyDtoMapper">
+    <resultMap id="BaseResultMap"
+               type="com.peopleNet.sotp.dal.model.pluginUpdatePolicyDto">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="policy_name" property="policyName" jdbcType="VARCHAR"/>
+        <result column="update_cycle" property="updateCycle" jdbcType="INTEGER"/>
+        <result column="total_usecnt" property="totalUsecnt" jdbcType="INTEGER"/>
+        <result column="total_errcnt" property="totalErrcnt" jdbcType="INTEGER"/>
+        <result column="policy_status" property="policyStatus"
+                jdbcType="TINYINT"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="create_user" property="createUser" jdbcType="VARCHAR"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, policy_name, update_cycle, total_usecnt, total_errcnt,
+        policy_status,
+        create_time,
+        create_user
+    </sql>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap"
+            parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from t_plugin_update_policy
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    <select id="selectByPolicyStatus" resultMap="BaseResultMap"
+            parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from t_plugin_update_policy
+        where policy_status =
+        #{status,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete from
+        t_plugin_update_policy
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+    <insert id="insert" parameterType="com.peopleNet.sotp.dal.model.pluginUpdatePolicyDto">
+        insert into
+        t_plugin_update_policy (id, policy_name, update_cycle,
+        total_usecnt,
+        total_errcnt, policy_status,
+        create_time, create_user)
+        values
+        (#{id,jdbcType=INTEGER}, #{policyName,jdbcType=VARCHAR},
+        #{updateCycle,jdbcType=INTEGER},
+        #{totalUsecnt,jdbcType=INTEGER},
+        #{totalErrcnt,jdbcType=INTEGER}, #{policyStatus,jdbcType=TINYINT},
+        #{createTime,jdbcType=TIMESTAMP}, #{createUser,jdbcType=VARCHAR})
+    </insert>
+    <insert id="insertSelective" parameterType="com.peopleNet.sotp.dal.model.pluginUpdatePolicyDto">
+        insert into t_plugin_update_policy
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="policyName != null">
+                policy_name,
+            </if>
+            <if test="updateCycle != null">
+                update_cycle,
+            </if>
+            <if test="totalUsecnt != null">
+                total_usecnt,
+            </if>
+            <if test="totalErrcnt != null">
+                total_errcnt,
+            </if>
+            <if test="policyStatus != null">
+                policy_status,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="createUser != null">
+                create_user,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="policyName != null">
+                #{policyName,jdbcType=VARCHAR},
+            </if>
+            <if test="updateCycle != null">
+                #{updateCycle,jdbcType=INTEGER},
+            </if>
+            <if test="totalUsecnt != null">
+                #{totalUsecnt,jdbcType=INTEGER},
+            </if>
+            <if test="totalErrcnt != null">
+                #{totalErrcnt,jdbcType=INTEGER},
+            </if>
+            <if test="policyStatus != null">
+                #{policyStatus,jdbcType=TINYINT},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createUser != null">
+                #{createUser,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.peopleNet.sotp.dal.model.pluginUpdatePolicyDto">
+        update t_plugin_update_policy
+        <set>
+            <if test="policyName != null">
+                policy_name = #{policyName,jdbcType=VARCHAR},
+            </if>
+            <if test="updateCycle != null">
+                update_cycle = #{updateCycle,jdbcType=INTEGER},
+            </if>
+            <if test="totalUsecnt != null">
+                total_usecnt = #{totalUsecnt,jdbcType=INTEGER},
+            </if>
+            <if test="totalErrcnt != null">
+                total_errcnt = #{totalErrcnt,jdbcType=INTEGER},
+            </if>
+            <if test="policyStatus != null">
+                policy_status = #{policyStatus,jdbcType=TINYINT},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createUser != null">
+                create_user = #{createUser,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.peopleNet.sotp.dal.model.pluginUpdatePolicyDto">
+        update
+        t_plugin_update_policy
+        set policy_name =
+        #{policyName,jdbcType=VARCHAR},
+        update_cycle =
+        #{updateCycle,jdbcType=INTEGER},
+        total_usecnt =
+        #{totalUsecnt,jdbcType=INTEGER},
+        total_errcnt =
+        #{totalErrcnt,jdbcType=INTEGER},
+        policy_status =
+        #{policyStatus,jdbcType=TINYINT},
+        create_time =
+        #{createTime,jdbcType=TIMESTAMP},
+        create_user =
+        #{createUser,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+</mapper>
